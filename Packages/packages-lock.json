@@ -1,12 +1,5 @@
 {
   "dependencies": {
-    "com.annulusgames.alchemy": {
-      "version": "https://github.com/annulusgames/Alchemy.git?path=/Alchemy/Assets/Alchemy",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "d9f5a2b8f9b7e79ac7fc7eb188b607bd60910398"
-    },
     "com.annulusgames.lit-motion": {
       "version": "https://github.com/annulusgames/LitMotion.git?path=src/LitMotion/Assets/LitMotion",
       "depth": 0,
@@ -30,7 +23,14 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "c3d18e4e99f9848e019ef50d0ae2d94f7a7cc820"
+      "hash": "f59785046a36605378e18678af15ee66549aa26b"
+    },
+    "com.cysharp.zstring": {
+      "version": "https://github.com/Cysharp/ZString.git?path=src/ZString.Unity/Assets/Scripts/ZString",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "9fae2bebcf8768398905aba0e64a25f2384b4556"
     },
     "com.github-glitchenzo.nugetforunity": {
       "version": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
@@ -47,6 +47,13 @@
         "com.unity.textmeshpro": "3.0.6"
       },
       "hash": "de5f787f2534a25c2f151538f26d8e1eaae7df2f"
+    },
+    "com.mackysoft.serializereference-extensions": {
+      "version": "https://github.com/ducvg/Unity-SerializeReferenceExtensions.git?path=Assets/MackySoft/MackySoft.SerializeReferenceExtensions",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "db4b35f18772d27cab40da324c3e8b480d2bda05"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",

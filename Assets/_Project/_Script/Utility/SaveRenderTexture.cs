@@ -1,9 +1,8 @@
 using UnityEngine;
 using UnityEditor;
 
-public class SaveRenderTexture 
-{
-    [MenuItem("Assets/Save RenderTexture to File")]
+public class SaveRenderTextureToFile {
+    [MenuItem("Assets/Save RenderTexture to file")]
     public static void SaveRTToFile()
     {
         RenderTexture rt = Selection.activeObject as RenderTexture;
@@ -14,15 +13,15 @@ public class SaveRenderTexture
         RenderTexture.active = null;
 
         byte[] bytes;
-        bytes = tex.EncodeToTGA();
+        bytes = tex.EncodeToPNG();
         
-        string path = AssetDatabase.GetAssetPath(rt) + ".tga";
+        string path = AssetDatabase.GetAssetPath(rt) + ".png";
         System.IO.File.WriteAllBytes(path, bytes);
         AssetDatabase.ImportAsset(path);
         Debug.Log("Saved to " + path);
     }
 
-    [MenuItem("Assets/Save RenderTexture to File", true)]
+    [MenuItem("Assets/Save RenderTexture to file", true)]
     public static bool SaveRTToFileValidation()
     {
         return Selection.activeObject is RenderTexture;
