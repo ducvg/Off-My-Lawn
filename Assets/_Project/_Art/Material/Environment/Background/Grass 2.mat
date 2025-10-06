@@ -46,7 +46,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha_Threshold: 0.49
+    - _Alpha_Threshold: 0.5
     - _Ground_Max_Size: 14
     - _Ground_Offset: 0.2
     - _QueueControl: 0
@@ -55,14 +55,14 @@ Material:
     - _SwayScale: 5
     - _Wind_Density: 5
     - _Wind_Speed: 0.3
-    - _Wind_Strength: 0.7
+    - _Wind_Strength: 0.4
     m_Colors:
     - _Color: {r: 0.26232815, g: 0.5698112, b: 0.19244564, a: 0}
     - _Ground_Dimension: {r: 14, g: 14, b: 0, a: 0}
     - _Ground_Offset: {r: 0.215, g: 0, b: 0, a: 0}
     - _Ground_Size: {r: 14, g: 9, b: 0, a: 0}
     - _Wind_Direction: {r: 1, g: 1.3, b: 0, a: 0}
-    - _Wind_Movement: {r: 0.69, g: 0, b: 0, a: 0}
+    - _Wind_Movement: {r: 0.5, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &1969345186305701553
 MonoBehaviour:

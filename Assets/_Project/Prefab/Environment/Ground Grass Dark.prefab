@@ -129,6 +129,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Grass 2
       objectReference: {fileID: 0}
+    - target: {fileID: 809763858553896727, guid: e253c2e7eb2f4464bbdc85c9a0b473e5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4680074952656119458, guid: e253c2e7eb2f4464bbdc85c9a0b473e5,
         type: 3}
       propertyPath: m_LocalPosition.x
