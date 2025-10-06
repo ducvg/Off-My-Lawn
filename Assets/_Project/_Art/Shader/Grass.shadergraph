@@ -29,9 +29,6 @@
         },
         {
             "m_Id": "5f93a83826ff42698a06d7f4f47c1947"
-        },
-        {
-            "m_Id": "4012f1b0e9b94c86a57d1811ca8f46e5"
         }
     ],
     "m_Keywords": [],
@@ -845,8 +842,8 @@
     "m_ShaderOutputName": "Tiling",
     "m_StageCapability": 3,
     "m_Value": {
-        "x": 0.10000000149011612,
-        "y": 0.10000000149011612
+        "x": 1.0,
+        "y": 1.0
     },
     "m_DefaultValue": {
         "x": 0.0,
@@ -1310,9 +1307,6 @@
             "m_Id": "1749ad2dd1724afbb3617cbfd095631a"
         },
         {
-            "m_Id": "4012f1b0e9b94c86a57d1811ca8f46e5"
-        },
-        {
             "m_Id": "5f93a83826ff42698a06d7f4f47c1947"
         },
         {
@@ -1495,36 +1489,6 @@
     "m_SupportsLODCrossFade": false,
     "m_CustomEditorGUI": "",
     "m_SupportVFX": false
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.Texture2DShaderProperty",
-    "m_ObjectId": "4012f1b0e9b94c86a57d1811ca8f46e5",
-    "m_Guid": {
-        "m_GuidSerialized": "c3404c53-238c-4515-861b-5805a0e1e574"
-    },
-    "m_Name": "Wind Noise Texture",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Wind Noise Texture",
-    "m_DefaultReferenceName": "_Wind_Noise_Texture",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_DismissedVersion": 0,
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": {
-        "m_SerializedTexture": "",
-        "m_Guid": ""
-    },
-    "isMainTexture": false,
-    "useTilingAndOffset": false,
-    "m_Modifiable": true,
-    "m_DefaultType": 0
 }
 
 {
@@ -1725,8 +1689,8 @@
     "m_ObjectId": "4f3032df511949a2857b5d5f456380ae",
     "m_Title": "Blend Ground",
     "m_Position": {
-        "x": -1644.8001708984375,
-        "y": 172.800048828125
+        "x": -1644.800048828125,
+        "y": 172.7999267578125
     }
 }
 
@@ -2650,8 +2614,8 @@
     "m_ObjectId": "9ed42e21863a4f31947bc989ab404152",
     "m_Title": "Grass Sway",
     "m_Position": {
-        "x": -2015.2001953125,
-        "y": -349.60003662109377
+        "x": -2015.2000732421875,
+        "y": -349.6000061035156
     }
 }
 
@@ -4335,7 +4299,7 @@
         "perlin noise"
     ],
     "m_Precision": 0,
-    "m_PreviewExpanded": false,
+    "m_PreviewExpanded": true,
     "m_DismissedVersion": 0,
     "m_PreviewMode": 0,
     "m_CustomColors": {
