@@ -3,6 +3,29 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 [Serializable]
+public enum MusicID
+{
+    BgMainMenu,
+    BgGamePlay
+}
+
+[Serializable]
+public enum FxID
+{
+    SfxDropSkewer,
+    SfxClearSkewer,
+    SfxPickSkewer,
+
+    SfxUIClickBtn,
+    SfxUIWinGame,
+    SfxUILoseGame,
+    SfxUIRewardClaim,
+    SfxUICoinClaim,
+    SfxGasTorch,
+    SfxIceBreak
+}
+
+[Serializable]
 public class AudioConfig<T> where T : Enum
 {
     [field: SerializeField] public T AudioKey { get; private set; }

@@ -1,30 +1,6 @@
 using System;
-using System.Collections;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-
-[Serializable]
-public enum MusicID
-{
-    BgMainMenu,
-    BgGamePlay
-}
-
-[Serializable]
-public enum FxID
-{
-    SfxDropSkewer,
-    SfxClearSkewer,
-    SfxPickSkewer,
-
-    SfxUIClickBtn,
-    SfxUIWinGame,
-    SfxUILoseGame,
-    SfxUIRewardClaim,
-    SfxUICoinClaim,
-    SfxGasTorch,
-    SfxIceBreak
-}
 
 public class AudioManager : PersistentSingleton<AudioManager>
 {
