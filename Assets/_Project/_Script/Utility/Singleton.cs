@@ -24,9 +24,23 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         }
         protected set => instance = value;
     }
+
+    protected virtual void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this as T;
+    }
 }
 
-[RequireComponent(typeof(DDOL_Component))]
 public class PersistentSingleton<T> : Singleton<T> where T : MonoBehaviour
 {
+    protected override void Awake()
+    {
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
+    }
 }

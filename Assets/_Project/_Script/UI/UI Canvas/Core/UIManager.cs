@@ -8,11 +8,13 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Transform canvasRoot;
     [SerializeField] private List<BaseCanvas> prefabList;
 
+    private readonly Dictionary<Type, BaseCanvas> canvasPrefabs = new();
     private Dictionary<Type, BaseCanvas> activeCanvases = new();
-    private Dictionary<Type, BaseCanvas> canvasPrefabs = new();
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+        
         foreach (var canvas in prefabList)
         {
             canvasPrefabs.Add(canvas.GetType(), canvas);

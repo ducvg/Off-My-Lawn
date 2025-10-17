@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f20331f5f0882e4e85db129f8c0d873, type: 3}
+  m_Name: Knight
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Knight
+  <HeroType>k__BackingField: 3
+  <Icon>k__BackingField: {fileID: -366252302, guid: e57647435825e3f4787818dedee3328c,
+    type: 3}
+  <Cost>k__BackingField: 100
+  <Cooldown>k__BackingField: 15
+  <Prefab>k__BackingField: {fileID: 8287993322720406573, guid: 5a0f4b01bed8e4f4e8f8a3f15fd6083a,
+    type: 3}
+  <MaxHealth>k__BackingField: 250
