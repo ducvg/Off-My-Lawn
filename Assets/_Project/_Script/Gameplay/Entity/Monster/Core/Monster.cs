@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class Monster : Entity
 {
-    [field: SerializeField] public MonsterConfigSO Config { get; private set; }
+    [field: SerializeField] public HeroConfigSO Config { get; private set; }
 
-    public void Init()
+    public override void Init()
     {
-        GraphicController.Init();
+        health = Config.MaxHealth;
+
+        GraphicController.Init(this);
         EquipmentController.Init(this);
 
         EquipmentController
-            .WithEquipment(Config.DefaultWeapon)
-            .WithEquipment(Config.DefaultShield)
-            .WithEquipment(Config.DefaultArmors);
+            .WithWeapon(Config.DefaultWeapon)
+            .WithShield(Config.DefaultShield)
+            .WithArmor(Config.DefaultArmors);
     }
 }

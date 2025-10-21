@@ -1,32 +1,37 @@
 using System;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using PrimeTween;
 using UnityEngine;
+
+public interface ITransition
+{
+    public Tween Run();
+}
 
 [Serializable]
 public class TransitionData
 {
-    [SerializeReference, Subclass] private BaseTransition[] openTransitions;
-    [SerializeReference, Subclass] private BaseTransition[] closeTransitions;
+    [SerializeReference] private ITransition[] openTransitions;
+    [SerializeReference] private ITransition[] closeTransitions;
 
-    public async UniTask Open()
+    public async UniTask Open(MonoBehaviour caller)
     {
-        List<UniTask> transitionTasks = new();
+        Sequence sequence = Sequence.Create();
         foreach (var transition in openTransitions)
         {
-            transitionTasks.Add(transition.Run());
+            _ = sequence.Chain(transition.Run()); //ignore await warning
         }
-        await UniTask.WhenAll(transitionTasks);
+        await sequence.WithCancellation(caller.destroyCancellationToken);
     }
 
-    public async UniTask Close()
+    public async UniTask Close(MonoBehaviour caller)
     {
-        List<UniTask> transitionTasks = new();
+        Sequence sequence = Sequence.Create();
         foreach (var transition in closeTransitions)
         {
-            transitionTasks.Add(transition.Run());
+            _ = sequence.Chain(transition.Run()); //ignore await warning
         }
-        await UniTask.WhenAll(transitionTasks);
+        await sequence.WithCancellation(caller.destroyCancellationToken);
     }
 }
 

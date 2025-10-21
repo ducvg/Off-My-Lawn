@@ -1,32 +1,53 @@
+using System.Collections.Generic;
+using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 
 public class GraphicController : MonoBehaviour
 {
-    [SerializeField] private Renderer[] renderers;
+    [SerializeField] private List<Renderer> outfitRenderers;
+    [SerializeField] private Renderer[] bodyRenderers;
 
-    public void Init()
+    private Entity ownerEntity;
+
+    public void Init(Entity owner)
     {
+        ownerEntity = owner;
     }
 
-    public void ChangeMaterial(Material newMaterial)
+    public void AddOutfitRenderer(Renderer renderer)
     {
-        foreach (var renderer in renderers)
-        {
-            renderer.material = newMaterial;
-        }
+        outfitRenderers.Add(renderer);
+    }
+
+    public void RemoveOutfitRenderer(Renderer renderer)
+    {
+        outfitRenderers.Remove(renderer);
+    }
+
+    public void ChangeMaterialAll(Material newMaterial)
+    {
+        foreach (var renderer in bodyRenderers) renderer.material = newMaterial;
+        foreach (var renderer in outfitRenderers) renderer.material = newMaterial;
+    }
+
+    public void ChangeOutfitColor(Color newColor)
+    {
+        foreach (var renderer in outfitRenderers) renderer.material.color = newColor;
     }
 
     public Material GetHeroMaterial()
     {
-        return renderers[0].material;
+        return bodyRenderers[0].material;
     }
 
 #if UNITY_EDITOR
-    [ContextMenu("Fetch Renderers")]
+    [Button("Fetch Renderers")]
     private void FetchRenderersEditor()
     {
-        renderers = GetComponentsInChildren<Renderer>();
+        bodyRenderers = GetComponentsInChildren<Renderer>();
+        outfitRenderers = GetComponentsInChildren<Renderer>().ToList();
         EditorUtility.SetDirty(this);
     }
 #endif

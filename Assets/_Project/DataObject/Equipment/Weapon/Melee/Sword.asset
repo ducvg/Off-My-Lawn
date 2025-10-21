@@ -15,16 +15,22 @@ MonoBehaviour:
   <Name>k__BackingField: Sword
   <Icon>k__BackingField: {fileID: 0}
   <Prefab>k__BackingField: {fileID: 0}
+  <Type>k__BackingField: 0
   <AttackAnimation>k__BackingField: {fileID: 0}
   <HitParticle>k__BackingField: {fileID: 0}
-  <HitEffects>k__BackingField:
-  - rid: 4666671890749194240
-  <Cooldown>k__BackingField: 0
-  <AttackSpeed>k__BackingField: 0
+  <AttackEffects>k__BackingField:
+  - rid: 4666671974448365568
+  - rid: 4666671974448365569
+  <Cooldown>k__BackingField: 1
+  <AttackSpeed>k__BackingField: 1
   references:
     version: 2
     RefIds:
-    - rid: 4666671890749194240
+    - rid: 4666671974448365568
       type: {class: DamageEffect, ns: , asm: Assembly-CSharp}
       data:
-        damage: 0
+        damage: 10
+    - rid: 4666671974448365569
+      type: {class: KnockbackEffect, ns: , asm: Assembly-CSharp}
+      data:
+        distance: 0.5

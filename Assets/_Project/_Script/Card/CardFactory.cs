@@ -1,5 +1,4 @@
-using Cysharp.Text;
-using TMPEffects.SerializedCollections;
+using AYellowpaper.SerializedCollections;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Card Factory", menuName = "Data Object/Factory/Card Factory")]
@@ -11,11 +10,10 @@ public class CardFactory : ScriptableObject
     public Card CreateCard(HeroConfigSO heroConfig, Transform parent)
     {
         Card card = Instantiate(cardPrefab, parent);
-
         card.Init(new CardData()
         {
-            HeroConfig = heroConfig,
-            BackgroundColor = heroTypeColors[heroConfig.HeroType]
+            Config = heroConfig,
+            BackgroundColor = heroTypeColors[heroConfig.HeroType],
         });
 
         return card;
@@ -24,6 +22,6 @@ public class CardFactory : ScriptableObject
 
 public struct CardData
 {
-    public HeroConfigSO HeroConfig;
+    public HeroConfigSO Config;
     public Color BackgroundColor;
 }

@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 1341379055027932625}
   - component: {fileID: 5390251256718476178}
   m_Layer: 0
-  m_Name: Body
+  m_Name: Graphic Controller
   m_TagString: Untagged
   m_Icon: {fileID: -1412012063857583412, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -345,10 +345,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c4d29ad2a1d7244f83d517764ae4757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accessoryMeshes:
+  outfitRenderers:
   - {fileID: 7574678211472722968}
   - {fileID: 5402546675125477090}
-  skinMeshes:
+  bodyRenderers:
   - {fileID: 2266246359188847400}
   - {fileID: 8245491401788493581}
   - {fileID: 5787421600823500267}
@@ -422,6 +422,58 @@ Transform:
   - {fileID: 5047630433524354394}
   m_Father: {fileID: 7185920977551569998}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2292813770974216472
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5538483472010820409}
+  - component: {fileID: 3298143192981498889}
+  m_Layer: 0
+  m_Name: Equipment Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5538483472010820409
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2292813770974216472}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2180213824649413588}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3298143192981498889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2292813770974216472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9af1445a93a44b34c9aa4387d7e6eea2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <EquipmentSlot>k__BackingField:
+    _serializedList:
+    - Key: 0
+      Value: {fileID: 764433605529312952}
+    - Key: 1
+      Value: {fileID: 7122503683854882519}
+    - Key: 2
+      Value: {fileID: 2067390764199137537}
 --- !u!1 &2709779979171479892
 GameObject:
   m_ObjectHideFlags: 0
@@ -1615,6 +1667,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4824766583615453516}
+  - {fileID: 5538483472010820409}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &4496310354154875055
@@ -1630,6 +1683,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <GraphicController>k__BackingField: {fileID: 5390251256718476178}
+  <EquipmentController>k__BackingField: {fileID: 3298143192981498889}
+  health: 0
+  <Config>k__BackingField: {fileID: 11400000, guid: 3cd130835c5edd04083beef31db84150,
+    type: 2}
 --- !u!1 &8007026317623828540
 GameObject:
   m_ObjectHideFlags: 0

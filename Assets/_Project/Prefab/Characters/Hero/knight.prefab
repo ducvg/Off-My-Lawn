@@ -1318,7 +1318,7 @@ GameObject:
   - component: {fileID: 2374169322228814706}
   - component: {fileID: 128654104043559326}
   m_Layer: 0
-  m_Name: Body
+  m_Name: Graphic Controller
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -1379,10 +1379,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c4d29ad2a1d7244f83d517764ae4757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accessoryMeshes:
-  - {fileID: 8171356450091941267}
+  outfitRenderers:
   - {fileID: 8088312711927608607}
-  skinMeshes:
+  - {fileID: 8171356450091941267}
+  bodyRenderers:
   - {fileID: 112313398457479385}
   - {fileID: 442553658712882473}
   - {fileID: 2896458583872165282}
@@ -1774,6 +1774,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8229156733313486213}
+  - {fileID: 7196376693365522693}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &8287993322720406573
@@ -1789,6 +1790,62 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <GraphicController>k__BackingField: {fileID: 128654104043559326}
+  <EquipmentController>k__BackingField: {fileID: 2724686915301519178}
+  health: 0
+  <Config>k__BackingField: {fileID: 11400000, guid: 7bf83eac3eb375a428568c222934d5ff,
+    type: 2}
+--- !u!1 &9111478412403483507
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7196376693365522693}
+  - component: {fileID: 2724686915301519178}
+  m_Layer: 0
+  m_Name: Equipment Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7196376693365522693
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9111478412403483507}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4381189380622951677}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2724686915301519178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9111478412403483507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9af1445a93a44b34c9aa4387d7e6eea2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <EquipmentSlot>k__BackingField:
+    _serializedList:
+    - Key: 0
+      Value: {fileID: 5468899746808289061}
+    - Key: 1
+      Value: {fileID: 7488197993265814110}
+    - Key: 2
+      Value: {fileID: 4059818939777360381}
 --- !u!1 &9163779577453718704
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,7 +7,8 @@ using UnityEngine;
 public class LevelData
 {
     public float StartMoney;
-    public List<HeroConfigSO> StartHeroes;
+    public List<HeroConfigSO> PlayableHeroes;
+    public List<HeroConfigSO> ForcedHeroes;
 
     //wave data
     //Grid data

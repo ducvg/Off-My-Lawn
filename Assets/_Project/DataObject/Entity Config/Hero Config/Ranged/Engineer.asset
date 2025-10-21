@@ -13,11 +13,18 @@ MonoBehaviour:
   m_Name: Engineer
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Engineer
-  <HeroType>k__BackingField: 0
   <Icon>k__BackingField: {fileID: 952240445, guid: e57647435825e3f4787818dedee3328c,
     type: 3}
-  <Cost>k__BackingField: 150
-  <Cooldown>k__BackingField: 5
   <Prefab>k__BackingField: {fileID: 26702406749682429, guid: bba52cb8327573a4299109283d05b63e,
     type: 3}
+  <DefaultWeapon>k__BackingField: {fileID: 0}
+  <DefaultShield>k__BackingField: {fileID: 0}
+  <DefaultArmors>k__BackingField: []
+  <Cost>k__BackingField: 150
   <MaxHealth>k__BackingField: 100
+  <CardCooldown>k__BackingField: 5
+  <HeroType>k__BackingField: 1
+  <UpgradePaths>k__BackingField: []
+  references:
+    version: 2
+    RefIds: []

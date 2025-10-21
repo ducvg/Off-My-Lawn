@@ -1,39 +1,53 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using AYellowpaper.SerializedCollections;
 using UnityEngine;
-#pragma warning disable CS8524 //suppress warning switch not have default case
-
 public class EquipmentController : MonoBehaviour
 {
-    [SerializeField] private Transform WeaponSlot, ShieldSlot;
-    [SerializeField] private Transform ArmorHeadSlot, ArmorChestSlot, ArmorArmSlot, ArmorLegSlot;
-
-    public Entity OwnerEntity { get; private set; }
-    public Weapon Weapon { get; private set; }
-    public Shield Shield { get; private set; }
-    public Dictionary<Transform, List<Armor>> Armors { get; private set; } = new();
+    [field: SerializeField] public SerializedDictionary<EquipmentType, Transform> EquipmentSlot { get; private set; }
+    private Weapon weapon;
+    private Shield shield;
+    private Dictionary<EquipmentType, Armor> armors = new();
+    private Entity ownerEntity;
 
     public void Init(Entity owner)
     {
-        OwnerEntity = owner;
-        Armors[ArmorHeadSlot] = new List<Armor>();
-        Armors[ArmorChestSlot] = new List<Armor>();
-        Armors[ArmorArmSlot] = new List<Armor>();
-        Armors[ArmorLegSlot] = new List<Armor>();
+        ownerEntity = owner;
     }
 
-    public EquipmentController WithEquipment(EquipmentConfigSO equipmentConfig)
+    public EquipmentController WithWeapon(WeaponConfigSO weaponConfig)
     {
-        Instantiate(equipmentConfig.Prefab).Equip(OwnerEntity);
+        if(!weaponConfig) return this;
+        if(weapon) weapon.Unequip();
+        var newWeapon = Instantiate(weaponConfig.Prefab, EquipmentSlot[weaponConfig.Type]);
+        newWeapon.Equip(ownerEntity);
+        weapon = newWeapon;
         return this;
     }
 
-    public EquipmentController WithEquipment(EquipmentConfigSO[] equipmentConfigs)
+    public EquipmentController WithShield(ShieldConfigSO shieldConfig)
     {
-        var length = equipmentConfigs.Length;
-        for(int i = 0; i < length; ++i)
+        if(!shieldConfig) return this;
+        if(shield) shield.Unequip();
+        var newShield = Instantiate(shieldConfig.Prefab, EquipmentSlot[shieldConfig.Type]);
+        newShield.Equip(ownerEntity);
+        shield = newShield;
+        return this;
+    }
+
+    public EquipmentController WithArmor(ArmorConfigSO armorConfig)
+    {
+        if(!armorConfig) return this;
+        if(armors[armorConfig.Type]) armors[armorConfig.Type].Unequip();
+        var newArmor = Instantiate(armorConfig.Prefab, EquipmentSlot[armorConfig.Type]);
+        newArmor.Equip(ownerEntity);
+        armors[armorConfig.Type] = newArmor;
+        return this;
+    }
+    public EquipmentController WithArmor(ArmorConfigSO[] armorConfigs)
+    {
+        foreach(var armorConfig in armorConfigs)
         {
-            Instantiate(equipmentConfigs[i].Prefab).Equip(OwnerEntity);
+            WithArmor(armorConfig);
         }
         return this;
     }

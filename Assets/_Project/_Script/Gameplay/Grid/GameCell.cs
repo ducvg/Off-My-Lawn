@@ -3,18 +3,18 @@ using UnityEngine;
 
 public class GameCell : MonoBehaviour
 {
-    public Hero Hero { get; private set; }
+    public Entity Entity { get; private set; }
 
-    public void PlaceHero(Hero hero, float positionY = 1.15f)
+    public void Place(Entity entity, float offsetY = 1.15f)
     {
-        Hero = hero;
-        Hero.transform.position = GameGrid.Instance.GetCellCenterPosition(this).WithY(positionY + transform.position.y);
-        Hero.Init();
+        Entity = entity;
+        Entity.transform.position = GameGrid.Instance.GetCellCenterPosition(this).WithY(offsetY + transform.position.y);
+        Entity.Init();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool CanPlaceHero()
+    public bool CanPlace()
     {
-        return Hero == null;
+        return Entity == null;
     }
 }

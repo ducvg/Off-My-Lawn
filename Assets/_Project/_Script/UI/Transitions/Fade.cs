@@ -1,23 +1,17 @@
 using System;
-using Cysharp.Threading.Tasks;
+using System.Runtime.CompilerServices;
+using PrimeTween;
 using UnityEngine;
 
 [Serializable]
-public class Fade : BaseTransition
+public class Fade : ITransition
 {
-    [SerializeField] private float startAlpha = 0;
-    [SerializeField] private float endAlpha = 1;
+    [SerializeField] private TweenSettings<float> settings;
     [SerializeField] private CanvasGroup canvasGroup;
 
-    public override async UniTask Run()
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Tween Run()
     {
-        for (float t = 0; t < duration; t += Time.deltaTime)
-        {
-            float easedTime = easeCurve.Evaluate(t / duration);
-            float progress = Mathf.LerpUnclamped(startAlpha, endAlpha, easedTime);
-            canvasGroup.alpha = progress;
-            await UniTask.Yield(canvasGroup.GetCancellationTokenOnDestroy());
-        }
-        canvasGroup.alpha = endAlpha;
+        return Tween.Alpha(canvasGroup, settings);
     }
 }

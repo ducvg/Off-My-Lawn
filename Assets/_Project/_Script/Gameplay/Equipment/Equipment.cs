@@ -1,15 +1,25 @@
 using UnityEngine;
 
-public interface IEquipment
+public abstract class Equipment : MonoBehaviour
 {
-    void Equip(Entity entity);
-    void Remove();
-}
-
-public abstract class Equipment : MonoBehaviour, IEquipment
-{
+    [field: SerializeField] public Renderer[] Renderers { get; private set; }
     protected Entity ownerEntity;
 
-    public abstract void Equip(Entity entity);
-    public abstract void Remove();  
+    public virtual void Equip(Entity entity)
+    {
+        ownerEntity = entity;
+        foreach (var renderer in Renderers)
+        {
+            ownerEntity.GraphicController.AddOutfitRenderer(renderer);
+        }
+    }
+    
+    public virtual void Unequip()
+    {
+        foreach (var renderer in Renderers)
+        {
+            ownerEntity.GraphicController.RemoveOutfitRenderer(renderer);
+        }
+        Destroy(gameObject);
+    }
 }

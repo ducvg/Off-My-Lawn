@@ -10,18 +10,19 @@ public class InputManager : Singleton<InputManager>
 
     public Card SelectedCard { get; private set; }
     private GameCell selectedCell = null;
-    private Hero previewHero;
+    private Entity previewEntity;
     private Material heroMaterial;
     private static readonly int MainTex = Shader.PropertyToID("_MainTex");
 
+#region Card Drag & Drop
     public void OnBeginDragCard(Card selected)
     {
         SelectedCard = selected;
-        previewHero = Instantiate(SelectedCard.HeroConfig.Prefab, transform);
+        previewEntity = Instantiate(SelectedCard.Config.Prefab, transform);
 
-        heroMaterial = previewHero.GraphicController.GetHeroMaterial();
+        heroMaterial = previewEntity.GraphicController.GetHeroMaterial();
         previewMaterial.SetTexture(MainTex, heroMaterial.GetTexture(MainTex));
-        previewHero.GraphicController.ChangeMaterial(previewMaterial);
+        previewEntity.GraphicController.ChangeMaterialAll(previewMaterial);
     }
 
     public void OnDragCard()
@@ -32,39 +33,46 @@ public class InputManager : Singleton<InputManager>
         if (Physics.Raycast(ray, out RaycastHit cellHit, 1000f, cellLayer))
         {
             selectedCell = GameGrid.Instance.GetCellAtPosition(cellHit.transform.position);
-            if (selectedCell.CanPlaceHero())
-                previewHero.transform.position = new Vector3(cellHit.transform.position.x, groundHit.point.y, cellHit.transform.position.z);
+            if (selectedCell.CanPlace())
+                previewEntity.transform.position = new Vector3(cellHit.transform.position.x, groundHit.point.y, cellHit.transform.position.z);
             else
-                previewHero.transform.position = groundHit.point;
+                previewEntity.transform.position = groundHit.point;
                 
             return;
         }
 
-        previewHero.transform.position = groundHit.point;
+        previewEntity.transform.position = groundHit.point;
     }
 
     public void OnEndDragCard()
     {
-        if (selectedCell != null && selectedCell.CanPlaceHero())
+        if (selectedCell != null && selectedCell.CanPlace())
         {
-            previewHero.GraphicController.ChangeMaterial(heroMaterial);
-            selectedCell.PlaceHero(previewHero);
+            previewEntity.GraphicController.ChangeMaterialAll(heroMaterial);
+            selectedCell.Place(previewEntity);
+
+            selectedCell = null;
         }
         else
         {
-            Destroy(previewHero.gameObject);
+            Destroy(previewEntity.gameObject);
         }
-        
-        previewHero = null;
+
+        previewEntity = null;
         SelectedCard = null;
     }
+    #endregion
 
+
+
+#if UNITY_EDITOR
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             EditorApplication.isPaused = true;
         }
     }
+#endif
 
 }

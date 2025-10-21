@@ -13,11 +13,18 @@ MonoBehaviour:
   m_Name: Knight
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Knight
-  <HeroType>k__BackingField: 3
   <Icon>k__BackingField: {fileID: -366252302, guid: e57647435825e3f4787818dedee3328c,
     type: 3}
-  <Cost>k__BackingField: 100
-  <Cooldown>k__BackingField: 15
   <Prefab>k__BackingField: {fileID: 8287993322720406573, guid: 5a0f4b01bed8e4f4e8f8a3f15fd6083a,
     type: 3}
+  <DefaultWeapon>k__BackingField: {fileID: 0}
+  <DefaultShield>k__BackingField: {fileID: 0}
+  <DefaultArmors>k__BackingField: []
+  <Cost>k__BackingField: 50
   <MaxHealth>k__BackingField: 250
+  <CardCooldown>k__BackingField: 5
+  <HeroType>k__BackingField: 3
+  <UpgradePaths>k__BackingField: []
+  references:
+    version: 2
+    RefIds: []

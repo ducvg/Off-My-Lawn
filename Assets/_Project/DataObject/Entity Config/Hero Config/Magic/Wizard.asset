@@ -17,11 +17,38 @@ MonoBehaviour:
     type: 3}
   <Prefab>k__BackingField: {fileID: 4496310354154875055, guid: 26a77cbe570c7cf409d0abdc8234e6c7,
     type: 3}
-  <HeroType>k__BackingField: 2
-  <Cost>k__BackingField: 150
-  <CardCooldown>k__BackingField: 0
-  <MaxHealth>k__BackingField: 100
-  <Upgrades>k__BackingField: []
   <DefaultWeapon>k__BackingField: {fileID: 0}
   <DefaultShield>k__BackingField: {fileID: 0}
   <DefaultArmors>k__BackingField: []
+  <Cost>k__BackingField: 150
+  <MaxHealth>k__BackingField: 100
+  <CardCooldown>k__BackingField: 10
+  <HeroType>k__BackingField: 2
+  <UpgradePaths>k__BackingField:
+  - <Upgrades>k__BackingField:
+    - <Name>k__BackingField: Ice
+      <Icon>k__BackingField: {fileID: 0}
+      <Cost>k__BackingField: 0
+      <UpgradeStrategies>k__BackingField:
+      - rid: 4666671955239763971
+      - rid: 4666671955239763970
+  - <Upgrades>k__BackingField:
+    - <Name>k__BackingField: Fire
+      <Icon>k__BackingField: {fileID: 0}
+      <Cost>k__BackingField: 0
+      <UpgradeStrategies>k__BackingField:
+      - rid: -2
+      - rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 4666671955239763970
+      type: {class: WeaponUpgrade, ns: , asm: Assembly-CSharp}
+      data:
+        upgradeWeaponConfig: {fileID: 0}
+    - rid: 4666671955239763971
+      type: {class: OutfitColorUpgrade, ns: , asm: Assembly-CSharp}
+      data:
+        outfitColor: {r: 0, g: 1, b: 0.9262297, a: 1}

@@ -7,18 +7,20 @@ public class Hero : Entity
 
     public (int pathIndex, int upgradeIndex) CurrentUpgrade { get; private set; } = (-1, -1);
 
-    public void Init()
+    public override void Init()
     {
-        GraphicController.Init();
+        health = Config.MaxHealth;
+
+        GraphicController.Init(this);
         EquipmentController.Init(this);
 
         EquipmentController
-            .WithEquipment(Config.DefaultWeapon)
-            .WithEquipment(Config.DefaultShield)
-            .WithEquipment(Config.DefaultArmors);
+            .WithWeapon(Config.DefaultWeapon)
+            .WithShield(Config.DefaultShield)
+            .WithArmor(Config.DefaultArmors);
     }
 
-    public void Upgrade(int pathIndex) //set path to selected path, should disable others in UI
+    public void Upgrade(int pathIndex)
     {
         if (CurrentUpgrade.upgradeIndex >= Config.UpgradePaths[pathIndex].Upgrades.Length) return;
 

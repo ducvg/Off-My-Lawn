@@ -316,6 +316,58 @@ Transform:
   - {fileID: 7356206828170917477}
   m_Father: {fileID: 8150253285223246048}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1512658422884594792
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4407079527495283546}
+  - component: {fileID: 6439965721950824601}
+  m_Layer: 0
+  m_Name: Equipment Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4407079527495283546
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512658422884594792}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 563693868584250726}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6439965721950824601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512658422884594792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9af1445a93a44b34c9aa4387d7e6eea2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <EquipmentSlot>k__BackingField:
+    _serializedList:
+    - Key: 0
+      Value: {fileID: 1285215506566522897}
+    - Key: 1
+      Value: {fileID: 478460930113024435}
+    - Key: 2
+      Value: {fileID: 9123137850212598258}
 --- !u!1 &2115431973151707735
 GameObject:
   m_ObjectHideFlags: 0
@@ -1086,6 +1138,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8906337775963817356}
+  - {fileID: 4407079527495283546}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &4348287135426786762
@@ -1101,6 +1154,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <GraphicController>k__BackingField: {fileID: 5880666513755800405}
+  <EquipmentController>k__BackingField: {fileID: 6439965721950824601}
+  health: 0
+  <Config>k__BackingField: {fileID: 11400000, guid: 1e00ed5c7871b914db038ecca184a862,
+    type: 2}
 --- !u!1 &6002177239289263123
 GameObject:
   m_ObjectHideFlags: 0
@@ -1527,7 +1584,7 @@ GameObject:
   - component: {fileID: 5698587915560304211}
   - component: {fileID: 5880666513755800405}
   m_Layer: 0
-  m_Name: Body
+  m_Name: Graphic Controller
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -1588,10 +1645,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c4d29ad2a1d7244f83d517764ae4757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accessoryMeshes:
+  outfitRenderers:
   - {fileID: 8702678897260707823}
   - {fileID: 8373423957035543083}
-  skinMeshes:
+  bodyRenderers:
   - {fileID: 5886146017494974679}
   - {fileID: 1109719864701782186}
   - {fileID: 1600587942626903548}

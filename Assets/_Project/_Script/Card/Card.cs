@@ -13,13 +13,14 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI costText;
 
-    [field: SerializeField] public HeroConfigSO HeroConfig { get;  private set; }
+    [field: SerializeField] public HeroConfigSO Config { get; private set; }
 
     public void Init(in CardData cardData)
     {
-        HeroConfig = cardData.HeroConfig;
-        icon.sprite = cardData.HeroConfig.Icon;
-        costText.SetTextFormat("{0}", cardData.HeroConfig.Cost);
+        Config = cardData.Config;
+
+        icon.sprite = cardData.Config.Icon;
+        costText.SetTextFormat("{0}", cardData.Config.Cost);
         background.color = cardData.BackgroundColor;
     }
     

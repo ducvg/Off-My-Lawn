@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   heroTypeColors:
     _serializedList:
-    - Key: 0
-      Value: {r: 0.39215687, g: 0.9843137, b: 0.39215687, a: 1}
     - Key: 1
+      Value: {r: 0.39215687, g: 0.9843137, b: 0.39215687, a: 1}
+    - Key: 0
       Value: {r: 0.9490196, g: 0.011764706, b: 0.16862746, a: 1}
     - Key: 2
       Value: {r: 0.7137255, g: 0, b: 1, a: 1}

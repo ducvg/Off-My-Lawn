@@ -1,10 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Shield : Equipment
 {
+    [SerializeField] private ShieldConfigSO config;
     protected float health;
 
-    public abstract void TakeDamage(float damage);
+    public override void Equip(Entity entity)
+    {
+        base.Equip(entity);
+        health = config.BaseHealth;
+    }
+
+    public abstract void Block(float damage);
 }

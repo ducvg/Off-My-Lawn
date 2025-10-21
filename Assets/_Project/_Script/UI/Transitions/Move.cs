@@ -1,23 +1,17 @@
 using System;
-using Cysharp.Threading.Tasks;
+using System.Runtime.CompilerServices;
+using PrimeTween;
 using UnityEngine;
 
 [Serializable]
-public class Move : BaseTransition
+public class Move : ITransition
 {
-    [SerializeField] private Vector3 startPosition;
-    [SerializeField] private Vector3 endPosition;
+    [SerializeField] private TweenSettings<Vector3> settings;
     [SerializeField] private Transform target;
 
-    public override async UniTask Run()
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Tween Run()
     {
-        for (float t = 0; t < duration; t += Time.deltaTime)
-        {
-            float easedTime = easeCurve.Evaluate(t / duration);
-            Vector3 progress = Vector3.LerpUnclamped(startPosition, endPosition, easedTime);
-            target.localPosition = progress;
-            await UniTask.Yield(target.GetCancellationTokenOnDestroy());
-        }
-        target.localPosition = endPosition;
+        return Tween.Position(target, settings);
     }
 }
