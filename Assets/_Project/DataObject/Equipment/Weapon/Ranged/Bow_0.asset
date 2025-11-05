@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 071b29b4d2187de478e405ce1487ae76, type: 3}
+  m_Name: Bow_0
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: 
+  <Icon>k__BackingField: {fileID: 0}
+  <Prefab>k__BackingField: {fileID: 4364076509868236190, guid: a47f2b35d8e06814ebd56074b4735b4c,
+    type: 3}
+  <EquipSlot>k__BackingField: 2
+  <EquipAnimation>k__BackingField: {fileID: 7400000, guid: 44105a4a5b1f84144a969e86350155b1,
+    type: 2}
+  <IdleAnimation>k__BackingField: {fileID: 7400000, guid: 6d16abbc059d6154a9756b0718f11206,
+    type: 2}
+  <AttackAnimation>k__BackingField: {fileID: 7400000, guid: 3525f934682e1424399b7a9fdc0b9ed6,
+    type: 2}
+  <HitParticle>k__BackingField: {fileID: 0}
+  <AttackEffects>k__BackingField:
+  - rid: 4666672067374743552
+  <AttackRange>k__BackingField: 20
+  <AttackCooldown>k__BackingField: 3
+  <AttackDelay>k__BackingField: 0.1
+  <AttackSpeed>k__BackingField: 2
+  <AttackPierce>k__BackingField: 1
+  <ProjectileConfig>k__BackingField: {fileID: 11400000, guid: ca1b9b99eb3f16747a6cd5344d68c6e8,
+    type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: 4666672067374743552
+      type: {class: DamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damage: 20

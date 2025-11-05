@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5d7e71988051dc42a256b862a9b5375, type: 3}
+  m_Name: Warrior
+  m_EditorClassIdentifier: 
+  <Id>k__BackingField: 4
+  <Name>k__BackingField: Warrior
+  <Icon>k__BackingField: {fileID: 474889952, guid: e57647435825e3f4787818dedee3328c,
+    type: 3}
+  <CardColor>k__BackingField: {r: 0.9490196, g: 0.011764706, b: 0.16862746, a: 1}
+  <Prefab>k__BackingField: {fileID: 4348287135426786762, guid: 2b35a4c25ed17774f8a9787998ec4502,
+    type: 3}
+  <MoveAnimation>k__BackingField: []
+  <DieAnimation>k__BackingField: {fileID: 0}
+  <DefaultWeaponConfig>k__BackingField: {fileID: 11400000, guid: 31d74c6f19b2bd14b8ef76d12f1b1862,
+    type: 2}
+  <DefaultShieldConfig>k__BackingField: {fileID: 0}
+  <DefaultArmorConfigs>k__BackingField: []
+  <CardCooldown>k__BackingField: 10
+  <CrystalCost>k__BackingField: 100
+  <MaxHealth>k__BackingField: 200
+  <BaseSpeed>k__BackingField: 1
+  <SpeedCurve>k__BackingField:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  <UpgradePaths>k__BackingField: []
+  <SpawnCost>k__BackingField: 0
+  references:
+    version: 2
+    RefIds: []

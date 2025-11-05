@@ -1,15 +1,12 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 [Serializable]
 public class LevelData
 {
-    public float StartMoney;
-    public List<HeroConfigSO> PlayableHeroes;
-    public List<HeroConfigSO> ForcedHeroes;
-
-    //wave data
-    //Grid data
+    public int LevelIndex;
+    public float StartCrystal = 100f;
+    public List<EntityConfigSO> PlayableEntities; //can choose to add to deck
+    public List<EntityConfigSO> ForcedEntities; //auto start with these hero cards
+    public List<WaveData> Waves;
 }

@@ -14,10 +14,10 @@ TagManager:
   - Grass
   - GroundGrass
   - Ground
-  - Cell Input
-  - 
-  - 
-  - 
+  - GameCell
+  - Monster
+  - Hero
+  - Gem
   - 
   - 
   - 

@@ -8,17 +8,9 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         get
         {
-            if (instance == null)
+            if (!instance)
             {
-                // Find singleton
                 instance = FindAnyObjectByType<T>();
-
-                // // Create new instance if one doesn't already exist.
-                // if (instance == null)
-                // {
-                //     // Need to create a new GameObject to attach the singleton to.
-                //     instance = new GameObject(typeof(T).Name).AddComponent<T>();
-                // }
             }
             return instance;
         }
@@ -27,7 +19,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     protected virtual void Awake()
     {
-        if (instance != null && instance != this)
+        if (instance && instance != this)
         {
             Destroy(gameObject);
             return;
@@ -41,6 +33,7 @@ public class PersistentSingleton<T> : Singleton<T> where T : MonoBehaviour
     protected override void Awake()
     {
         base.Awake();
+        transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
     }
 }

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e18094a50ea0dd041bffd0a6c3f39303, type: 3}
+  m_Name: Shield_0
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: 
+  <Icon>k__BackingField: {fileID: 0}
+  <Prefab>k__BackingField: {fileID: 4625880755890370358, guid: 961a64a74262d104eb14bf8973a6f736,
+    type: 3}
+  <EquipSlot>k__BackingField: 1
+  <EquipAnimation>k__BackingField: {fileID: 7400000, guid: 5e058e7ec189c3545bf580d44e7909e5,
+    type: 2}
+  <IdleAnimation>k__BackingField: {fileID: 7400000, guid: 34f12c4844b4fe446880883a933eea1f,
+    type: 2}
+  <HurtAnimation>k__BackingField: {fileID: 7400000, guid: 635d7bd3cccf72f4b876abeb9ef73814,
+    type: 2}
+  <BaseHealth>k__BackingField: 1000

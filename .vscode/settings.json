@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Off-My-Lawn.sln"
+    "dotnet.defaultSolution": "Off-My-Lawn.sln",
+    "vstuc.refreshOnSave": true
 }

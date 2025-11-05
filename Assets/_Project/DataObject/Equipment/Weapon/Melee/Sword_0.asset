@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 071b29b4d2187de478e405ce1487ae76, type: 3}
+  m_Name: Sword_0
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Sword
+  <Icon>k__BackingField: {fileID: 0}
+  <Prefab>k__BackingField: {fileID: 0}
+  <Type>k__BackingField: 0
+  <AttackAnimation>k__BackingField: {fileID: 0}
+  <HitParticle>k__BackingField: {fileID: 0}
+  <AttackEffects>k__BackingField:
+  - rid: 4666671974448365568
+  - rid: 4666671974448365569
+  <Cooldown>k__BackingField: 1
+  <AttackSpeed>k__BackingField: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 4666671974448365568
+      type: {class: DamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damage: 10
+    - rid: 4666671974448365569
+      type: {class: KnockbackEffect, ns: , asm: Assembly-CSharp}
+      data:
+        distance: 0.5

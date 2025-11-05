@@ -5,14 +5,24 @@ public class GameCell : MonoBehaviour
 {
     public Entity Entity { get; private set; }
 
-    public void Place(Entity entity, float offsetY = 1.15f)
+    public void Place(Entity entity, float offsetY = GameConstant.LAWN_ELEVATION_Y)
     {
         Entity = entity;
-        Entity.transform.position = GameGrid.Instance.GetCellCenterPosition(this).WithY(offsetY + transform.position.y);
-        Entity.Init();
+        entity.transform.parent = null;
+        entity.OnCellPlaced(this);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void OnEntityDespawn(Entity entity)
+    {
+        if (Entity == entity)
+        {
+            Entity = null;
+        } else
+        {
+            Debug.LogError($"?? wrong entity despawned at cell", this);
+        }
+    }
+
     public bool CanPlace()
     {
         return Entity == null;

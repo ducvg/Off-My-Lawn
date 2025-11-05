@@ -1,4 +1,4 @@
 public interface IAttackEffect
 {
-    void Execute(Entity target);
+    void Apply(Entity target);
 }

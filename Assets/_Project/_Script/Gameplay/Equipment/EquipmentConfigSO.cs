@@ -1,17 +1,17 @@
 using UnityEngine;
 
-public class EquipmentConfigSO<TEquipment> : ScriptableObject where TEquipment : Equipment
+public abstract class EquipmentConfigSO<TEquipment> : ScriptableObject where TEquipment : Equipment
 {
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public Sprite Icon { get; private set; }
     [field: SerializeField] public TEquipment Prefab { get; private set; }
 
-    [field: SerializeField] public EquipmentType Type { get; private set; } = EquipmentType.Helmet;
+    [field: SerializeField] public BodySlot EquipSlot { get; private set; } = BodySlot.Head;
 }
 
-public enum EquipmentType
+public enum BodySlot
 {
-    MainHand,
-    OffHand,
-    Helmet,
+    RightHand,
+    LeftHand,
+    Head,
 }

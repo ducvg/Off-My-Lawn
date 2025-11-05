@@ -322,7 +322,7 @@ Animator:
   m_GameObject: {fileID: 1266907565044855741}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 0b3da1f3c3be7b14bbbc3e7c0295b0b4, type: 2}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f8eec2baa9c66c1499d12c354b538a06, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -355,6 +355,7 @@ MonoBehaviour:
   - {fileID: 1377353825842864165}
   - {fileID: 2586808724603279512}
   - {fileID: 1494979554121495509}
+  <Animator>k__BackingField: {fileID: 1341379055027932625}
 --- !u!1 &1280416957849062873
 GameObject:
   m_ObjectHideFlags: 0
@@ -1045,6 +1046,59 @@ Transform:
   - {fileID: 9046697603308621830}
   m_Father: {fileID: 3780896160068727740}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5042721335450950477
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5570293167372871805}
+  - component: {fileID: 2246568072714339673}
+  m_Layer: 11
+  m_Name: Hitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5570293167372871805
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5042721335450950477}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2180213824649413588}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2246568072714339673
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5042721335450950477}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.7, y: 1, z: 0.45}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &5065244863635169234
 GameObject:
   m_ObjectHideFlags: 0
@@ -1076,6 +1130,37 @@ Transform:
   m_Children:
   - {fileID: 1613574692734913718}
   m_Father: {fileID: 3193373776706402411}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5159866357299442766
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6418887516445052538}
+  m_Layer: 0
+  m_Name: Attack Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6418887516445052538
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5159866357299442766}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2180213824649413588}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5824294114343119685
 GameObject:
@@ -1666,8 +1751,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4824766583615453516}
+  - {fileID: 6418887516445052538}
   - {fileID: 5538483472010820409}
+  - {fileID: 5570293167372871805}
+  - {fileID: 4824766583615453516}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &4496310354154875055
@@ -1684,9 +1771,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <GraphicController>k__BackingField: {fileID: 5390251256718476178}
   <EquipmentController>k__BackingField: {fileID: 3298143192981498889}
-  health: 0
-  <Config>k__BackingField: {fileID: 11400000, guid: 3cd130835c5edd04083beef31db84150,
-    type: 2}
+  <AttackPoint>k__BackingField: {fileID: 6418887516445052538}
+  hitBox: {fileID: 2246568072714339673}
 --- !u!1 &8007026317623828540
 GameObject:
   m_ObjectHideFlags: 0

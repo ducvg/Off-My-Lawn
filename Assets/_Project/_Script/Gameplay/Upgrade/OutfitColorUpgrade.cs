@@ -8,6 +8,6 @@ public class OutfitColorUpgrade : IUpgradeStrategy
 
     public void ApplyUpgrade(Hero hero)
     {
-        hero.GraphicController.ChangeOutfitColor(outfitColor);
+        hero.GraphicController.SetOutfitColor(outfitColor);
     }
 }

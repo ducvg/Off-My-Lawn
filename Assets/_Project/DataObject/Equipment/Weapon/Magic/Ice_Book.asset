@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 071b29b4d2187de478e405ce1487ae76, type: 3}
+  m_Name: Ice_Book
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Ice Book
+  <Icon>k__BackingField: {fileID: 0}
+  <Prefab>k__BackingField: {fileID: 3225135281819560703, guid: f370eeaf1432e23488928919788a4702,
+    type: 3}
+  <EquipSlot>k__BackingField: 0
+  <EquipAnimation>k__BackingField: {fileID: 7400000, guid: 2f4888255cbac9a4f8023871ae67a9cf,
+    type: 2}
+  <IdleAnimation>k__BackingField: {fileID: 7400000, guid: 2f4888255cbac9a4f8023871ae67a9cf,
+    type: 2}
+  <AttackAnimation>k__BackingField: {fileID: 7400000, guid: 35586a467d9229747bb8d885f441fd04,
+    type: 2}
+  <HitParticle>k__BackingField: {fileID: 0}
+  <AttackEffects>k__BackingField:
+  - rid: 4274358147731947520
+  - rid: 4274358147731947521
+  <AttackRange>k__BackingField: 14
+  <AttackCooldown>k__BackingField: 5
+  <AttackDelay>k__BackingField: 0.2
+  <AttackSpeed>k__BackingField: 1
+  <AttackPierce>k__BackingField: 2
+  <ProjectileConfig>k__BackingField: {fileID: 11400000, guid: 4f14ac0938627d14792ae18bddf1d627,
+    type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: 4274358147731947520
+      type: {class: DamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damage: 25
+    - rid: 4274358147731947521
+      type: {class: StatusAttack, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffect:
+          rid: 4274358147731947579
+    - rid: 4274358147731947579
+      type: {class: SlowStatusEffect, ns: , asm: Assembly-CSharp}
+      data:
+        addPercent: -0.4
+        duration: 5
+        emissionColor: {r: 0, g: 0.29411766, b: 0.39215687, a: 0}

@@ -1,5 +1,4 @@
 using System;
-using Cysharp.Threading.Tasks;
 using PrimeTween;
 using UnityEngine;
 
@@ -14,24 +13,24 @@ public class TransitionData
     [SerializeReference] private ITransition[] openTransitions;
     [SerializeReference] private ITransition[] closeTransitions;
 
-    public async UniTask Open(MonoBehaviour caller)
+    public Sequence Open()
     {
         Sequence sequence = Sequence.Create();
-        foreach (var transition in openTransitions)
+        for (int i = 0; i < openTransitions.Length; i++)
         {
-            _ = sequence.Chain(transition.Run()); //ignore await warning
+            sequence.Group(openTransitions[i].Run());
         }
-        await sequence.WithCancellation(caller.destroyCancellationToken);
+        return sequence;
     }
 
-    public async UniTask Close(MonoBehaviour caller)
+    public Sequence Close()
     {
         Sequence sequence = Sequence.Create();
-        foreach (var transition in closeTransitions)
+        for (int i = 0; i < closeTransitions.Length; i++)
         {
-            _ = sequence.Chain(transition.Run()); //ignore await warning
+            sequence.Group(closeTransitions[i].Run());
         }
-        await sequence.WithCancellation(caller.destroyCancellationToken);
+        return sequence;
     }
 }
 

@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 071b29b4d2187de478e405ce1487ae76, type: 3}
+  m_Name: Axe_0
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Basic Axe
+  <Icon>k__BackingField: {fileID: 0}
+  <Prefab>k__BackingField: {fileID: -4425229344689524587, guid: 2541c7e13178ef1469071639ec3814ce,
+    type: 3}
+  <EquipSlot>k__BackingField: 0
+  <EquipAnimation>k__BackingField: {fileID: 7400000, guid: 5326986421366294aa1210c5dd589685,
+    type: 2}
+  <IdleAnimation>k__BackingField: {fileID: 7400000, guid: 5326986421366294aa1210c5dd589685,
+    type: 2}
+  <AttackAnimation>k__BackingField: {fileID: 7400000, guid: 7fd32bfe9c38b5d498cfe30ef085676b,
+    type: 2}
+  <HitParticle>k__BackingField: {fileID: 0}
+  <AttackEffects>k__BackingField:
+  - rid: 4274358141512318976
+  - rid: 4274358141512318977
+  <AttackRange>k__BackingField: 3
+  <AttackCooldown>k__BackingField: 4
+  <AttackDelay>k__BackingField: 1
+  <AttackSpeed>k__BackingField: 1
+  <AttackPierce>k__BackingField: 5
+  <ProjectileConfig>k__BackingField: {fileID: 0}
+  references:
+    version: 2
+    RefIds:
+    - rid: 4274358141512318976
+      type: {class: DamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damage: 50
+    - rid: 4274358141512318977
+      type: {class: KnockbackEffect, ns: , asm: Assembly-CSharp}
+      data:
+        distance: 0.1

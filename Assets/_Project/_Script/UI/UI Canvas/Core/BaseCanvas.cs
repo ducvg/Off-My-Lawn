@@ -23,7 +23,7 @@ public class BaseCanvas : MonoBehaviour
         isTransitioning = true;
 
         gameObject.SetActive(true);
-        await transitionData.Open(this);
+        await transitionData.Open();
 
         isTransitioning = false;
     }
@@ -35,7 +35,7 @@ public class BaseCanvas : MonoBehaviour
         if (isTransitioning) return;
         isTransitioning = true;
 
-        await transitionData.Close(this);
+        await transitionData.Close();
         gameObject.SetActive(false);
 
         isTransitioning = false;
