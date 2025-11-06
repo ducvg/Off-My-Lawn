@@ -23,8 +23,8 @@ public class GameGrid : Singleton<GameGrid>
     public GameCell GetCellAtPosition(Vector3 position)
     {
         Vector3Int pos = gridMap.WorldToCell(position);
-        if (pos.x < 0 || pos.x > Grid.GetLength(0) + 1 ||
-            pos.y < 0 || pos.y > Grid.GetLength(1) + 1)
+        if (pos.x < 0 || pos.x >= Grid.GetLength(0)||
+            pos.y < 0 || pos.y >= Grid.GetLength(1))
             return null;
         return Grid[pos.x, pos.y];
     }
@@ -35,6 +35,11 @@ public class GameGrid : Singleton<GameGrid>
         return gridMap.GetCellCenterWorld(pos);
     }
 
-    public int GetRandomRowIndex() =>Random.Range(0, Grid.GetLength(1));
+    public Vector3 GetGridCellSize()
+    {
+        return gridMap.cellSize;
+    }
+
+    public int GetRandomRowIndex() => Random.Range(0, Grid.GetLength(1));
     public int GetRandomColumnIndex() =>Random.Range(0, Grid.GetLength(0));
 }

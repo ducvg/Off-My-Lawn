@@ -1,8 +1,6 @@
 using UnityEngine;
 using Cysharp.Threading.Tasks;
-using UnityEngine.UI;
 using System.Runtime.CompilerServices;
-using Sirenix.OdinInspector;
 
 public class BaseCanvas : MonoBehaviour
 {
@@ -16,7 +14,6 @@ public class BaseCanvas : MonoBehaviour
     }
 
     //called after opening the canvas
-    [Button("Open Canvas")]
     public virtual async UniTask Open()
     {
         if (isTransitioning) return;
@@ -29,7 +26,6 @@ public class BaseCanvas : MonoBehaviour
     }
 
     //delay closing the canvas
-    [Button("Close Canvas")]
     public virtual async UniTask Close()
     {
         if (isTransitioning) return;

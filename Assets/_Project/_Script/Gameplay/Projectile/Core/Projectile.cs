@@ -15,7 +15,6 @@ public abstract class Projectile : MonoBehaviour, IUpdate
         OwnerWeapon = weapon;
         LastPosition = transform.position;
         config = weapon.Config.ProjectileConfig;
-
         pierceCount = weapon.Config.AttackPierce;
     }
 
@@ -33,7 +32,7 @@ public abstract class Projectile : MonoBehaviour, IUpdate
         }
         if (--pierceCount <= 0)
         {
-            OnDespawn();
+            Despawn();
         }
     }
 
@@ -47,10 +46,10 @@ public abstract class Projectile : MonoBehaviour, IUpdate
 #if UNITY_EDITOR
         if (!GameManager.Instance) return;
 #endif
-        GameManager.Instance.TryDeregisterUpdate(this);
+        GameManager.Instance.TryUnregisterUpdate(this);
     }
 
-    public virtual void OnDespawn()
+    public virtual void Despawn()
     {
         ProjectileManager.Instance.Release(OwnerWeapon.Config.ProjectileConfig.Prefab, this);
     }

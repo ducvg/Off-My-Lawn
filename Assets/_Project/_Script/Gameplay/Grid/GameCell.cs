@@ -1,22 +1,22 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class GameCell : MonoBehaviour
 {
-    public Entity Entity { get; private set; }
+    public Hero Hero { get; private set; }
 
-    public void Place(Entity entity, float offsetY = GameConstant.LAWN_ELEVATION_Y)
+    public void PlaceHero(Hero hero, float offsetY = GameConstant.LAWN_ELEVATION_Y)
     {
-        Entity = entity;
-        entity.transform.parent = null;
-        entity.OnCellPlaced(this);
+
+        Hero = hero;
+        hero.transform.parent = null;
+        hero.OnCellPlaced(this);
     }
 
-    public void OnEntityDespawn(Entity entity)
+    public void OnEntityDespawn(Hero hero)
     {
-        if (Entity == entity)
+        if (Hero == hero)
         {
-            Entity = null;
+            Hero = null;
         } else
         {
             Debug.LogError($"?? wrong entity despawned at cell", this);
@@ -25,6 +25,6 @@ public class GameCell : MonoBehaviour
 
     public bool CanPlace()
     {
-        return Entity == null;
+        return Hero == null;
     }
 }

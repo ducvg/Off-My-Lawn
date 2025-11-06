@@ -58,14 +58,16 @@ public class EntityEquipmentController : MonoBehaviour
     public EntityEquipmentController WithArmor(ArmorConfigSO armorConfig)
     {
         if (!armorConfig) return this;
-        if (Armors[armorConfig.EquipSlot])
+        if (Armors.TryGetValue(armorConfig.EquipSlot, out var existingArmor))
         {
-            Armors[armorConfig.EquipSlot].Unequip(ownerEntity);
-            Destroy(Armors[armorConfig.EquipSlot].gameObject);
+            existingArmor.Unequip(ownerEntity);
+            Destroy(existingArmor.gameObject);
             Armors.Remove(armorConfig.EquipSlot);
         }
 
         var newArmor = Instantiate(armorConfig.Prefab, EquipmentSlot[armorConfig.EquipSlot]);
+        ownerEntity.GraphicController.AddOutfitMaterial(newArmor.Material);
+        newArmor.SetConfig(armorConfig);
         newArmor.Equip(ownerEntity);
         Armors[armorConfig.EquipSlot] = newArmor;
 
@@ -99,6 +101,7 @@ public class EntityEquipmentController : MonoBehaviour
         var slot = armor.Config.EquipSlot;
         if (Armors.ContainsKey(slot))
         {
+            ownerEntity.GraphicController.RemoveOutfitMaterial(armor.Material);
             Armors.Remove(slot);
         }
     }

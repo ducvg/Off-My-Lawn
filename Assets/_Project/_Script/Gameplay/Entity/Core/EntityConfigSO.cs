@@ -23,7 +23,8 @@ public class EntityConfigSO : ScriptableObject
     [field: Header("Stats")]
     [field: SerializeField] public float CardCooldown { get; private set; }
     [field: SerializeField] public float CrystalCost { get; private set; }
-    [field: SerializeField] public float MaxHealth { get; private set; } = 100f;
+    [field: SerializeField] public float BaseHealth { get; private set; } = 100f;
+    [field: SerializeField] public float BaseAttackSpeed { get; private set; } = 1f;
 
     [field: Header("Upgrades")]
     [field: SerializeField] public UpgradePath[] UpgradePaths { get; private set; }
@@ -45,5 +46,8 @@ public enum EntityID
     Warrior,
     Wizard,
 
-    Skeleton,
+    Skeleton, //1
+    Skeleton_HelmetHorn, //3
+    Skeleton_Runner, //5
+    Skeleton_Summoner //7
 }

@@ -16,10 +16,9 @@ MonoBehaviour:
   <Icon>k__BackingField: {fileID: 0}
   <Prefab>k__BackingField: {fileID: 4446705124074532172, guid: e6c07cb0d86c3ca4483fc3ac2fa69d5b,
     type: 3}
-  <Type>k__BackingField: 0
+  <EquipSlot>k__BackingField: 2
   <EquipAnimation>k__BackingField: {fileID: 0}
-  <IdleAnimation>k__BackingField: {fileID: 7400000, guid: 26117c086d51de04b8e1e0c7285cc5e5,
-    type: 2}
+  <IdleAnimation>k__BackingField: {fileID: 0}
   <AttackAnimation>k__BackingField: {fileID: 7400000, guid: 15bbebf5774a1eb4492ea71b55c20182,
     type: 2}
   <HitParticle>k__BackingField: {fileID: 0}
@@ -28,7 +27,7 @@ MonoBehaviour:
   <AttackRange>k__BackingField: 0.25
   <AttackCooldown>k__BackingField: 2
   <AttackDelay>k__BackingField: 0.5
-  <AttackSpeed>k__BackingField: 2.06
+  <AttackPierce>k__BackingField: 1
   <ProjectileConfig>k__BackingField: {fileID: 0}
   references:
     version: 2

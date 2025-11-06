@@ -13,10 +13,10 @@ public struct AttackState : IState
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void OnUpdate(Entity entity)
     {
-        if (!weapon.HasTargetInRange())
+        if (!weapon.IsAttackFinished()) return;
+        if (!weapon.HasTarget())
         {
-            if (entity is Hero) entity.ChangeState(new IdleState());
-            else entity.ChangeState(new WalkState());
+            entity.ChangeState(new IdleState());
             return;
         }
         if (weapon.IsOnCooldown()) return;

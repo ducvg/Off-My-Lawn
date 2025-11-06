@@ -23,7 +23,7 @@ public struct EquipState : IState
         }
         
         Weapon weapon = entity.EquipmentController.Weapon;
-        if (weapon && weapon.HasTargetInRange())
+        if (weapon && weapon.HasTarget())
         {
             entity.ChangeState(new AttackState());
             return;

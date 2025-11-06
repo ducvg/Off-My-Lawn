@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2323192082648114226}
-  - component: {fileID: 2718958831029882520}
-  - component: {fileID: 2306468866933209570}
   - component: {fileID: 1163717373205637144}
+  - component: {fileID: 804659812345065660}
+  - component: {fileID: 2306468866933209570}
   m_Layer: 12
   m_Name: Crystal
   m_TagString: Untagged
@@ -35,26 +35,41 @@ Transform:
   - {fileID: 5493373633240620378}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &2718958831029882520
-SphereCollider:
+--- !u!114 &1163717373205637144
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7625906889213422847}
-  m_Material: {fileID: 13400000, guid: 8bd0d822261994748843fb36d09a9b17, type: 2}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42b1181d246a02b419e88a2391cb8f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crystalValue: {fileID: 11400000, guid: 98ae9b2e058ccee4f91c999b83c8dd83, type: 2}
+  graphicTransform: {fileID: 5493373633240620378}
+  rb: {fileID: 2306468866933209570}
+--- !u!65 &804659812345065660
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7625906889213422847}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 7927
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1
+  m_Size: {x: 1.5, y: 1, z: 1.5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &2306468866933209570
 Rigidbody:
@@ -64,7 +79,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7625906889213422847}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 1.5
   m_Drag: 1
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -83,20 +98,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &1163717373205637144
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7625906889213422847}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42b1181d246a02b419e88a2391cb8f00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  crystalValue: {fileID: 11400000, guid: 98ae9b2e058ccee4f91c999b83c8dd83, type: 2}
-  rb: {fileID: 2306468866933209570}
 --- !u!1001 &5455789116550593201
 PrefabInstance:
   m_ObjectHideFlags: 0

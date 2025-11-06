@@ -22,13 +22,14 @@ public class SlowStatusEffect : IStatusEffect
         elapsedTime = 0f;
     }
 
-    public void OnApply(Entity target)
+    public bool OnApply(Entity target)
     {
-        target.StatBonus.MoveSpeedMultiplier += addPercent;
-        target.StatBonus.AttackSpeedMultiplier += addPercent;
+        target.StatModifier.MoveSpeedModifier.bonusAdd += addPercent;
+        target.StatModifier.AttackSpeedModifier.bonusAdd += addPercent;
         target.GraphicController.SetEmissionAll(emissionColor);
         target.SyncAnimationSpeed();
         elapsedTime = 0f;
+        return true;
     }
 
     public void OnUpdate(Entity target)
@@ -42,8 +43,8 @@ public class SlowStatusEffect : IStatusEffect
 
     public void OnRemove(Entity target)
     {
-        target.StatBonus.MoveSpeedMultiplier -= addPercent;
-        target.StatBonus.AttackSpeedMultiplier -= addPercent;
+        target.StatModifier.MoveSpeedModifier.bonusAdd -= addPercent;
+        target.StatModifier.AttackSpeedModifier.bonusAdd -= addPercent;
         target.GraphicController.SetEmissionAll(Color.black);
         target.SyncAnimationSpeed();
     }

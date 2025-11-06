@@ -6,7 +6,7 @@ public class LevelData
 {
     public int LevelIndex;
     public float StartCrystal = 100f;
-    public List<EntityConfigSO> PlayableEntities; //can choose to add to deck
-    public List<EntityConfigSO> ForcedEntities; //auto start with these hero cards
+    public List<EntityID> PlayableEntities; //can add to deck
+    public List<EntityID> ForcedEntities; //auto in deck, cant remove
     public List<WaveData> Waves;
 }

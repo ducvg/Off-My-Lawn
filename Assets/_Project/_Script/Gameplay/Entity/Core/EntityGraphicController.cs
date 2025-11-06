@@ -10,8 +10,8 @@ public class EntityGraphicController : MonoBehaviour
     [SerializeField] private List<Renderer> outfitRenderers;
     [SerializeField] private Renderer[] bodyRenderers;
     [field: SerializeField] public Animator Animator { get; private set; }
-    public Material BodyMaterial { get; private set; }
-    public List<Material> OutfitMaterials { get; private set; } = new();
+    private Material bodyMaterial;
+    private HashSet<Material> outfitMaterials = new();
     private AnimatorOverrideController animatorOverride;
     private AnimClipOverrideList overrideList;
     private Entity ownerEntity;
@@ -31,17 +31,17 @@ public class EntityGraphicController : MonoBehaviour
 
     private void SetupMaterials()
     {
-        BodyMaterial = bodyRenderers[0].material;
+        bodyMaterial = bodyRenderers[0].material;
         int count = bodyRenderers.Length;
         for (int i = 0; i < count; i++)
         {
-            bodyRenderers[i].material = BodyMaterial;
+            bodyRenderers[i].material = bodyMaterial;
         }
 
         count = outfitRenderers.Count;
         for (int i = 0; i < count; i++)
         {
-            OutfitMaterials.Add(outfitRenderers[i].material);
+            outfitMaterials.Add(outfitRenderers[i].material);
         }
     }
 
@@ -66,24 +66,14 @@ public class EntityGraphicController : MonoBehaviour
     {
         Animator.CrossFade(animHash, crossFadeDuration);
     }
-    public void AddOutfitRenderer(Renderer renderer)
-    {
-        outfitRenderers.Add(renderer);
-        AddOutfitMaterial(renderer.material);
-    }
-    public void RemoveOutfitRenderer(Renderer renderer)
-    {
-        outfitRenderers.Remove(renderer);
-        RemoveOutfitMaterial(renderer.material);
-    }
 
     public void BlinkEmissionAll(in Color newColor, float duration)
     {
         colorSequence.Complete();
         colorSequence = Sequence.Create();
-        colorSequence.Group(Tween.MaterialColor(BodyMaterial, GameConstant.emissionId, newColor, duration,
+        colorSequence.Group(Tween.MaterialColor(bodyMaterial, GameConstant.emissionId, newColor, duration,
                 ease: Ease.InCubic, cycleMode: CycleMode.Yoyo, cycles: 2));
-        foreach (var mat in OutfitMaterials)
+        foreach (var mat in outfitMaterials)
         {
             colorSequence.Group(Tween.MaterialColor(mat, GameConstant.emissionId, newColor, duration,
                     ease: Ease.InCubic, cycleMode: CycleMode.Yoyo, cycles: 2));
@@ -92,51 +82,45 @@ public class EntityGraphicController : MonoBehaviour
 
     public void SetEmissionAll(in Color newColor)
     {
-        BodyMaterial.SetColor(GameConstant.emissionId, newColor);
-        foreach (var mat in OutfitMaterials) mat.SetColor(GameConstant.emissionId, newColor);
+        bodyMaterial.SetColor(GameConstant.emissionId, newColor);
+        foreach (var mat in outfitMaterials) mat.SetColor(GameConstant.emissionId, newColor);
     }
     
     public void SetOutfitColor(in Color newColor)
     {
-        foreach (var mat in OutfitMaterials) mat.SetColor(GameConstant.colorId, newColor);
+        foreach (var mat in outfitMaterials) mat.SetColor(GameConstant.colorId, newColor);
+    }
+
+    public void SetBodyMaterial(Material material)
+    {
+        foreach (var renderer in bodyRenderers) renderer.material = material;
+        bodyMaterial = material;
+    }
+
+    public void AddOutfitMaterial(Material material)
+    {
+        outfitMaterials.Add(material);
+    }
+
+    public void RemoveOutfitMaterial(Material material)
+    {
+        outfitMaterials.Remove(material);
     }
 
     public void SetShaderAll(Shader newShader)
     {
-        BodyMaterial.shader = newShader;
-        foreach(var outfitMat in OutfitMaterials)
+        bodyMaterial.shader = newShader;
+        foreach (var outfitMat in outfitMaterials)
         {
             outfitMat.shader = newShader;
         }
     }
-    public void SetBodyMaterial(Material material)
-    {
-        foreach (var renderer in bodyRenderers) renderer.material = material;
-        BodyMaterial = material;
-    }
-    public void SetOutfitMaterials(List<Material> materials)
-    {
-        int count = OutfitMaterials.Count;
-        for (int i = 0; i < count; i++)
-        {
-            outfitRenderers[i].material = materials[i];
-        }
-        OutfitMaterials = materials;
-    }
-    void AddOutfitMaterial(Material material)
-    {
-        OutfitMaterials.Add(material);
-    }
-    void RemoveOutfitMaterial(Material material)
-    {
-        OutfitMaterials.Remove(material);
-    }
-
+    
     void OnDestroy()
     {
         Destroy(animatorOverride);
-        Destroy(BodyMaterial);
-        foreach (var mat in OutfitMaterials)
+        Destroy(bodyMaterial);
+        foreach (var mat in outfitMaterials)
         {
             Destroy(mat);
         }

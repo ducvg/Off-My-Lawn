@@ -8,6 +8,7 @@ public interface IUpdate
 }
 public class GameManager : PersistentSingleton<GameManager>
 {
+    [SerializeField] private Light directionalLight;
     HashSet<IUpdate> updates = new();
     HashSet<IUpdate> updatesToAdd = new();
     HashSet<IUpdate> updatesToRemove = new();
@@ -21,7 +22,8 @@ public class GameManager : PersistentSingleton<GameManager>
     void Update()
     {
         if (isPaused) return;
-
+        var value = 8000 + Mathf.PingPong(Time.time * 150, 7000f); //575 secs a day
+        directionalLight.colorTemperature = value;
         foreach (var u in updates)
         {
             u.OnUpdate();
@@ -50,7 +52,7 @@ public class GameManager : PersistentSingleton<GameManager>
     {
         return updatesToAdd.Add(entity);
     }
-    public bool TryDeregisterUpdate(IUpdate entity)
+    public bool TryUnregisterUpdate(IUpdate entity)
     {
         return updatesToRemove.Add(entity);
     }

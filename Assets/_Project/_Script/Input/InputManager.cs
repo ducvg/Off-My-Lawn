@@ -3,16 +3,17 @@ using UnityEngine;
 
 public class InputManager : Singleton<InputManager>
 {
+    [field: SerializeField] public LayerMask CellLayer { get; private set; }
+    [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Material previewMaterial;
     [SerializeField] private Shader previewShader;
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private LayerMask cellLayer;
     [SerializeField] private FloatValueSO crystalValue;
     public Card SelectedCard { get; private set; }
     private Shader litURP;
     private GameCell selectedCell;
-    private Entity previewEntity;
+    private Hero previewHero;
     private new Camera camera;
+    public IInputState CurrentInputState { get; private set; } = new EmptyInputState();
 
     void Start()
     {
@@ -24,35 +25,36 @@ public class InputManager : Singleton<InputManager>
     #region Card Drag & Drop
     public void OnBeginDragCard(Card selected)
     {
+        if (selected.EntityConfig.Prefab is not Hero hero) return;
         if (crystalValue.Value < selected.EntityConfig.CrystalCost)
         {
             UIManager.Instance.GetCanvas<GameplayCanvas>().WarnInsufficientCrystal();
             return;
         }
         SelectedCard = selected;
-        previewEntity = Instantiate(SelectedCard.EntityConfig.Prefab);
-        previewEntity.GraphicController.SetShaderAll(previewShader);
+        previewHero = Instantiate(hero);
+        previewHero.GraphicController.SetShaderAll(previewShader);
     }
 
     public void OnDragCard()
     {
-        if(!SelectedCard) return;
+        if (!SelectedCard) return;
         selectedCell = null;
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
         Physics.Raycast(ray, out RaycastHit groundHit, 1000f, groundLayer);
-        if (Physics.Raycast(ray, out RaycastHit cellHit, 1000f, cellLayer))
+        if (Physics.Raycast(ray, out RaycastHit cellHit, 1000f, CellLayer))
         {
             Transform cellTf = cellHit.transform;
             selectedCell = GameGrid.Instance.GetCellAtPosition(cellTf.position);
             if (selectedCell.CanPlace())
-                previewEntity.transform.position = new Vector3(cellTf.position.x, groundHit.point.y, cellTf.position.z);
+                previewHero.transform.position = new Vector3(cellTf.position.x, groundHit.point.y, cellTf.position.z);
             else
-                previewEntity.transform.position = groundHit.point;
-                
+                previewHero.transform.position = groundHit.point;
+
             return;
         }
 
-        previewEntity.transform.position = groundHit.point;
+        previewHero.transform.position = groundHit.point;
     }
 
     public void OnEndDragCard()
@@ -60,21 +62,29 @@ public class InputManager : Singleton<InputManager>
         if (!SelectedCard) return;
         if (selectedCell != null && selectedCell.CanPlace())
         {
-            previewEntity.Init(SelectedCard.EntityConfig);
-            previewEntity.GraphicController.SetShaderAll(litURP);
-            // previewEntity.GraphicController.ChangeMaterialAll(heroMaterial);
-            selectedCell.Place(previewEntity);
             crystalValue.Value -= SelectedCard.EntityConfig.CrystalCost;
+
+            previewHero.Init(SelectedCard.EntityConfig);
+            previewHero.GraphicController.SetShaderAll(litURP);
+
+            selectedCell.PlaceHero(previewHero);
             selectedCell = null;
+            SelectedCard.StartCooldown();
         }
         else
         {
-            Destroy(previewEntity.gameObject);
+            Destroy(previewHero.gameObject);
         }
 
-        previewEntity = null;
+        previewHero = null;
         SelectedCard = null;
     }
+    #endregion
+
+    [SerializeField] private Texture2D removerCursorTexture;
+    #region Hero Remover Drag & Drop
+
+
     #endregion
 
     void Update()
@@ -83,15 +93,19 @@ public class InputManager : Singleton<InputManager>
         {
             EditorApplication.isPaused = true;
         }
-
-        // if(Input.GetMouseButtonDown(0))
-        // {
-        //     Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-        //     if (Physics.Raycast(ray, out RaycastHit cellHit, 100f, cellLayer))
-        //     {
-        //         selectedCell = GameGrid.Instance.GetCellAtPosition(cellHit.transform.position);
-        //         if(selectedCell) Debug.Log($"Clicked Cell", selectedCell);
-        //     }
-        // }
+        CurrentInputState.OnUpdate(this);
+    }
+    
+    public void ChangeInputState(IInputState newState)
+    {
+        if (CurrentInputState != null)
+        {
+            CurrentInputState.OnExit(this);
+        }
+        CurrentInputState = newState;
+        if (CurrentInputState != null)
+        {
+            CurrentInputState.OnEnter(this);
+        }
     }
 }

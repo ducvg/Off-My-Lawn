@@ -30,7 +30,6 @@ MonoBehaviour:
   <AttackRange>k__BackingField: 3
   <AttackCooldown>k__BackingField: 4
   <AttackDelay>k__BackingField: 1
-  <AttackSpeed>k__BackingField: 1
   <AttackPierce>k__BackingField: 5
   <ProjectileConfig>k__BackingField: {fileID: 0}
   references:

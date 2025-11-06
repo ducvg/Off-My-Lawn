@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 071b29b4d2187de478e405ce1487ae76, type: 3}
+  m_Name: Skeleton Staff
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Summon Staff
+  <Icon>k__BackingField: {fileID: 0}
+  <Prefab>k__BackingField: {fileID: 349583912441118001, guid: 17b958120ce83ca4494c516d5622f497,
+    type: 3}
+  <EquipSlot>k__BackingField: 0
+  <EquipAnimation>k__BackingField: {fileID: 7400000, guid: 2f4888255cbac9a4f8023871ae67a9cf,
+    type: 2}
+  <IdleAnimation>k__BackingField: {fileID: 7400000, guid: 2f4888255cbac9a4f8023871ae67a9cf,
+    type: 2}
+  <AttackAnimation>k__BackingField: {fileID: 7400000, guid: 44570738aac02514fadb37146fa77cfe,
+    type: 2}
+  <HitParticle>k__BackingField: {fileID: 0}
+  <AttackEffects>k__BackingField:
+  - rid: 4274358167039639561
+  <AttackRange>k__BackingField: 0
+  <AttackCooldown>k__BackingField: 15
+  <AttackDelay>k__BackingField: 0.1
+  <AttackPierce>k__BackingField: 0
+  <ProjectileConfig>k__BackingField: {fileID: 0}
+  references:
+    version: 2
+    RefIds:
+    - rid: 4274358167039639561
+      type: {class: SummonAttack, ns: , asm: Assembly-CSharp}
+      data:
+        summonEntityConfig: {fileID: 11400000, guid: d5ec9f1136eac564193004000c478e4d,
+          type: 2}

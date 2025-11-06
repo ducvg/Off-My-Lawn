@@ -2,21 +2,20 @@ using System;
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Jobs;
-using Unity.Burst;
 using UnityEngine;
-using UnityEngine.Jobs;
 
 public class ProjectileManager : Singleton<ProjectileManager>
 {
     private PoolFactory<Projectile> projectileFactory = new();
     private List<Projectile> activeLineProjectiles = new();
     private List<Projectile> activeCurvedProjectiles = new();
-    IMoveProjectile lineMover = new MoveLineProjectile();
-    IMoveProjectile curveMover = new MoveCurvedProjectile();
+    IProjectileMover lineMover = new LineProjectileMover();
+    IProjectileMover curveMover = new CurvedProjectileMover();
 
     public Projectile Spawn(Projectile prefab, Vector3 position, Weapon weapon, Transform parent = null)
     {
         var projectile = projectileFactory.Spawn(prefab, position, parent);
+        projectile.transform.forward = weapon.OwnerEntity.transform.forward;
         projectile.Init(weapon);
 
         if (weapon.Config.ProjectileConfig.UseCurve) activeCurvedProjectiles.Add(projectile);

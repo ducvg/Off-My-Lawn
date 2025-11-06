@@ -22,7 +22,7 @@ public struct DropInState : IState
         }
 
         var weapon = entity.EquipmentController.Weapon;
-        if (weapon && weapon.HasTargetInRange())
+        if (weapon && weapon.HasTarget())
         {
             entity.ChangeState(new AttackState());
             return;

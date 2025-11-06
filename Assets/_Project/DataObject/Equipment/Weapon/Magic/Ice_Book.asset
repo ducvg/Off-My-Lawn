@@ -27,10 +27,9 @@ MonoBehaviour:
   <AttackEffects>k__BackingField:
   - rid: 4274358147731947520
   - rid: 4274358147731947521
-  <AttackRange>k__BackingField: 14
+  <AttackRange>k__BackingField: 13
   <AttackCooldown>k__BackingField: 5
   <AttackDelay>k__BackingField: 0.2
-  <AttackSpeed>k__BackingField: 1
   <AttackPierce>k__BackingField: 2
   <ProjectileConfig>k__BackingField: {fileID: 11400000, guid: 4f14ac0938627d14792ae18bddf1d627,
     type: 2}

@@ -5,19 +5,18 @@ using Random = UnityEngine.Random;
 
 public abstract class Entity : MonoBehaviour, IUpdate
 {
-    public BonusStats StatBonus { get; private set; } = new();
-    public EntityConfigSO Config { get; private set; }
+    public static readonly Color HurtEmission = new Color(0.2f, 0.2f, 0.2f, 1f);
     [field: SerializeField] public EntityGraphicController GraphicController { get; private set; }
     [field: SerializeField] public EntityEquipmentController EquipmentController { get; private set; }
     [field: SerializeField] public Transform AttackPoint { get; private set; }
     [SerializeField] protected Collider hitBox;
-    protected float health;
+    public EntityConfigSO Config { get; private set; }
+    public StatModifier StatModifier { get; private set; } = new();
     protected IState currentState;
-    protected Dictionary<Type, IStatusEffect> activeStatusEffects = new();  //structs
-    protected Action<Entity> statusUpdates;
-    public static readonly Color HurtEmission = new Color(0.2f, 0.2f, 0.2f, 1f); //nigger
+    protected Dictionary<Type, IStatusEffect> activeStatusEffects = new();
+    protected event Action<Entity> statusUpdateAction;
 
-    public virtual void OnCellPlaced(GameCell cell) { }
+    protected float health;
 
     #region Setups
     protected virtual void Awake()
@@ -32,8 +31,8 @@ public abstract class Entity : MonoBehaviour, IUpdate
         Config = config;
         ResetStatusEffects();
 
-        StatBonus.Init(this);
-        health = Config.MaxHealth;
+        StatModifier.Init(this);
+        health = Config.BaseHealth;
 
         GraphicController.Init(this);
         SetupGraphics();
@@ -60,7 +59,7 @@ public abstract class Entity : MonoBehaviour, IUpdate
 
     public virtual void OnUpdate()
     {
-        statusUpdates?.Invoke(this);
+        statusUpdateAction?.Invoke(this);
         if (currentState != null)
         {
             currentState.OnUpdate(this);
@@ -69,11 +68,11 @@ public abstract class Entity : MonoBehaviour, IUpdate
 
     public virtual void SyncAnimationSpeed()
     {
-        GraphicController.Animator.SetFloat(Animation.MoveSpeedHash, StatBonus.GetFinalMoveSpeed());
-        GraphicController.Animator.SetFloat(Animation.AttackSpeedHash, StatBonus.GetFinalAttackSpeed());
+        GraphicController.Animator.SetFloat(Animation.MoveSpeedHash, StatModifier.GetFinalMoveSpeed());
+        GraphicController.Animator.SetFloat(Animation.AttackSpeedHash, StatModifier.GetFinalAttackSpeed());
     }
 
-    #region Status Effects
+#region Status Effects
     private void ResetStatusEffects()
     {
         foreach (var statusEffect in activeStatusEffects.Values)
@@ -85,28 +84,26 @@ public abstract class Entity : MonoBehaviour, IUpdate
     public virtual void ApplyStatusEffect(IStatusEffect statusEffect)
     {
         Type type = statusEffect.GetType();
-        if (activeStatusEffects.TryGetValue(type, out var existingEffect))
+        if(activeStatusEffects.TryGetValue(type, out var existingEffect))
         {
             existingEffect.OnDuplicate(this);
             return;
         }
+        if(!statusEffect.OnApply(this)) return;
         activeStatusEffects[statusEffect.GetType()] = statusEffect;
-        statusEffect.OnApply(this);
-        statusUpdates += statusEffect.OnUpdate;
+        statusUpdateAction += statusEffect.OnUpdate;
     }
     public virtual void RemoveStatusEffect(IStatusEffect statusEffect)
     {
-        if (activeStatusEffects.Remove(statusEffect.GetType()))
+        if(activeStatusEffects.Remove(statusEffect.GetType()))
         {
             statusEffect.OnRemove(this);
-            statusUpdates -= statusEffect.OnUpdate;
+            statusUpdateAction -= statusEffect.OnUpdate;
         }
     }
-    #endregion
+#endregion
 
-    public virtual void Upgrade(int pathIndex) { }
-
-    #region Death & despawn
+#region Death & despawn
 
     //shield -> armors -> health
     public virtual void TakeDamage(float damage, float damageForce = 3f, Action OnKill = null)
@@ -115,19 +112,17 @@ public abstract class Entity : MonoBehaviour, IUpdate
         if (shield)
         {
             shield.Block(this, ref damage);
-            if (damage <= 0) return;
         }
 
-        GraphicController.BlinkEmissionAll(HurtEmission, 0.15f); //no shield
-        foreach (var armor in EquipmentController.Armors.Values)
+        foreach (var slot in EquipmentController.EquipmentSlot.Keys)
         {
-            if (armor)
+            if (EquipmentController.Armors.TryGetValue(slot, out var armor))
             {
                 armor.Block(this, ref damage);
-                if (damage <= 0) return;
             }
         }
-
+        
+        GraphicController.BlinkEmissionAll(HurtEmission, 0.15f); 
         health -= damage;
         if (health <= 0)
         {
@@ -143,7 +138,11 @@ public abstract class Entity : MonoBehaviour, IUpdate
 
     public virtual void Despawn()
     {
-        LevelManager.Instance.UnregisterEntityCollider(hitBox);
+    }
+
+    public virtual bool IsDead()
+    {
+        return health <= 0;
     }
     #endregion
 
@@ -167,8 +166,8 @@ public abstract class Entity : MonoBehaviour, IUpdate
     }
     protected virtual void OnDisable()
     {
-        if (!GameManager.Instance) return; //Scene random destroy
-        GameManager.Instance.TryDeregisterUpdate(this);
+        if(!GameManager.Instance) return; //Scene random destroy
+        GameManager.Instance.TryUnregisterUpdate(this);
     }
     private void OnDestroy()
     {

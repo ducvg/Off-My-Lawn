@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 071b29b4d2187de478e405ce1487ae76, type: 3}
+  m_Name: Wrench
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Wrench
+  <Icon>k__BackingField: {fileID: 0}
+  <Prefab>k__BackingField: {fileID: 1993338934598560508, guid: db8cd19f50c2d6c448f207af9081a1b9,
+    type: 3}
+  <EquipSlot>k__BackingField: 0
+  <EquipAnimation>k__BackingField: {fileID: 7400000, guid: 26117c086d51de04b8e1e0c7285cc5e5,
+    type: 2}
+  <IdleAnimation>k__BackingField: {fileID: 7400000, guid: 26117c086d51de04b8e1e0c7285cc5e5,
+    type: 2}
+  <AttackAnimation>k__BackingField: {fileID: 7400000, guid: ebac46d57787f4747ac858f8f85d17bb,
+    type: 2}
+  <HitParticle>k__BackingField: {fileID: 0}
+  <AttackEffects>k__BackingField:
+  - rid: 4274358164764229632
+  - rid: 4274358167039639556
+  <AttackRange>k__BackingField: 13
+  <AttackCooldown>k__BackingField: 4
+  <AttackDelay>k__BackingField: 0.4
+  <AttackPierce>k__BackingField: 1
+  <ProjectileConfig>k__BackingField: {fileID: 11400000, guid: 7a4a7ba61a1165443a255849d607ed0a,
+    type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: 4274358164764229632
+      type: {class: DamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        damage: 25
+    - rid: 4274358167039639556
+      type: {class: StatusAttack, ns: , asm: Assembly-CSharp}
+      data:
+        statusEffect:
+          rid: 4274358167039639559
+    - rid: 4274358167039639559
+      type: {class: StunStatusEffect, ns: , asm: Assembly-CSharp}
+      data:
+        chance: 0.4
+        duration: 3

@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5d7e71988051dc42a256b862a9b5375, type: 3}
+  m_Name: Skeleton_Summoner
+  m_EditorClassIdentifier: 
+  <Id>k__BackingField: 9
+  <Name>k__BackingField: Summoner
+  <Icon>k__BackingField: {fileID: 0}
+  <CardColor>k__BackingField: {r: 0, g: 0, b: 0, a: 0}
+  <Prefab>k__BackingField: {fileID: 4678752875207087356, guid: 787bbcf16e92f44439b85cd19e847896,
+    type: 3}
+  <MoveAnimation>k__BackingField:
+  - {fileID: 7400000, guid: 6885424bfa266164ab1b92f97845de40, type: 2}
+  <DieAnimation>k__BackingField: {fileID: -203655887218126122, guid: 30582c18ee482b94b8caa653f683d829,
+    type: 3}
+  <DefaultWeaponConfig>k__BackingField: {fileID: 11400000, guid: 41c0349b65855f246b4ba629283fcf2a,
+    type: 2}
+  <DefaultShieldConfig>k__BackingField: {fileID: 0}
+  <DefaultArmorConfigs>k__BackingField: []
+  <CardCooldown>k__BackingField: 0
+  <CrystalCost>k__BackingField: 0
+  <BaseHealth>k__BackingField: 100
+  <BaseAttackSpeed>k__BackingField: 1
+  <UpgradePaths>k__BackingField: []
+  <BaseSpeed>k__BackingField: 1
+  <SpeedCurve>k__BackingField:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  <SpawnCost>k__BackingField: 7
+  references:
+    version: 2
+    RefIds: []

@@ -1,7 +1,6 @@
 
 using System.Runtime.CompilerServices;
 using PrimeTween;
-using UnityEngine;
 
 public struct DieState : IState
 {
