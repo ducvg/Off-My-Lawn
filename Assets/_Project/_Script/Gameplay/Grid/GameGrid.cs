@@ -40,6 +40,12 @@ public class GameGrid : Singleton<GameGrid>
         return gridMap.cellSize;
     }
 
+    public int GetRowIndexOf(Vector3 position)
+    {
+        Vector3Int pos = gridMap.WorldToCell(position);
+        return pos.y;
+    }
+
     public int GetRandomRowIndex() => Random.Range(0, Grid.GetLength(1));
     public int GetRandomColumnIndex() =>Random.Range(0, Grid.GetLength(0));
 }
