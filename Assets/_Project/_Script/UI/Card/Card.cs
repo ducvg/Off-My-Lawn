@@ -1,11 +1,12 @@
 using Cysharp.Text;
+using PrimeTween;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, 
-    IPointerEnterHandler, IPointerExitHandler, IUpdate
+public class Card : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler,
+    IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Image background;
     [SerializeField] private Image icon;
@@ -13,7 +14,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     [SerializeField] private Image cooldownOverlay;
     public EntityConfigSO EntityConfig { get; private set; }
     float cooldownTimer;
-    bool canSelect;
+    bool isOnCooldown;
 
     public void Init(EntityConfigSO config)
     {
@@ -25,10 +26,17 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         background.color = config.CardColor;
     }
 
-    public void OnUpdate()
+    void Update()
     {
+        CooldownUpdate();
+    }
+
+    public void CooldownUpdate()
+    {
+        if (!isOnCooldown) return;
+
         cooldownTimer += Time.deltaTime;
-        if(cooldownTimer >= EntityConfig.CardCooldown)
+        if (cooldownTimer >= EntityConfig.CardCooldown)
         {
             EndCooldown();
             return;
@@ -38,52 +46,49 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
     public void StartCooldown()
     {
+        isOnCooldown = true;
         cooldownTimer = 0f;
-        canSelect = false;
         cooldownOverlay.enabled = true;
         cooldownOverlay.fillAmount = 1f;
-        GameManager.Instance.TryRegisterUpdate(this);
     }
     
     void EndCooldown()
     {
-        canSelect = true;
+        isOnCooldown = false;
+        cooldownTimer = EntityConfig.CardCooldown;
         cooldownOverlay.enabled = false;
-        GameManager.Instance.TryUnregisterUpdate(this);
+        cooldownOverlay.fillAmount = 0f;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (isOnCooldown) return;
+        InputManager.Instance.OnCardSelected(this);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (!canSelect) return;
-        InputManager.Instance.OnBeginDragCard(this);
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (!canSelect) return;
-        InputManager.Instance.OnDragCard();
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        InputManager.Instance.OnEndDragCard();
+        if (isOnCooldown) return;
+        InputManager.Instance.OnCardSelected(this);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!canSelect) return;
+        if (isOnCooldown) return;
         transform.localScale = Vector3.one * 1.1f;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (!canSelect) return;
+        if (isOnCooldown) return;
         transform.localScale = Vector3.one;
     }
 
-    void OnDestroy()
+    public void OnEndDrag(PointerEventData eventData) //required by beginHandler
     {
-        if(!GameManager.Instance) return;
-        GameManager.Instance.TryUnregisterUpdate(this);
+    }
+
+    public void OnDrag(PointerEventData eventData) //required by beginHandler
+    {
     }
 }

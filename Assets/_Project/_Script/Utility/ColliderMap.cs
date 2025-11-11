@@ -22,7 +22,8 @@ public class ColliderMap<T> where T : MonoBehaviour
 
     public bool TryGetEntity(Collider collider, out T entity)
     {
-        if(!ColliderDic.ContainsKey(collider)) {
+        if (!ColliderDic.ContainsKey(collider))
+        {
             entity = null;
             return false;
         }

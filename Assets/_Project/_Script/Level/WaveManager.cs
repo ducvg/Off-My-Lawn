@@ -1,31 +1,39 @@
 using System.Collections.Generic;
+using PrimeTween;
 using UnityEngine;
 using ZLinq;
 
-public class WaveManager : Singleton<WaveManager>, IUpdate
+public class WaveManager : Singleton<WaveManager>
 {
-    public List<Entity> WaveMonsters { get; private set; }
+    HashSet<Entity> waveMonsters = new(); 
     List<WaveData> levelWaves;
     public int currentWaveIndex;
     public float waveTimer = 0f;
 
     public void Init(List<WaveData> levelWaves)
     {
-        GameManager.Instance.TryRegisterUpdate(this);
-        WaveMonsters = new();
         this.levelWaves = levelWaves;
-
-        SpawnNextWave();
+        GameManager.Instance.SetGamePause(true);
+        
+        Tween.Delay(
+            duration: 10f,
+            target: this, onComplete: target =>
+            {
+                GameManager.Instance.SetGamePause(false);
+                target.SpawnNextWave();
+            }
+        );
     }
 
-    public void OnUpdate()
+    public void Update()
     {
+        if(GameManager.IsPause) return;
         waveTimer += Time.deltaTime;
         if (waveTimer >= levelWaves[currentWaveIndex].WaveTime)
         {
             OnWaveTimeUp();
         }
-        else if (WaveMonsters.Count == 0)
+        else if (waveMonsters.Count == 0)
         {
             OnWaveCleared();
         }
@@ -33,7 +41,11 @@ public class WaveManager : Singleton<WaveManager>, IUpdate
 
     void OnWaveTimeUp()
     {
-        if (currentWaveIndex + 1 >= levelWaves.Count) return;
+        if(currentWaveIndex + 1 >= levelWaves.Count)
+        {
+            LevelManager.Instance.OnLevelComplete();
+            return;
+        }
         SpawnNextWave();
     }
 
@@ -41,7 +53,6 @@ public class WaveManager : Singleton<WaveManager>, IUpdate
     {
         if(currentWaveIndex + 1 >= levelWaves.Count)
         {
-            GameManager.Instance.TryUnregisterUpdate(this);
             LevelManager.Instance.OnLevelComplete();
             return;
         }
@@ -56,7 +67,7 @@ public class WaveManager : Singleton<WaveManager>, IUpdate
     void SpawnNextWave()
     {
         
-        List<EntityConfigSO> entities = GetWaveMonsters(currentWaveIndex);
+        List<EntityConfigSO> entities = GetOrderedWaveMonsters(currentWaveIndex);
         // SpawnAtGraves(entities);
         SpawnRandomRows(entities);
 
@@ -64,14 +75,19 @@ public class WaveManager : Singleton<WaveManager>, IUpdate
         waveTimer = 0f;
     }
 
-    public List<EntityConfigSO> GetWaveMonsters(int waveIndex)
+    public List<EntityConfigSO> GetOrderedWaveMonsters(int waveIndex)
     {
         WaveData wave = levelWaves[waveIndex];
         var configsToSpawn = new List<EntityConfigSO>();
+        var monsterSpawnCount = wave.MonsterSpawnData.Length;
+        var weights = new List<float>();
 
-        foreach (var monster in wave.MonsterSpawnData) //spawn forced pick first
+        for(int i = 0; i < monsterSpawnCount; i++) //spawning forced picks first
         {
-            for (int i = 0; i < monster.ForcedPickCount; i++)
+            weights.Add(wave.MonsterSpawnData[i].PickWeight);
+            var monster = wave.MonsterSpawnData[i];
+
+            for (int j = 0; j < monster.ForcedPickCount; j++)
             {
                 var config = EntityFactory.Instance.GetEntityConfig(monster.EntityID);
                 configsToSpawn.Add(config);
@@ -79,23 +95,21 @@ public class WaveManager : Singleton<WaveManager>, IUpdate
             }
         }
 
-        int safeLock = 10_000;
-        var weights = wave.MonsterSpawnData.AsValueEnumerable()
-            .Select(m => m.PickWeight).ToList();
-        while (wave.WaveSpawnPoint > 0 && --safeLock > 0)
+        while (wave.WaveSpawnPoint > 0)
         {
             int index = weights.GetRandomWeightedIndex();
             if (index == -1) continue;
-            if (wave.MonsterSpawnData[index].MaxInWave <= 0)
+            var monsterToSpawn = wave.MonsterSpawnData[index];
+            if (monsterToSpawn.MaxInWave <= 0)
             {
                 weights.RemoveAt(index);
                 continue;
             }
 
-            var config = EntityFactory.Instance.GetEntityConfig(wave.MonsterSpawnData[index].EntityID);
+            var config = EntityFactory.Instance.GetEntityConfig(monsterToSpawn.EntityID);
             configsToSpawn.Add(config);
             wave.WaveSpawnPoint -= config.SpawnCost;
-            --wave.MonsterSpawnData[index].MaxInWave;
+            --monsterToSpawn.MaxInWave;
         }
         return configsToSpawn;
     }
@@ -113,18 +127,12 @@ public class WaveManager : Singleton<WaveManager>, IUpdate
             m.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
             m.ChangeState(new WalkState());
 
-            WaveMonsters.Add(m);
+            this.waveMonsters.Add(m);
         }
     }
 
     public void OnWaveMonsterDespawn(Entity monster)
     {
-        WaveMonsters.Remove(monster);
-    }
-
-    void OnDestroy()
-    {
-        if(!GameManager.Instance) return;
-        GameManager.Instance.TryUnregisterUpdate(this);
+        waveMonsters.Remove(monster);
     }
 }

@@ -17,7 +17,7 @@ public class UIManager : Singleton<UIManager>
         
         foreach (var canvas in prefabList)
         {
-            canvasPrefabs.Add(canvas.GetType(), canvas);
+            canvasPrefabs[canvas.GetType()] = canvas;
         }
         prefabList = null; //dipose the list
     }

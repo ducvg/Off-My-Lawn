@@ -32,7 +32,7 @@ public class ProjectileManager : Singleton<ProjectileManager>
         projectileFactory.Release(prefab, projectile);
     }
 
-    public void OnUpdate()
+    void Update()
     {
         lineMover.Move(activeLineProjectiles);
         curveMover.Move(activeCurvedProjectiles); //unemployed
@@ -54,7 +54,8 @@ public class ProjectileManager : Singleton<ProjectileManager>
                 continue;
             }
             Projectile projectile = i < lineCount
-                ? activeLineProjectiles[i] : activeCurvedProjectiles[i - lineCount];
+                ? activeLineProjectiles[i] 
+                : activeCurvedProjectiles[i - lineCount];
             projectile.OnHit(entity);
         }
     }
@@ -68,7 +69,7 @@ public class ProjectileManager : Singleton<ProjectileManager>
         NativeArray<RaycastHit> hitResults = new(lineCount + curveCount, Allocator.TempJob);
 
         Vector3 from, to, dir, dirNormalized;
-        const float offsetGuard = 0.01f;
+        const float offsetGuard = 0.001f;
         for (int i = 0; i < lineCount; i++)
         {
             from = activeLineProjectiles[i].LastPosition;

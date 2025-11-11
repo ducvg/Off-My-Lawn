@@ -1,15 +1,15 @@
 public struct EmptyInputState : IInputState
 {
-    public void OnEnter(InputManager inputManager)
-    {
-        
-    }
-    public void OnUpdate(InputManager inputManager)
+    public void OnEnter()
     {
 
     }
-    public void OnExit(InputManager inputManager)
+    public void OnUpdate()
     {
-        
+
+    }
+    public void OnExit()
+    {
+
     }
 }

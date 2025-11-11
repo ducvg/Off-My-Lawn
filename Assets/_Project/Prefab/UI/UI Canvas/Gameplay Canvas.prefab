@@ -1733,9 +1733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8953e8129db298e4392fd08de925f1a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icon: {fileID: 5150389866578873987}
-  removerCursorTexture: {fileID: 2800000, guid: 84aff257a041fa041840ad10e7cac69f,
-    type: 3}
+  <Icon>k__BackingField: {fileID: 5150389866578873987}
 --- !u!1 &4664926920039902840
 GameObject:
   m_ObjectHideFlags: 0

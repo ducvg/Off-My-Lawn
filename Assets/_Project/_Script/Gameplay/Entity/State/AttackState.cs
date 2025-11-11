@@ -1,18 +1,17 @@
 using System.Runtime.CompilerServices;
-using UnityEngine;
 
 public struct AttackState : IState
 {
-    Weapon weapon;
 
     public void OnEnter(Entity entity)
     {
-        weapon = entity.EquipmentController.Weapon;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void OnUpdate(Entity entity)
     {
+        var weapon = entity.EquipmentController.Weapon;
+
         if (!weapon.IsAttackFinished()) return;
         if (!weapon.HasTarget())
         {
@@ -27,6 +26,8 @@ public struct AttackState : IState
 
     public void OnExit(Entity entity)
     {
+        var weapon = entity.EquipmentController.Weapon;
+
         weapon.CancelAttack();
     }
 }

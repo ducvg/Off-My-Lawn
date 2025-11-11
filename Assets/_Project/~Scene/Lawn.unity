@@ -11329,17 +11329,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 661bec5c36996294db9749fdea0909de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <CellLayer>k__BackingField:
+  cellLayer:
     serializedVersion: 2
     m_Bits: 512
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
-  previewMaterial: {fileID: 2100000, guid: 6b622c25d1933994d9f23e34130a2b58, type: 2}
   previewShader: {fileID: -6465566751694194690, guid: 7de7c6505f608074e911dae1db5132fe,
     type: 3}
   crystalValue: {fileID: 11400000, guid: 98ae9b2e058ccee4f91c999b83c8dd83, type: 2}
-  removerCursorTexture: {fileID: 0}
+  removerCursorTexture: {fileID: 2800000, guid: 160bada78e5737e459db7726cf275db4,
+    type: 3}
 --- !u!1 &1632226306
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using PrimeTween;
 using UnityEngine;
 
-public class LevelManager : Singleton<LevelManager>, IUpdate
+public class LevelManager : Singleton<LevelManager>
 {
     [SerializeField] private FloatValueSO crystalValue;
     [SerializeField] private FloatValueSO levelProgressValue;
@@ -10,11 +10,6 @@ public class LevelManager : Singleton<LevelManager>, IUpdate
     private ColliderMap<Entity> entityColliderMap = new();
     public float levelTotalTime;
     public float levelTimer;
-
-    void Start()
-    {
-        Init();
-    }
 
     public void Init()
     {
@@ -25,17 +20,14 @@ public class LevelManager : Singleton<LevelManager>, IUpdate
         SetupLevelProgress();
         SetupDeckCards();
 
-        Tween.Delay(WaveManager.Instance, duration: 10f, waveManager =>
-        {
-            waveManager.Init(levelData.Waves);
-            GameManager.Instance.TryRegisterUpdate(this);
-        });
+        WaveManager.Instance.Init(levelData.Waves);
     }
 
-    public void OnUpdate()
+    public void Update()
     {
+        if(GameManager.IsPause) return;
         levelTimer = Mathf.MoveTowards(levelTimer, levelTotalTime, Time.deltaTime);
-        levelProgressValue.Value = levelTimer / levelTotalTime;
+        levelProgressValue.Value = Mathf.Lerp(0f, 1f, levelTimer / levelTotalTime);
     }
 
     public void OnLevelComplete()
@@ -97,11 +89,5 @@ public class LevelManager : Singleton<LevelManager>, IUpdate
     public bool TryGetEntityByCollider(Collider collider, out Entity entity)
     {
         return entityColliderMap.TryGetEntity(collider, out entity);
-    }
-
-    void OnDestroy()
-    {
-        if(!GameManager.Instance) return;
-        GameManager.Instance.TryUnregisterUpdate(this);
     }
 }

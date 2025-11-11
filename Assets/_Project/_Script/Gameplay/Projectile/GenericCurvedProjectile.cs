@@ -23,14 +23,14 @@ public class GenericCurvedProjectile : Projectile
         traveledDistance = 0f;
     }
 
-    public override void OnUpdate()
+    public override void Update()
     {
         if(traveledDistance > targetDistance)
         {
             Despawn();
             return;
         }
-        base.OnUpdate();
+        base.Update();
         traveledDistance += config.Speed * Time.deltaTime;
         float height = initialPosition.y + config.HeightCurve.Evaluate(traveledDistance / targetDistance) * relativeDistance;
 

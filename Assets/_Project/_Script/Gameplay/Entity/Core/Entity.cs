@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public abstract class Entity : MonoBehaviour, IUpdate
+public abstract class Entity : MonoBehaviour
 {
     public static readonly Color HurtEmission = new Color(0.2f, 0.2f, 0.2f, 1f);
     [field: SerializeField] public EntityGraphicController GraphicController { get; private set; }
@@ -57,7 +57,7 @@ public abstract class Entity : MonoBehaviour, IUpdate
     }
     #endregion
 
-    public virtual void OnUpdate()
+    public virtual void Update()
     {
         statusUpdateAction?.Invoke(this);
         if (currentState != null)
@@ -160,15 +160,7 @@ public abstract class Entity : MonoBehaviour, IUpdate
     {
         hitBox.enabled = enabled;
     }
-    protected virtual void OnEnable()
-    {
-        GameManager.Instance.TryRegisterUpdate(this);
-    }
-    protected virtual void OnDisable()
-    {
-        if(!GameManager.Instance) return; //Scene random destroy
-        GameManager.Instance.TryUnregisterUpdate(this);
-    }
+
     private void OnDestroy()
     {
         if (!LevelManager.Instance) return;

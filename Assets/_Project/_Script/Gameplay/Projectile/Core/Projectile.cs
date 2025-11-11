@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public abstract class Projectile : MonoBehaviour, IUpdate
+public abstract class Projectile : MonoBehaviour
 {
     public Weapon OwnerWeapon { get; private set; }
     public Vector3 LastPosition { get; private set; }
@@ -18,8 +15,7 @@ public abstract class Projectile : MonoBehaviour, IUpdate
         pierceCount = weapon.Config.AttackPierce;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public virtual void OnUpdate()
+    public virtual void Update()
     {
         LastPosition = transform.position;
     }
@@ -34,19 +30,6 @@ public abstract class Projectile : MonoBehaviour, IUpdate
         {
             Despawn();
         }
-    }
-
-    protected virtual void OnEnable()
-    {
-        GameManager.Instance.TryRegisterUpdate(this);
-    }
-    
-    protected virtual void OnDisable()
-    {
-#if UNITY_EDITOR
-        if (!GameManager.Instance) return;
-#endif
-        GameManager.Instance.TryUnregisterUpdate(this);
     }
 
     public virtual void Despawn()
