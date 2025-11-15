@@ -39,54 +39,42 @@ public class ProjectileManager : Singleton<ProjectileManager>
         ProcessCollisions();
     }
 
-#region Collision handling
     void ProcessCollisions()
     {
-        RunRayCasts(out ReadOnlySpan<RaycastHit> hits);
-
-        int lineCount = activeLineProjectiles.Count;
-        int hitCount = hits.Length;
-        for (int i = hitCount - 1; i >= 0; --i)
-        {
-            RaycastHit hit = hits[i];
-            if (!hit.collider || !LevelManager.Instance.TryGetEntityByCollider(hit.collider, out Entity entity))
-            {
-                continue;
-            }
-            Projectile projectile = i < lineCount
-                ? activeLineProjectiles[i] 
-                : activeCurvedProjectiles[i - lineCount];
-            projectile.OnHit(entity);
-        }
+        RunRayCasts(out NativeArray<RaycastHit> hitResults);
+        CheckCollision(in hitResults);
+        hitResults.Dispose();
     }
 
-    void RunRayCasts(out ReadOnlySpan<RaycastHit> hits)
+    void RunRayCasts(out NativeArray<RaycastHit> hitResults)
     {
         int lineCount = activeLineProjectiles.Count;
         int curveCount = activeCurvedProjectiles.Count;
 
         NativeArray<RaycastCommand> rayCommands = new(lineCount + curveCount, Allocator.TempJob);
-        NativeArray<RaycastHit> hitResults = new(lineCount + curveCount, Allocator.TempJob);
+        hitResults = new(lineCount + curveCount, Allocator.TempJob);
 
         Vector3 from, to, dir, dirNormalized;
-        const float offsetGuard = 0.001f;
+        const float offsetGuard = 0.01f;
+        
         for (int i = 0; i < lineCount; i++)
         {
+            //raycast from last position to current position
             from = activeLineProjectiles[i].LastPosition;
             to = activeLineProjectiles[i].transform.position;
             dir = to - from;
             dirNormalized = dir.normalized;
             from -= dirNormalized * offsetGuard;
-            float dist = dir.magnitude + offsetGuard;
+            float rayLength = dir.magnitude + offsetGuard;
 
             QueryParameters qp = new QueryParameters
             {
-                layerMask = activeLineProjectiles[i].OwnerWeapon.targetLayerMask,
+                layerMask = activeLineProjectiles[i].OwnerWeapon.TargetLayerMask,
                 hitTriggers = QueryTriggerInteraction.Ignore,
                 hitMultipleFaces = false,
                 hitBackfaces = false,
             };
-            rayCommands[i] = new RaycastCommand(from, dirNormalized, qp, dist);
+            rayCommands[i] = new RaycastCommand(from, dirNormalized, qp, rayLength);
         }
 
         for (int i = 0; i < curveCount; i++)
@@ -100,7 +88,7 @@ public class ProjectileManager : Singleton<ProjectileManager>
 
             QueryParameters qp = new QueryParameters
             {
-                layerMask = activeCurvedProjectiles[i].OwnerWeapon.targetLayerMask,
+                layerMask = activeCurvedProjectiles[i].OwnerWeapon.TargetLayerMask,
                 hitTriggers = QueryTriggerInteraction.Ignore,
                 hitMultipleFaces = false,
                 hitBackfaces = false,
@@ -108,14 +96,28 @@ public class ProjectileManager : Singleton<ProjectileManager>
             rayCommands[i + lineCount] = new RaycastCommand(from, dirNormalized, qp, dist);
         }
 
-        JobHandle handle = RaycastCommand.ScheduleBatch(rayCommands, hitResults, 50);
+        JobHandle handle = RaycastCommand.ScheduleBatch(rayCommands, hitResults, 100);
         handle.Complete();
 
-        hits = hitResults.AsReadOnlySpan();
-
         rayCommands.Dispose();
-        hitResults.Dispose();
     }
-    #endregion
+
+    void CheckCollision(in NativeArray<RaycastHit> hitResults)
+    {
+        int lineCount = activeLineProjectiles.Count;
+        int hitCount = hitResults.Length;
+        for (int i = hitCount - 1; i >= 0; --i)
+        {
+            RaycastHit hit = hitResults[i];
+            if (!hit.collider || !LevelManager.Instance.TryGetEntityByCollider(hit.collider, out Entity entity))
+            {
+                continue;
+            }
+            Projectile projectile = i < lineCount
+                ? activeLineProjectiles[i]
+                : activeCurvedProjectiles[i - lineCount];
+            projectile.OnHit(entity);
+        }
+    }
 
 }

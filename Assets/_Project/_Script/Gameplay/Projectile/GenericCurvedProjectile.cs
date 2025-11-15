@@ -15,7 +15,7 @@ public class GenericCurvedProjectile : Projectile
         initialPosition = transform.position;
         float realAttackRange = Mathf.Min(weapon.Config.AttackRange, GameConstant.GRID_BOUND_X_MAX);
         
-        bool isHit = Physics.Raycast(initialPosition, transform.forward, out RaycastHit hitInfo, realAttackRange, weapon.targetLayerMask);
+        bool isHit = Physics.Raycast(initialPosition, transform.forward, out RaycastHit hitInfo, realAttackRange, weapon.TargetLayerMask);
         if (isHit) targetDistance = hitInfo.distance;
         else targetDistance = realAttackRange;
         

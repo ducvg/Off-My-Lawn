@@ -42,17 +42,34 @@ public class InputManager : Singleton<InputManager>
 
     public void OnCardSelected(Card selected)
     {
-        if (currentInputState is PlaceHeroInputState) return;
-        
-        ChangeInputState(new PlaceHeroInputState
+        switch (GameManager.GameState)
         {
-            GroundLayer = groundLayer,
-            CellLayer = cellLayer,
-            SelectedCard = selected,
-            PreviewShader = previewShader,
-            DefaultShader = litURP,
-            CrystalValue = crystalValue
-        });
+            case GameState.Playing:
+                ChangeInputState(new PlaceHeroInputState
+                {
+                    GroundLayer = groundLayer,
+                    CellLayer = cellLayer,
+                    SelectedCard = selected,
+                    PreviewShader = previewShader,
+                    DefaultShader = litURP,
+                    CrystalValue = crystalValue
+                });
+                return;
+            case GameState.SelectCard:
+                if(CardManager.Instance.IsCardInDeck(selected))
+                {
+                    CardManager.Instance.RemoveCard(selected);
+                    UIManager.Instance.GetCanvas<SelectCardCanvas>().ReturnCard(selected);
+                } else 
+                {
+                    CardManager.Instance.AddCard(selected);
+                }
+
+                return;
+            default:
+                Debug.LogWarning("Unintended card state: " + GameManager.GameState);
+                return;
+        }
     }
     
     public void OnHeroRemoverSelected(HeroRemover remover)

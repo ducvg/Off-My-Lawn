@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColliderMap<T> where T : MonoBehaviour
+public class ColliderMap<T>
 {
     private readonly Dictionary<Collider, T> ColliderDic;
 
@@ -22,11 +22,6 @@ public class ColliderMap<T> where T : MonoBehaviour
 
     public bool TryGetEntity(Collider collider, out T entity)
     {
-        if (!ColliderDic.ContainsKey(collider))
-        {
-            entity = null;
-            return false;
-        }
         return ColliderDic.TryGetValue(collider, out entity);
     }
 }

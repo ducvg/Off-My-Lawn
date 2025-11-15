@@ -7,7 +7,7 @@ using UnityEngine;
 public class Rotation : ITransition
 {
     [SerializeField] private TweenSettings<Quaternion> settings;
-    [SerializeField] private Transform target;
+    [SerializeField] private RectTransform target;
 
     public Tween Run()
     {

@@ -32,5 +32,21 @@ public class TransitionData
         }
         return sequence;
     }
+
+    public void OpenImmediate()
+    {
+        for (int i = 0; i < openTransitions.Length; i++)
+        {
+            openTransitions[i].Run().Complete();
+        }    
+    }
+
+    public void CloseImmediate()
+    {
+        for (int i = 0; i < closeTransitions.Length; i++)
+        {
+            closeTransitions[i].Run().Complete();
+        }    
+    }
 }
 

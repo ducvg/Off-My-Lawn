@@ -7,7 +7,7 @@ using UnityEngine;
 public abstract class Weapon : Equipment
 {
     public WeaponConfigSO Config { get; private set; }
-    public LayerMask targetLayerMask { get; protected set; }
+    public LayerMask TargetLayerMask { get; protected set; }
     public Entity OwnerEntity { get; protected set; }
     protected RaycastHit[] raycastHitBuffer = new RaycastHit[1];
     protected Ray ray;
@@ -31,7 +31,7 @@ public abstract class Weapon : Equipment
             .ApplyAnimatorOverrides();
 
         transform.forward = OwnerEntity.transform.forward;
-        targetLayerMask = GetTargetLayerMask(entity);
+        TargetLayerMask = GetTargetLayerMask(entity);
         lastAttackTime = -Config.AttackCooldown; 
         attackLength = Config.AttackAnimation.length; 
     }
@@ -49,7 +49,7 @@ public abstract class Weapon : Equipment
     public virtual bool HasTarget()
     {
         ray = new Ray(OwnerEntity.AttackPoint.position, OwnerEntity.transform.forward);
-        int hitsCount = Physics.RaycastNonAlloc(ray, raycastHitBuffer, Config.AttackRange, targetLayerMask);
+        int hitsCount = Physics.RaycastNonAlloc(ray, raycastHitBuffer, Config.AttackRange, TargetLayerMask);
         if (hitsCount <= 0) return false;
         if (raycastHitBuffer[0].point.x > GameConstant.GRID_BOUND_X_MAX)
         {
@@ -87,7 +87,7 @@ public abstract class Weapon : Equipment
         {
             return LayerMask.GetMask("Monster");
         }
-        else // if (attacker is Monster)
+        else
         {
             return LayerMask.GetMask("Hero");
         }

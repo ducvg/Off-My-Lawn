@@ -13,60 +13,52 @@ public class WaveManager : Singleton<WaveManager>
     public void Init(List<WaveData> levelWaves)
     {
         this.levelWaves = levelWaves;
-        GameManager.Instance.SetGamePause(true);
-        
-        Tween.Delay(
-            duration: 10f,
-            target: this, onComplete: target =>
-            {
-                GameManager.Instance.SetGamePause(false);
-                target.SpawnNextWave();
-            }
-        );
+        currentWaveIndex = 0;
+        SpawnNextWave();
     }
 
     public void Update()
     {
-        if(GameManager.IsPause) return;
+        if(GameManager.GameState != GameState.Playing) return;
+
         waveTimer += Time.deltaTime;
-        if (waveTimer >= levelWaves[currentWaveIndex].WaveTime)
-        {
-            OnWaveTimeUp();
-        }
-        else if (waveMonsters.Count == 0)
+        if (waveMonsters.Count == 0)
         {
             OnWaveCleared();
+        }
+        else if (waveTimer >= levelWaves[currentWaveIndex].WaveTime)
+        {
+            OnWaveTimeUp();
         }
     }
 
     void OnWaveTimeUp()
     {
-        if(currentWaveIndex + 1 >= levelWaves.Count)
-        {
-            LevelManager.Instance.OnLevelComplete();
-            return;
-        }
+        Debug.Log("Wave time up!");
+        if (currentWaveIndex >= levelWaves.Count) return;
         SpawnNextWave();
     }
 
     void OnWaveCleared()
     {
-        if(currentWaveIndex + 1 >= levelWaves.Count)
+        Debug.Log("Wave cleared!");
+        if (currentWaveIndex >= levelWaves.Count)
         {
             LevelManager.Instance.OnLevelComplete();
             return;
         }
-        SpawnNextWave();
-        float leftoverTime = waveTimer - levelWaves[currentWaveIndex - 1].WaveTime;
-        if(leftoverTime > 0)
+        
+        float leftoverTime = levelWaves[currentWaveIndex].WaveTime - waveTimer;
+        if (leftoverTime > 0)
         {
-            LevelManager.Instance.AddLevelTime(-leftoverTime);
+            LevelManager.Instance.SkipLevelTime(leftoverTime);
         }
+
+        SpawnNextWave();
     }
 
     void SpawnNextWave()
     {
-        
         List<EntityConfigSO> entities = GetOrderedWaveMonsters(currentWaveIndex);
         // SpawnAtGraves(entities);
         SpawnRandomRows(entities);
@@ -95,8 +87,15 @@ public class WaveManager : Singleton<WaveManager>
             }
         }
 
+        int safe = 0;
         while (wave.WaveSpawnPoint > 0)
         {
+            if(safe++ > 1000)
+            {
+                Debug.LogError("Infinite loop in GetOrderedWaveMonsters");
+                break;
+            }
+
             int index = weights.GetRandomWeightedIndex();
             if (index == -1) continue;
             var monsterToSpawn = wave.MonsterSpawnData[index];
@@ -114,9 +113,9 @@ public class WaveManager : Singleton<WaveManager>
         return configsToSpawn;
     }
 
-    private void SpawnRandomRows(List<EntityConfigSO> waveMonsters)
+    public void SpawnRandomRows(List<EntityConfigSO> spawnList)
     {
-        foreach (var monster in waveMonsters)
+        foreach (var monster in spawnList)
         {
             var pos = new Vector3(
                 GameConstant.GRID_BOUND_X_MAX + 0.5f + Random.Range(0, GameConstant.MONSTER_SPAWN_RANGE_X),
@@ -125,14 +124,22 @@ public class WaveManager : Singleton<WaveManager>
             );
             Entity m = EntityFactory.Instance.Spawn(monster.Id, pos);
             m.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
-            m.ChangeState(new WalkState());
 
-            this.waveMonsters.Add(m);
+            waveMonsters.Add(m);
         }
     }
 
     public void OnWaveMonsterDespawn(Entity monster)
     {
         waveMonsters.Remove(monster);
+    }
+
+    public void ClearAllMonsters()
+    {
+        foreach (var monster in waveMonsters)
+        {
+            EntityFactory.Instance.Release(monster);
+        }
+        waveMonsters.Clear();
     }
 }

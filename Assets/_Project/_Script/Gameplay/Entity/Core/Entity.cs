@@ -22,12 +22,12 @@ public abstract class Entity : MonoBehaviour
     protected virtual void Awake()
     {
         SetColliderActive(false);
+        LevelManager.Instance.RegisterEntityCollider(hitBox, this);
     }
 
     public virtual void Init(EntityConfigSO config)
     {
         SetColliderActive(true);
-        LevelManager.Instance.RegisterEntityCollider(hitBox, this);
         Config = config;
         ResetStatusEffects();
 
@@ -106,7 +106,7 @@ public abstract class Entity : MonoBehaviour
 #region Death & despawn
 
     //shield -> armors -> health
-    public virtual void TakeDamage(float damage, float damageForce = 3f, Action OnKill = null)
+    public virtual void TakeDamage(float damage, float damageForce = 3f)
     {
         var shield = EquipmentController.Shield;
         if (shield)
@@ -126,7 +126,6 @@ public abstract class Entity : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
-            OnKill?.Invoke();
             OnDie();
         }
     }

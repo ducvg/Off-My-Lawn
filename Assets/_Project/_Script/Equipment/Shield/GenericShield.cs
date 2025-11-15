@@ -31,7 +31,7 @@ public class GenericShield : Shield
     void BlinkEmission()
     {
         emissionTween.Complete();
-        emissionTween = Tween.MaterialColor(material, GameConstant.emissionId, new Color(0.2f, 0.2f, 0.2f, 1f),
+        emissionTween = Tween.MaterialColor(material, ShaderId.emission, new Color(0.2f, 0.2f, 0.2f, 1f),
                                         duration: 0.15f, Ease.InCubic, cycles: 2, cycleMode: CycleMode.Yoyo);
     }
 

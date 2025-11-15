@@ -40,6 +40,14 @@ public class UIManager : Singleton<UIManager>
         return canvas;
     }
 
+    public T OpenImmediate<T>() where T : BaseCanvas
+    {
+        T canvas = GetCanvas<T>();
+        canvas.Setup();
+        canvas.OpenImmediate();
+        return canvas;
+    }
+
     public void Close<T>() where T : BaseCanvas
     {
         if (IsOpened<T>())

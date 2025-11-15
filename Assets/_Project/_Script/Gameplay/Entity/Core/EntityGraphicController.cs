@@ -71,24 +71,24 @@ public class EntityGraphicController : MonoBehaviour
     {
         colorSequence.Complete();
         colorSequence = Sequence.Create();
-        colorSequence.Group(Tween.MaterialColor(bodyMaterial, GameConstant.emissionId, newColor, duration,
+        colorSequence.Group(Tween.MaterialColor(bodyMaterial, ShaderId.emission, newColor, duration,
                 ease: Ease.InCubic, cycleMode: CycleMode.Yoyo, cycles: 2));
         foreach (var mat in outfitMaterials)
         {
-            colorSequence.Group(Tween.MaterialColor(mat, GameConstant.emissionId, newColor, duration,
+            colorSequence.Group(Tween.MaterialColor(mat, ShaderId.emission, newColor, duration,
                     ease: Ease.InCubic, cycleMode: CycleMode.Yoyo, cycles: 2));
         }
     }
 
     public void SetEmissionAll(in Color newColor)
     {
-        bodyMaterial.SetColor(GameConstant.emissionId, newColor);
-        foreach (var mat in outfitMaterials) mat.SetColor(GameConstant.emissionId, newColor);
+        bodyMaterial.SetColor(ShaderId.emission, newColor);
+        foreach (var mat in outfitMaterials) mat.SetColor(ShaderId.emission, newColor);
     }
     
     public void SetOutfitColor(in Color newColor)
     {
-        foreach (var mat in outfitMaterials) mat.SetColor(GameConstant.colorId, newColor);
+        foreach (var mat in outfitMaterials) mat.SetColor(ShaderId.color, newColor);
     }
 
     public void SetBodyMaterial(Material material)

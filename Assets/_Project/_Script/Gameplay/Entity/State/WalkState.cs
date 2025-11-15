@@ -19,6 +19,7 @@ public struct WalkState : IState
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void OnUpdate(Entity entity)
     {
+        newBaseSpeed = entity.StatModifier.GetFinalMoveSpeed() + randSpeed;
         float curveFactor = entity.Config.SpeedCurve.Evaluate(Time.time * newBaseSpeed);
         float finalSpeed = newBaseSpeed * curveFactor;
         entity.transform.Translate(Vector3.forward * finalSpeed * Time.deltaTime);

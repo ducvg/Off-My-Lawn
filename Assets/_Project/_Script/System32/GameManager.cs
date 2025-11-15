@@ -1,31 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class GameManager : PersistentSingleton<GameManager>
 {
-    [SerializeField] private Light directionalLight;
-    public static bool IsPause { get; private set; }
+    public static GameState GameState { get; private set; }
 
     void Start()
     {
-        LoadLevel(0);
+        var levelData = LoadLevel(0);
+        CameraManager.Instance.Init();
+        LevelManager.Instance.Init(levelData);
     }
 
-    void Update()
+    public void SetGameState(GameState newState)
     {
-        var value = 8000 + Mathf.PingPong(Time.time * 150, 7000f); //575 secs a day
-        directionalLight.colorTemperature = value;
-    }
+        GameState = newState;
+    }   
 
-    public void SetGamePause(bool isPause)
+    LevelData LoadLevel(int levelIndex)
     {
-        IsPause = isPause;
+        return null;
     }
+}
 
-    void LoadLevel(int levelIndex)
-    {
-
-        LevelManager.Instance.Init();
-    }
+public enum GameState
+{
+    SelectCard,
+    Playing,
+    Paused,
 }

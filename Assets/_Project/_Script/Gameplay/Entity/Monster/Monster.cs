@@ -13,30 +13,10 @@ public class Monster : Entity
         for (int i = 0; i < count; ++i) bodyParts[i].Init();
     }
 
-    public override void TakeDamage(float damage, float damageForce = 3f, Action OnKill = null)
+    public override void TakeDamage(float damage, float damageForce = 3f)
     {
-        var shield = EquipmentController.Shield;
-        if (shield)
-        {
-            shield.Block(this, ref damage);
-        }
-
-        foreach (var slot in EquipmentController.EquipmentSlot.Keys)
-        {
-            if (EquipmentController.Armors.TryGetValue(slot, out var armor))
-            {
-                armor.Block(this, ref damage);
-            }
-        }
-        
-        health -= damage;
+        base.TakeDamage(damage, damageForce);
         TryDetachBodyParts(damageForce); //*
-        GraphicController.BlinkEmissionAll(HurtEmission, 0.15f);
-        if (health <= 0)
-        {
-            OnKill?.Invoke();
-            OnDie();
-        }
     }
 
     private void TryDetachBodyParts(float force)

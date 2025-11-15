@@ -28,7 +28,7 @@ public struct PlaceHeroInputState : IInputState
         }
 
         camera = Camera.main;
-
+        SelectedCard.SetSelectable(false);
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
         Physics.Raycast(ray, out RaycastHit groundHit, 1000f, GroundLayer);
         previewHero = Object.Instantiate(hero);
@@ -56,7 +56,7 @@ public struct PlaceHeroInputState : IInputState
             else
                 previewHero.transform.position = groundHit.point;
 
-            if (Input.GetMouseButtonUp(0)) //drag mode release
+            if (Input.GetMouseButtonUp(0)) //release drag
             {
                 InputManager.Instance.ChangeInputState(new EmptyInputState());
             }
@@ -73,6 +73,8 @@ public struct PlaceHeroInputState : IInputState
 
     public void OnExit()
     {
+        SelectedCard.SetSelectable(true);
+
         if (selectedCell && selectedCell.CanPlace())
         {
             CrystalValue.Value -= SelectedCard.EntityConfig.CrystalCost;
@@ -82,7 +84,7 @@ public struct PlaceHeroInputState : IInputState
 
             selectedCell.PlaceHero(previewHero);
             selectedCell = null;
-            SelectedCard.StartCooldown();
+            SelectedCard.SetOnCooldown();
         }
         else
         {

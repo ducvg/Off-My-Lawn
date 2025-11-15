@@ -27,3 +27,20 @@ public struct IdleState : IState
     {
     }
 }
+
+public struct PreviewState : IState
+{
+    public void OnEnter(Entity entity)
+    {
+        entity.GraphicController.PlayAnimation(Animation.IdleHash, 0.1f);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void OnUpdate(Entity entity)
+    {
+    }
+
+    public void OnExit(Entity entity)
+    {
+    }
+}

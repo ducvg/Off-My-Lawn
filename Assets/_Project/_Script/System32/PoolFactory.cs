@@ -79,9 +79,7 @@ public class PoolFactory<T> where T : Component
 
     private void OnDestroy(T instance)
     {
-#if UNITY_EDITOR
         if (!instance) return;
-#endif
         Object.Destroy(instance.gameObject);
     }
 

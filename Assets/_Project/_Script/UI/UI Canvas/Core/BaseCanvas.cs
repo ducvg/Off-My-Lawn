@@ -37,9 +37,18 @@ public class BaseCanvas : MonoBehaviour
         isTransitioning = false;
     }
 
+    public virtual void OpenImmediate()
+    {
+        if (isTransitioning) return;
+        gameObject.SetActive(true);
+        transitionData.OpenImmediate();
+        isTransitioning = false;
+    }
+
     public virtual void CloseImmediate()
     {
         if (isTransitioning) return;
+        transitionData.CloseImmediate();
         gameObject.SetActive(false);
         isTransitioning = false;
     }

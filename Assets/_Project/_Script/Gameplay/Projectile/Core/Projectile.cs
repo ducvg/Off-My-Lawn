@@ -6,6 +6,7 @@ public abstract class Projectile : MonoBehaviour
     public Vector3 LastPosition { get; private set; }
     protected ProjectileConfigSO config;
     protected int pierceCount;
+    protected Entity lastHitTarget;
 
     public virtual void Init(Weapon weapon)
     {
@@ -13,6 +14,7 @@ public abstract class Projectile : MonoBehaviour
         LastPosition = transform.position;
         config = weapon.Config.ProjectileConfig;
         pierceCount = weapon.Config.AttackPierce;
+        lastHitTarget = null;
     }
 
     public virtual void Update()
@@ -22,6 +24,9 @@ public abstract class Projectile : MonoBehaviour
 
     public virtual void OnHit(Entity target)
     {
+        if (target == lastHitTarget) return; //raycast can hit target again if pierce
+        lastHitTarget = target;
+
         foreach (var effect in OwnerWeapon.Config.AttackEffects)
         {
             effect.Apply(target);

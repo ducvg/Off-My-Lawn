@@ -7,7 +7,7 @@ using UnityEngine;
 public class Scale : ITransition
 {
     [SerializeField] private TweenSettings<Vector3> settings;
-    [SerializeField] private Transform target;
+    [SerializeField] private RectTransform target;
 
     public Tween Run()
     {

@@ -8,10 +8,8 @@ using UnityEngine.UI;
 public class GameplayCanvas : BaseCanvas
 {
     [SerializeField] private RectTransform FlagPrefab;
-    [SerializeField] private CardFactory cardFactory;
     [SerializeField] private FloatValueSO crystalValue;
     [SerializeField] private FloatValueSO levelProgressValue;
-    [SerializeField] private Transform cardParent;
     [SerializeField] private TextMeshProUGUI crystalText;
     [SerializeField] private RectTransform progressIndicator;
     [SerializeField] private RectTransform progressBarParent;
@@ -26,12 +24,6 @@ public class GameplayCanvas : BaseCanvas
         SetCrystalText(crystalValue.Value);
     }
 
-    public void AddCard(EntityConfigSO entityConfig)
-    {
-        cardFactory.CreateCard(entityConfig, cardParent);
-    }
-
-#region Crystal 
     public void WarnInsufficientCrystal()
     {
         crystalWarnSequence.Complete();
@@ -45,9 +37,7 @@ public class GameplayCanvas : BaseCanvas
     {
         crystalText.SetTextFormat("{0}", amount);
     }
-    #endregion
 
-#region Level Progress
     public void ClearFlags()
     {
         foreach (var flag in flags)
@@ -71,7 +61,6 @@ public class GameplayCanvas : BaseCanvas
         float xPos = Mathf.Lerp(0, -progressBarParent.rect.width, lerpFactor);
         progressIndicator.anchoredPosition = new Vector2(xPos, progressIndicator.anchoredPosition.y);
     }
-#endregion
 
     void OnEnable()
     {

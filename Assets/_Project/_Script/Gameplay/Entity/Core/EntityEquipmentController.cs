@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using Sirenix.OdinInspector;
@@ -21,13 +22,13 @@ public class EntityEquipmentController : MonoBehaviour
 
     public EntityEquipmentController WithWeapon(WeaponConfigSO weaponConfig)
     {
-        if (!weaponConfig) return this;
         if (Weapon)
         {
             Weapon.Unequip(ownerEntity);
             Destroy(Weapon.gameObject);
             Weapon = null;
         }
+        if (!weaponConfig) return this;
 
         Weapon = Instantiate(weaponConfig.Prefab, EquipmentSlot[BodySlot.RightHand]);
         Weapon.Init(weaponConfig);
@@ -39,13 +40,13 @@ public class EntityEquipmentController : MonoBehaviour
 
     public EntityEquipmentController WithShield(ShieldConfigSO shieldConfig)
     {
-        if (!shieldConfig) return this;
         if (Shield)
         {
             Shield.Unequip(ownerEntity);
             Destroy(Shield.gameObject);
             Shield = null;
         }
+        if (!shieldConfig) return this;
 
         Shield = Instantiate(shieldConfig.Prefab, EquipmentSlot[BodySlot.LeftHand]);
         Shield.SetConfig(shieldConfig);
@@ -57,13 +58,13 @@ public class EntityEquipmentController : MonoBehaviour
 
     public EntityEquipmentController WithArmor(ArmorConfigSO armorConfig)
     {
-        if (!armorConfig) return this;
         if (Armors.TryGetValue(armorConfig.EquipSlot, out var existingArmor))
         {
             existingArmor.Unequip(ownerEntity);
             Destroy(existingArmor.gameObject);
             Armors.Remove(armorConfig.EquipSlot);
         }
+        if (!armorConfig) return this;
 
         var newArmor = Instantiate(armorConfig.Prefab, EquipmentSlot[armorConfig.EquipSlot]);
         ownerEntity.GraphicController.AddOutfitMaterial(newArmor.Material);
@@ -75,11 +76,34 @@ public class EntityEquipmentController : MonoBehaviour
     }
     public EntityEquipmentController WithArmor(ArmorConfigSO[] armors)
     {
-        foreach (var armor in armors)
+        int count = armors.Length;
+        if(count == 0)
         {
-            WithArmor(armor);
+            ClearArmors();
+            return this;   
+        }
+        for(int i = 0; i < count; i++)
+        {
+            WithArmor(armors[i]);
         }
         return this;
+    }
+
+    void ClearArmors()
+    {
+        int count = Armors.Values.Count;
+        if(count == 0) return;
+        
+        Armor[] removes = ArrayPool<Armor>.Shared.Rent(count);
+        Armors.Values.CopyTo(removes, 0);
+        for (int i = 0; i < count; i++)
+        {
+            var armor = removes[i];
+            armor.Unequip(ownerEntity);
+            if(armor) Destroy(armor.gameObject);
+        }
+        Armors.Clear();
+        ArrayPool<Armor>.Shared.Return(removes);
     }
 
     public void UnequipWeapon(Weapon weapon)
