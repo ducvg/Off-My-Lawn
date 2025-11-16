@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Entity Config", menuName = "Data Object/Entity Config")]
@@ -7,7 +8,7 @@ public class EntityConfigSO : ScriptableObject
     [field: Header("General")]
     [field: SerializeField] public EntityID Id { get; private set; }
     [field: SerializeField] public string Name { get; private set; }
-    [field: SerializeField] public Sprite Icon { get; private set; }
+    [field: SerializeField, PreviewField(60)] public Sprite Icon { get; private set; }
     [field: SerializeField] public Color CardColor { get; private set; }
     [field: SerializeField] public Entity Prefab { get; private set; }
 

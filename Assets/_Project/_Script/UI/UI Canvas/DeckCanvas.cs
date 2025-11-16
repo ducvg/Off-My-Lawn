@@ -28,7 +28,7 @@ public class DeckCanvas : BaseCanvas
 
     public void SlotInCards()
     {
-        foreach(var card in CardManager.Instance.Cards)
+        foreach(var card in CardManager.Instance.DeckCards)
         {
             var slot = GetEmptySlot();
             if(!slot) return;

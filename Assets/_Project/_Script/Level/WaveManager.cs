@@ -26,7 +26,7 @@ public class WaveManager : Singleton<WaveManager>
         {
             OnWaveCleared();
         }
-        else if (waveTimer >= levelWaves[currentWaveIndex].WaveTime)
+        else if (currentWaveIndex < levelWaves.Count && waveTimer >= levelWaves[currentWaveIndex].WaveTime)
         {
             OnWaveTimeUp();
         }
@@ -59,36 +59,32 @@ public class WaveManager : Singleton<WaveManager>
 
     void SpawnNextWave()
     {
-        List<EntityConfigSO> entities = GetOrderedWaveMonsters(currentWaveIndex);
-        // SpawnAtGraves(entities);
-        SpawnRandomRows(entities);
-
+        SpawnWave(currentWaveIndex);
         currentWaveIndex++;
         waveTimer = 0f;
     }
 
-    public List<EntityConfigSO> GetOrderedWaveMonsters(int waveIndex)
+    void SpawnWave(int waveIndex)
     {
         WaveData wave = levelWaves[waveIndex];
-        var configsToSpawn = new List<EntityConfigSO>();
-        var monsterSpawnCount = wave.MonsterSpawnData.Length;
-        var weights = new List<float>();
+        var monsterSpawnCount = wave.MonsterSpawnData.Count;
+        var weights = new List<int>();
 
-        for(int i = 0; i < monsterSpawnCount; i++) //spawning forced picks first
+        for(int i = 0; i < monsterSpawnCount; i++) //spawning forced spawn first
         {
             weights.Add(wave.MonsterSpawnData[i].PickWeight);
-            var monster = wave.MonsterSpawnData[i];
+            var spawnData = wave.MonsterSpawnData[i];
 
-            for (int j = 0; j < monster.ForcedPickCount; j++)
+            for (int j = 0; j < spawnData.MinSpawn; j++) //ignore spawn points limit
             {
-                var config = EntityFactory.Instance.GetEntityConfig(monster.EntityID);
-                configsToSpawn.Add(config);
-                wave.WaveSpawnPoint -= config.SpawnCost;
+                Entity spawnedEntity = EntityFactory.Instance.SpawnRandomRow(spawnData.EntityID);
+                wave.WaveSpawnPoint -= spawnedEntity.Config.SpawnCost;
+                waveMonsters.Add(spawnedEntity);
             }
         }
 
         int safe = 0;
-        while (wave.WaveSpawnPoint > 0)
+        while (wave.WaveSpawnPoint > 0) //spawn by pick weight
         {
             if(safe++ > 1000)
             {
@@ -98,34 +94,17 @@ public class WaveManager : Singleton<WaveManager>
 
             int index = weights.GetRandomWeightedIndex();
             if (index == -1) continue;
-            var monsterToSpawn = wave.MonsterSpawnData[index];
-            if (monsterToSpawn.MaxInWave <= 0)
+            var spawnData = wave.MonsterSpawnData[index];
+            if (spawnData.MaxSpawn <= 0)
             {
                 weights.RemoveAt(index);
                 continue;
             }
 
-            var config = EntityFactory.Instance.GetEntityConfig(monsterToSpawn.EntityID);
-            configsToSpawn.Add(config);
-            wave.WaveSpawnPoint -= config.SpawnCost;
-            --monsterToSpawn.MaxInWave;
-        }
-        return configsToSpawn;
-    }
-
-    public void SpawnRandomRows(List<EntityConfigSO> spawnList)
-    {
-        foreach (var monster in spawnList)
-        {
-            var pos = new Vector3(
-                GameConstant.GRID_BOUND_X_MAX + 0.5f + Random.Range(0, GameConstant.MONSTER_SPAWN_RANGE_X),
-                GameConstant.LAWN_ELEVATION_Y,
-                0.5f + GameGrid.Instance.GetRandomRowIndex()
-            );
-            Entity m = EntityFactory.Instance.Spawn(monster.Id, pos);
-            m.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
-
-            waveMonsters.Add(m);
+            Entity spawnedEntity = EntityFactory.Instance.SpawnRandomRow(spawnData.EntityID);
+            wave.WaveSpawnPoint -= spawnedEntity.Config.SpawnCost;
+            --spawnData.MaxSpawn;
+            waveMonsters.Add(spawnedEntity);
         }
     }
 

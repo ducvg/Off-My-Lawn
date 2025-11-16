@@ -8,10 +8,10 @@ public class SelectCardCanvas : BaseCanvas
     [SerializeField] private Transform cardContainer;
     Dictionary<EntityConfigSO, Card> holderDict = new();
 
-    public void Init(List<EntityID> availableCardIds)
+    public void Init(List<EntityID> selectableIds)
     {
         ClearCards();
-        PopulateSelection(availableCardIds);
+        PopulateSelection(selectableIds);
     }
 
     public void OnReadyClick()
@@ -23,12 +23,12 @@ public class SelectCardCanvas : BaseCanvas
         LevelManager.Instance.StartLevel();
     }
 
-    private void PopulateSelection(List<EntityID> availableCardIds)
+    private void PopulateSelection(List<EntityID> selectableIds)
     {
-        int count = availableCardIds.Count;
+        int count = selectableIds.Count;
         for (int i = 0; i < count; i++)
         {
-            var config = EntityFactory.Instance.GetEntityConfig(availableCardIds[i]);
+            var config = GameDatabase.Instance.EntityDictionary[selectableIds[i]];
             var holder = cardFactory.CreateCard(config, cardContainer.transform);
             holder.SetSelectable(false);
             holderDict[config] = holder;

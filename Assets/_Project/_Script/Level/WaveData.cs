@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 [Serializable]
 public class WaveData
@@ -6,14 +7,14 @@ public class WaveData
     public bool IsFlag = false;
     public float WaveTime = 15;
     public int WaveSpawnPoint = 10;
-    public SpawnData[] MonsterSpawnData;
+    public List<SpawnData> MonsterSpawnData = new();
 }
 
 [Serializable]
 public class SpawnData
 {
-    public EntityID EntityID;
-    public float PickWeight = 1f;
-    public int ForcedPickCount;
-    public int MaxInWave = 999;
+    public EntityID EntityID = EntityID.Skeleton;
+    public int PickWeight = 1;
+    public int MinSpawn;
+    public int MaxSpawn = 999;
 }

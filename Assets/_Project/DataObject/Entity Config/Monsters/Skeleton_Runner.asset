@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Id>k__BackingField: 8
   <Name>k__BackingField: Runner
-  <Icon>k__BackingField: {fileID: 0}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 835f68a94efaa694aba20c95fb8dc381,
+    type: 3}
   <CardColor>k__BackingField: {r: 0, g: 0, b: 0, a: 0}
   <Prefab>k__BackingField: {fileID: 4384032931977427607, guid: 641e0acdd1614e44f99a804f24e543b6,
     type: 3}

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Id>k__BackingField: 9
   <Name>k__BackingField: Summoner
-  <Icon>k__BackingField: {fileID: 0}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 396ad646a1bdec344a4b5fb497c5b085,
+    type: 3}
   <CardColor>k__BackingField: {r: 0, g: 0, b: 0, a: 0}
   <Prefab>k__BackingField: {fileID: 4678752875207087356, guid: 787bbcf16e92f44439b85cd19e847896,
     type: 3}

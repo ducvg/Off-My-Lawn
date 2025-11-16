@@ -5,27 +5,27 @@ using UnityEngine;
 public class CardManager : Singleton<CardManager>
 {
     [SerializeField] private CardFactory cardFactory;
-    public HashSet<Card> Cards { get; private set; } = new();
+    public HashSet<Card> DeckCards { get; private set; } = new();
 
     public void SpawnDefaultCards(List<EntityID> entiyIds)
     {
         ClearCards();
         foreach(var id in entiyIds)
         {
-            var config = EntityFactory.Instance.GetEntityConfig(id);
+            var config = GameDatabase.Instance.EntityDictionary[id];
             var card = cardFactory.CreateCard(config);
             card.SetSelectable(false);
-            Cards.Add(card);
+            DeckCards.Add(card);
             card.gameObject.SetActive(false);
         }
     }
 
-    public void AddCard(Card card)
+    public void AddCardToDeck(Card card)
     {
         var slot = UIManager.Instance.GetCanvas<DeckCanvas>().GetEmptySlot();
         if(!slot) return;
 
-        Cards.Add(card);
+        DeckCards.Add(card);
         card.transform.SetParent(slot);
         Tween.StopAll(card.transform);
         Tween.Position(card.transform, slot.position, 0.2f, ease: Ease.Linear);  
@@ -33,12 +33,12 @@ public class CardManager : Singleton<CardManager>
 
     public void RemoveCard(Card card)
     {
-        Cards.Remove(card);
+        DeckCards.Remove(card);
     }
 
-    public void SetCardActive(bool isActive)
+    public void SetDeckActive(bool isActive)
     {
-        foreach(var card in Cards)
+        foreach(var card in DeckCards)
         {
             if(card) card.SetSelectable(isActive);
         }
@@ -46,16 +46,16 @@ public class CardManager : Singleton<CardManager>
 
     public bool IsCardInDeck(Card card)
     {
-        return Cards.Contains(card);
+        return DeckCards.Contains(card);
     }
 
     public void ClearCards()
     {
-        foreach(var card in Cards)
+        foreach(var card in DeckCards)
         {
             Destroy(card.gameObject);
         }
-        Cards.Clear();
+        DeckCards.Clear();
     }
 
 }

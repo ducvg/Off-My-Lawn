@@ -1,25 +1,30 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using Cysharp.Text;
 using Cysharp.Threading.Tasks;
 using PrimeTween;
+using Sirenix.OdinInspector;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class LevelManager : Singleton<LevelManager>
 {
     [SerializeField] private TextMeshProUGUI startLevelText;
     [SerializeField] private FloatValueSO crystalValue;
     [SerializeField] private FloatValueSO levelProgressValue;
-    [SerializeField] private LevelData levelData;
+    private LevelData levelData;
     private Dictionary<Collider, Entity> entityColliderMap = new();
     public float levelTotalTime;
     public float levelTimer;
     public float levelDisplayTimer;
     private List<Entity> previewMonsters = new();
 
-    public void Init(LevelData loadedLevel)
+    public void Init(int levelIndex)
     {
-        // this.levelData = loadedLevel;
+        LoadLevel(levelIndex);
         GameManager.Instance.SetGameState(GameState.Paused);
 
         crystalValue.Value = levelData.StartCrystal;
@@ -31,8 +36,8 @@ public class LevelManager : Singleton<LevelManager>
     public async void StartSelection()
     {
         //preload avoid stutter mid game
-        CardManager.Instance.SpawnDefaultCards(levelData.ForcedEntities);
-        UIManager.Instance.OpenImmediate<SelectCardCanvas>().Init(levelData.PlayableEntities);
+        CardManager.Instance.SpawnDefaultCards(levelData.ForcedHeroes);
+        UIManager.Instance.OpenImmediate<SelectCardCanvas>().Init(levelData.SelectableHeroes);
         UIManager.Instance.CloseImmediate<SelectCardCanvas>();
 
         await UniTask.Delay(1000);
@@ -41,17 +46,16 @@ public class LevelManager : Singleton<LevelManager>
         GameManager.Instance.SetGameState(GameState.SelectCard);
         UIManager.Instance.Open<DeckCanvas>().SlotInCards();
         UIManager.Instance.Open<SelectCardCanvas>();
-        
     }
 
     public async void StartLevel()
     {
         GameManager.Instance.SetGameState(GameState.Paused);
         SetupLevelProgress();
-        CardManager.Instance.SetCardActive(false);
+        CardManager.Instance.SetDeckActive(false);
         await PlayStartLevelText(); //4.5s
         ClearPreviewMonsters();
-        CardManager.Instance.SetCardActive(true);
+        CardManager.Instance.SetDeckActive(true);
         GameManager.Instance.SetGameState(GameState.Playing);
         WaveManager.Instance.gameObject.SetActive(false); //stop update
         await UniTask.Delay(5000);
@@ -97,7 +101,8 @@ public class LevelManager : Singleton<LevelManager>
 
     public void OnLevelComplete()
     {
-        
+        Debug.Log("Level Completed!");
+
     }
 
     void PreloadEntities()
@@ -111,37 +116,20 @@ public class LevelManager : Singleton<LevelManager>
             }
         }
 
-        int previewCount = Mathf.Min(uniqueEntityIDs.Count, 10); //spawn preview monsters at road
-        List<EntityConfigSO> previews = new();
-        foreach (var id in uniqueEntityIDs)
+        int previewCount = Mathf.Min(uniqueEntityIDs.Count, 10);
+        foreach (var id in uniqueEntityIDs) //spawn each unique first
         {
-            previews.Add(EntityFactory.Instance.GetEntityConfig(id));
+            var previewSpawn = EntityFactory.Instance.SpawnPreviewMode(id);
+            previewMonsters.Add(previewSpawn);
             previewCount--;
         }
-        while(previewCount > 0)
+        while(previewCount > 0) //pick random till 10
         {
             WaveData randWave = levelData.Waves[Random.Range(0, levelData.Waves.Count)];
-            var randMonster = randWave.MonsterSpawnData[Random.Range(0, randWave.MonsterSpawnData.Length)];
-            previews.Add(EntityFactory.Instance.GetEntityConfig(randMonster.EntityID));
+            SpawnData randSpawnData = randWave.MonsterSpawnData[Random.Range(0, randWave.MonsterSpawnData.Count)];
+            var previewSpawn = EntityFactory.Instance.SpawnPreviewMode(randSpawnData.EntityID);
+            previewMonsters.Add(previewSpawn);
             previewCount--;
-        }
-
-        SpawnPreviewMonster(previews);
-    }
-
-    void SpawnPreviewMonster(List<EntityConfigSO> configs)
-    {
-        foreach (var monster in configs)
-        {
-            var pos = new Vector3(
-                GameConstant.GRID_BOUND_X_MAX + 0.5f + Random.Range(0, GameConstant.MONSTER_SPAWN_RANGE_X),
-                GameConstant.LAWN_ELEVATION_Y,
-                0.5f + GameGrid.Instance.GetRandomRowIndex()
-            );
-            Entity m = EntityFactory.Instance.Spawn(monster.Id, pos);
-            m.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
-            m.ChangeState(new PreviewState());
-            previewMonsters.Add(m); 
         }
     }
 
@@ -167,6 +155,27 @@ public class LevelManager : Singleton<LevelManager>
             float lerpFactor = (float)i / (waveCount - 1);
             gameplayCanvas.AddProgressFlag(lerpFactor);
         }
+    }
+
+    [Button]
+    void LoadLevel(int index)
+    {
+        TextAsset jsonAsset = Resources.Load<TextAsset>($"Levels/Level_{index}");
+        levelData = JsonUtility.FromJson<LevelData>(jsonAsset.text);
+        Debug.Log($"Loaded Level {levelData.LevelIndex}");
+    }
+
+    [Button]
+    void SaveLevel()
+    {
+        const string levelPath = "Assets/_Project/Resources/Levels";
+        string fileName = $"Level_{levelData.LevelIndex}.json";
+        string filePath = Path.Combine(levelPath, fileName);
+        string json = JsonUtility.ToJson(levelData);
+        File.WriteAllText(filePath, json);
+
+        AssetDatabase.ImportAsset(filePath);
+        Debug.Log($"Saved Level {levelData.LevelIndex} to: " + levelPath);
     }
 
     public void SkipLevelTime(float skippedTime)

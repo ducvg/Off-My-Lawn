@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public static class RandomExtension
 {
-    public static int GetRandomWeightedIndex(this List<float> weights)
+    public static int GetRandomWeightedIndex(this List<int> weights)
     {
         int resultIndex = -1;
         float totalWeight = 0;

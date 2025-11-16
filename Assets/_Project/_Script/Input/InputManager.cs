@@ -62,7 +62,7 @@ public class InputManager : Singleton<InputManager>
                     UIManager.Instance.GetCanvas<SelectCardCanvas>().ReturnCard(selected);
                 } else 
                 {
-                    CardManager.Instance.AddCard(selected);
+                    CardManager.Instance.AddCardToDeck(selected);
                 }
 
                 return;

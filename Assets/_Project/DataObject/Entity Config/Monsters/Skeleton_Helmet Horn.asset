@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Id>k__BackingField: 7
   <Name>k__BackingField: Helmet Skeleton
-  <Icon>k__BackingField: {fileID: 0}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 5cb9ab259b2553544a0a9d7fc862e1d3,
+    type: 3}
   <CardColor>k__BackingField: {r: 0, g: 0, b: 0, a: 0}
   <Prefab>k__BackingField: {fileID: 3353353583478220515, guid: 79b5cc978959ecb4b9625c04486ede29,
     type: 3}

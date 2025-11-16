@@ -7,20 +7,14 @@ public class GameManager : PersistentSingleton<GameManager>
 
     void Start()
     {
-        var levelData = LoadLevel(0);
         CameraManager.Instance.Init();
-        LevelManager.Instance.Init(levelData);
+        LevelManager.Instance.Init(1);
     }
 
     public void SetGameState(GameState newState)
     {
         GameState = newState;
     }   
-
-    LevelData LoadLevel(int levelIndex)
-    {
-        return null;
-    }
 }
 
 public enum GameState

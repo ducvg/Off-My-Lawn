@@ -3984,28 +3984,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18a6b53ccbb610842a85082e050c4fdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityDatabase:
-    _serializedList:
-    - Key: 5
-      Value: {fileID: 11400000, guid: 85d822f6227ae994c87cd342ac277068, type: 2}
-    - Key: 4
-      Value: {fileID: 11400000, guid: 432d01b123d0087489f0ac758e084df5, type: 2}
-    - Key: 0
-      Value: {fileID: 11400000, guid: 4efee0479e18ede4982ea3d541859d6e, type: 2}
-    - Key: 1
-      Value: {fileID: 11400000, guid: c3cd467091f5e3a4da726839a2e086aa, type: 2}
-    - Key: 2
-      Value: {fileID: 11400000, guid: 28142a471eb66514287a39182629c55a, type: 2}
-    - Key: 3
-      Value: {fileID: 11400000, guid: 3edcba367ea128743854419308ce1b28, type: 2}
-    - Key: 6
-      Value: {fileID: 11400000, guid: d5ec9f1136eac564193004000c478e4d, type: 2}
-    - Key: 7
-      Value: {fileID: 11400000, guid: e019ad83e67ac6540969b31a217bdc06, type: 2}
-    - Key: 8
-      Value: {fileID: 11400000, guid: 7e1601962b272ba44828521160bcd4cf, type: 2}
-    - Key: 9
-      Value: {fileID: 11400000, guid: 4bbc2903c0a182d488459ab9e23eaf46, type: 2}
 --- !u!1001 &575050581
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9289,68 +9267,6 @@ MonoBehaviour:
   startLevelText: {fileID: 969716988}
   crystalValue: {fileID: 11400000, guid: 98ae9b2e058ccee4f91c999b83c8dd83, type: 2}
   levelProgressValue: {fileID: 11400000, guid: ae7a81a7c2addb2469061711bb7b7110, type: 2}
-  levelData:
-    LevelIndex: 1
-    StartCrystal: 1000
-    PlayableEntities: 000000000100000003000000020000000400000005000000
-    ForcedEntities: 0000000001000000
-    Waves:
-    - IsFlag: 0
-      WaveTime: 90
-      WaveSpawnPoint: 1
-      MonsterSpawnData:
-      - EntityID: 6
-        PickWeight: 1
-        ForcedPickCount: 0
-        MaxInWave: 999
-    - IsFlag: 0
-      WaveTime: 60
-      WaveSpawnPoint: 1
-      MonsterSpawnData:
-      - EntityID: 6
-        PickWeight: 12
-        ForcedPickCount: 0
-        MaxInWave: 999
-      - EntityID: 7
-        PickWeight: 4
-        ForcedPickCount: 1
-        MaxInWave: 2
-    - IsFlag: 1
-      WaveTime: 60
-      WaveSpawnPoint: 20
-      MonsterSpawnData:
-      - EntityID: 6
-        PickWeight: 20
-        ForcedPickCount: 0
-        MaxInWave: 999
-      - EntityID: 7
-        PickWeight: 10
-        ForcedPickCount: 2
-        MaxInWave: 999
-      - EntityID: 8
-        PickWeight: 5
-        ForcedPickCount: 2
-        MaxInWave: 999
-    - IsFlag: 0
-      WaveTime: 60
-      WaveSpawnPoint: 14
-      MonsterSpawnData:
-      - EntityID: 9
-        PickWeight: 1
-        ForcedPickCount: 0
-        MaxInWave: 999
-    - IsFlag: 1
-      WaveTime: 60
-      WaveSpawnPoint: 20
-      MonsterSpawnData:
-      - EntityID: 8
-        PickWeight: 2
-        ForcedPickCount: 0
-        MaxInWave: 999
-      - EntityID: 9
-        PickWeight: 1
-        ForcedPickCount: 0
-        MaxInWave: 999
   levelTotalTime: 0
   levelTimer: 0
   levelDisplayTimer: 0
@@ -10975,6 +10891,107 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1517535023}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1526275327
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1526275329}
+  - component: {fileID: 1526275328}
+  m_Layer: 0
+  m_Name: LevelEditor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1526275328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526275327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 792d4e192f659c1449b342003edc176c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <SelectableHeroes>k__BackingField:
+  - {fileID: 11400000, guid: 4efee0479e18ede4982ea3d541859d6e, type: 2}
+  - {fileID: 11400000, guid: c3cd467091f5e3a4da726839a2e086aa, type: 2}
+  - {fileID: 11400000, guid: 3edcba367ea128743854419308ce1b28, type: 2}
+  - {fileID: 11400000, guid: 28142a471eb66514287a39182629c55a, type: 2}
+  - {fileID: 11400000, guid: 432d01b123d0087489f0ac758e084df5, type: 2}
+  - {fileID: 11400000, guid: 85d822f6227ae994c87cd342ac277068, type: 2}
+  <ForcedHeroes>k__BackingField:
+  - {fileID: 11400000, guid: 4efee0479e18ede4982ea3d541859d6e, type: 2}
+  - {fileID: 11400000, guid: 28142a471eb66514287a39182629c55a, type: 2}
+  levelIndex: 1
+  currentLevelData:
+    LevelIndex: 1
+    StartCrystal: 1000
+    SelectableHeroes: 000000000100000003000000020000000400000005000000
+    ForcedHeroes: 0000000002000000
+    Waves:
+    - IsFlag: 0
+      WaveTime: 85
+      WaveSpawnPoint: 2
+      MonsterSpawnData:
+      - EntityID: 6
+        PickWeight: 1
+        MinSpawn: 0
+        MaxSpawn: 999
+    - IsFlag: 0
+      WaveTime: 95
+      WaveSpawnPoint: 1
+      MonsterSpawnData:
+      - EntityID: 6
+        PickWeight: 12
+        MinSpawn: 0
+        MaxSpawn: 999
+      - EntityID: 7
+        PickWeight: 4
+        MinSpawn: 1
+        MaxSpawn: 999
+    - IsFlag: 1
+      WaveTime: 60
+      WaveSpawnPoint: 14
+      MonsterSpawnData:
+      - EntityID: 8
+        PickWeight: 3
+        MinSpawn: 1
+        MaxSpawn: 999
+      - EntityID: 6
+        PickWeight: 4
+        MinSpawn: 1
+        MaxSpawn: 999
+    - IsFlag: 1
+      WaveTime: 0
+      WaveSpawnPoint: 0
+      MonsterSpawnData:
+      - EntityID: 9
+        PickWeight: 1
+        MinSpawn: 2
+        MaxSpawn: 999
+--- !u!4 &1526275329
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526275327}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1533550358
 Mesh:
   m_ObjectHideFlags: 0
@@ -15270,3 +15287,4 @@ SceneRoots:
   - {fileID: 372283224}
   - {fileID: 1337677225}
   - {fileID: 1685977873}
+  - {fileID: 1526275329}
