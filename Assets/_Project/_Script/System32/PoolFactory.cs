@@ -1,24 +1,35 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class PoolFactory<T> where T : Component
 {
-    private Dictionary<T, ObjectPool<T>> pools = new();
+    private Dictionary<T, UnityPool<T>> pools;
 
-    public void AddPool(T prefab, bool collectionCheck = false, int defaultCapacity = 10, int maxSize = 50)
+    public PoolFactory()
+    {
+        pools = new();
+    }
+
+    private void AddPool(T prefab, int defaultCapacity = 10, int maxSize = 1000)
     {
         if (pools.ContainsKey(prefab)) return;
-        var pool = new ObjectPool<T>(
-            () => OnCreate(prefab),
-            OnGet,
-            OnRelease,
-            OnDestroy,
-            collectionCheck,
-            defaultCapacity,
-            maxSize
-        );
+        var pool = new UnityPool<T>(prefab, defaultCapacity, maxSize);
         pools[prefab] = pool;
+    }
+
+    public void Preload(T prefab, int count)
+    {
+        if(!pools.TryGetValue(prefab, out UnityPool<T> pool))
+        {
+            AddPool(prefab);
+            pool = pools[prefab];
+        }
+        
+        for (int i = 0; i < count; ++i)
+        {
+            pool.Get();
+        }
+        pool.ReleaseAll();     
     }
 
     public T Spawn(T prefab, Vector3 position, Transform parent = null)
@@ -46,42 +57,54 @@ public class PoolFactory<T> where T : Component
             Object.Destroy(instance.gameObject);
         }
     }
+}
 
-    public void Preload(T prefab, int count)
+public class UnityPool<T> where T : Component
+{
+    private readonly T prefab;
+    private readonly Stack<T> inactiveStack;
+    private readonly int maxSize;
+
+    public UnityPool(T prefab, int defaultCapacity, int maxSize)
     {
-        if(!pools.TryGetValue(prefab, out ObjectPool<T> pool))
-        {
-            AddPool(prefab);
-            pool = pools[prefab];
-        }
-        for (int i = 0; i < count; ++i)
-        {
-            var instance = pool.Get();
-            pool.Release(instance);
-        }     
+        this.prefab = prefab;
+        inactiveStack = new(defaultCapacity);
+        this.maxSize = maxSize;
     }
 
-    #region Pool logic
-    private T OnCreate(T prefab)
+    private T Create()
     {
         return Object.Instantiate(prefab);
     }
 
-    private void OnGet(T instance)
+    public T Get()
     {
+        T instance;
+        
+        if (inactiveStack.Count == 0) instance = Create();
+        else instance = inactiveStack.Pop();
+
         instance.gameObject.SetActive(true);
+        return instance;
     }
 
-    private void OnRelease(T instance)
+    public void Release(T instance)
     {
+        if(inactiveStack.Count > maxSize)
+        {
+            Object.Destroy(instance);
+            return;
+        }
         instance.gameObject.SetActive(false);
+        inactiveStack.Push(instance);
     }
 
-    private void OnDestroy(T instance)
+    public void ReleaseAll()
     {
-        if (!instance) return;
-        Object.Destroy(instance.gameObject);
+        while(inactiveStack.Count > 0)
+        {
+            Object.Destroy(inactiveStack.Pop());
+        }
+        inactiveStack.Clear();
     }
-
-    #endregion
 }
