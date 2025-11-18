@@ -2,6 +2,7 @@ using Sirenix.OdinInspector.Editor;
 using UnityEngine;
 using Sirenix.Utilities.Editor;
 using Sirenix.Utilities;
+using System.Runtime.CompilerServices;
 
 public class LevelEditorWindow : OdinMenuEditorWindow
 {
@@ -11,6 +12,7 @@ public class LevelEditorWindow : OdinMenuEditorWindow
 
     public void SetLevelData(LevelData levelData){
         currentLevelData = levelData;
+        GUIHelper.RequestRepaint();
     }
 
     protected override OdinMenuTree BuildMenuTree()
@@ -20,14 +22,14 @@ public class LevelEditorWindow : OdinMenuEditorWindow
         tree.Config.DrawSearchToolbar = true;
 
         tree.Add("Edit Spawns Window", this);
-        tree.AddAllAssetsAtPath("Monsters", MONSTERS_PATH, typeof(EntityConfigSO)).ForEach(InitMenuItem);
+        tree.AddAllAssetsAtPath("Monsters", MONSTERS_PATH, typeof(EntityConfigSO)).ForEach(SetupMonsterItem);
 
         tree.EnumerateTree().AddIcons<EntityConfigSO>(x => x.Icon);
 
         return tree;
     }
 
-    private void InitMenuItem(OdinMenuItem item)
+    private void SetupMonsterItem(OdinMenuItem item)
     {
         item.IsSelectable = false;
         item.OnDrawItem += x => DragAndDropUtilities.DragZone(item.Rect, item.Value, true, false);

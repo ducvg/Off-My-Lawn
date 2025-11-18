@@ -12,50 +12,40 @@ public class LevelEditor : MonoBehaviour
     [field: SerializeField] public List<EntityConfigSO> ForcedHeroes {get; private set;} = new();
     [SerializeField] int levelIndex;
     [SerializeField, ReadOnly] LevelData currentLevelData;
-    const string levelPath = "Assets/_Project/Resources/Levels";
+    private LevelEditorWindow editWindow;
 
     [Button, Title(""), PropertySpace(SpaceBefore = 10)]
-    public void EditLevelSpawns()
+    public void OpenEditWindow()
     {
-        var window = EditorWindow.GetWindow<LevelEditorWindow>();
-        window.position = GUIHelper.GetEditorWindowRect().AlignCenter(1500, 900);
-        window.SetLevelData(currentLevelData);
-        window.Show();
+        editWindow = EditorWindow.GetWindow<LevelEditorWindow>();
+        editWindow.position = GUIHelper.GetEditorWindowRect().AlignCenter(1500, 900);
+        editWindow.SetLevelData(currentLevelData);
     }
 
-    
     [ButtonGroup]
     void LoadLevel()
     {
-        string fileName = $"Level_{levelIndex}.json";
-        var path = Path.Combine(levelPath, fileName);
-        string json = File.ReadAllText(path);
-        currentLevelData = JsonUtility.FromJson<LevelData>(json);
+        currentLevelData = Data.LoadLevel(levelIndex);
         LoadLevelHeroes(currentLevelData);
-        Debug.Log($"Loaded level {currentLevelData.LevelIndex} at: {path}");
+        if(editWindow) editWindow.SetLevelData(currentLevelData);
     }
-
 
     [ButtonGroup]
     void SaveLevel()
     {
-        string fileName = $"Level_{levelIndex}.json";
-        var path = Path.Combine(levelPath, fileName);
         SaveLevelHeroConfigs();
-        string json = JsonUtility.ToJson(currentLevelData);
-        File.WriteAllText(path, json);
-        AssetDatabase.ImportAsset(path);
-        Debug.Log($"Saved Level {currentLevelData.LevelIndex} to: " + path);
+        currentLevelData.LevelIndex = levelIndex;
+        Data.SaveLevel(currentLevelData);
     }
 
     void LoadLevelHeroes(LevelData loadedData)
     {
         SelectableHeroes.Clear(); ForcedHeroes.Clear();
-        foreach(EntityID selectableId in loadedData.SelectableHeroes)
+        foreach(var selectableId in loadedData.SelectableHeroes)
         {
             SelectableHeroes.Add(GameDatabase.Instance.EntityDictionary[selectableId]);
         }
-        foreach(EntityID forcedId in loadedData.ForcedHeroes)
+        foreach(var forcedId in loadedData.ForcedHeroes)
         {
             ForcedHeroes.Add(GameDatabase.Instance.EntityDictionary[forcedId]);
         }

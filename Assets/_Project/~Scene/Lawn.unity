@@ -10933,49 +10933,49 @@ MonoBehaviour:
   levelIndex: 1
   currentLevelData:
     LevelIndex: 1
-    StartCrystal: 1000
+    StartCrystal: 99
     SelectableHeroes: 000000000100000003000000020000000400000005000000
     ForcedHeroes: 0000000002000000
     Waves:
     - IsFlag: 0
-      WaveTime: 85
-      WaveSpawnPoint: 2
-      MonsterSpawnData:
+      WaveTime: 95
+      WaveSpawnPoint: 1
+      SpawnDataList:
       - EntityID: 6
         PickWeight: 1
         MinSpawn: 0
         MaxSpawn: 999
     - IsFlag: 0
-      WaveTime: 95
-      WaveSpawnPoint: 1
-      MonsterSpawnData:
+      WaveTime: 85
+      WaveSpawnPoint: 2
+      SpawnDataList:
       - EntityID: 6
-        PickWeight: 12
+        PickWeight: 1
         MinSpawn: 0
         MaxSpawn: 999
       - EntityID: 7
-        PickWeight: 4
-        MinSpawn: 1
+        PickWeight: 1
+        MinSpawn: 0
         MaxSpawn: 999
     - IsFlag: 1
       WaveTime: 60
       WaveSpawnPoint: 14
-      MonsterSpawnData:
+      SpawnDataList:
       - EntityID: 8
-        PickWeight: 3
-        MinSpawn: 1
+        PickWeight: 1
+        MinSpawn: 0
         MaxSpawn: 999
-      - EntityID: 6
-        PickWeight: 4
-        MinSpawn: 1
+      - EntityID: 9
+        PickWeight: 1
+        MinSpawn: 0
         MaxSpawn: 999
     - IsFlag: 1
       WaveTime: 0
       WaveSpawnPoint: 0
-      MonsterSpawnData:
+      SpawnDataList:
       - EntityID: 9
         PickWeight: 1
-        MinSpawn: 2
+        MinSpawn: 0
         MaxSpawn: 999
 --- !u!4 &1526275329
 Transform:

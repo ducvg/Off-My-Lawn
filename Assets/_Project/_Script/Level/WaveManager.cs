@@ -67,13 +67,13 @@ public class WaveManager : Singleton<WaveManager>
     void SpawnWave(int waveIndex)
     {
         WaveData wave = levelWaves[waveIndex];
-        var monsterSpawnCount = wave.MonsterSpawnData.Count;
+        var monsterSpawnCount = wave.SpawnDataList.Count;
         var weights = new List<int>();
 
         for(int i = 0; i < monsterSpawnCount; i++) //spawning forced spawn first
         {
-            weights.Add(wave.MonsterSpawnData[i].PickWeight);
-            var spawnData = wave.MonsterSpawnData[i];
+            weights.Add(wave.SpawnDataList[i].PickWeight);
+            var spawnData = wave.SpawnDataList[i];
 
             for (int j = 0; j < spawnData.MinSpawn; j++) //ignore spawn points limit
             {
@@ -94,7 +94,7 @@ public class WaveManager : Singleton<WaveManager>
 
             int index = weights.GetRandomWeightedIndex();
             if (index == -1) continue;
-            var spawnData = wave.MonsterSpawnData[index];
+            var spawnData = wave.SpawnDataList[index];
             if (spawnData.MaxSpawn <= 0)
             {
                 weights.RemoveAt(index);

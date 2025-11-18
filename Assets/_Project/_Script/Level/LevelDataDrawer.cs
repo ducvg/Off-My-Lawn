@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector.Editor;
 using Sirenix.Utilities;
 using Sirenix.Utilities.Editor;
@@ -11,38 +12,49 @@ public sealed class LevelDataDrawer : Attribute{}
 
 public sealed class LevelDataDrawerAttribute : OdinAttributeDrawer<LevelDataDrawer, LevelData>
 {
-    LevelData LevelData;
-    int removeWaveIndex, addWaveIndex;
-    (int oldIndex, int newIndex) moveWaveElement;
-    (WaveData wave, int dataIndex) removeSpawnData;
-
-    private void SetupValues()
-    {
-        addWaveIndex = removeWaveIndex = -1; 
-        moveWaveElement = (-1,-1);
-        removeSpawnData = (null, -1);
-    }
+    private LevelData LevelData;
 
     protected override void DrawPropertyLayout(GUIContent label)
     {
         LevelData = ValueEntry.SmartValue;
         if (LevelData == null) return;
 
-        SetupValues();
         EditorGUILayout.Space(10);
         DrawLevelGeneralInfo(LevelData);
         EditorGUILayout.Space(5);
 
         if (LevelData.Waves == null) LevelData.Waves = new();
 
+        var modifiedWaveList = LevelData.Waves; 
         int count = LevelData.Waves.Count;
-
         for (int i = 0; i < count; i++)
         {
             var wave = LevelData.Waves[i];
             SirenixEditorGUI.HorizontalLineSeparator(2);
             EditorGUILayout.BeginHorizontal();
-            DrawWaveHeader(wave);
+            {
+                DrawWaveHeader(i);
+                if(SirenixEditorGUI.IconButton(EditorIcons.ArrowUp) && i > 0)
+                {
+                    modifiedWaveList = modifiedWaveList.ToList();
+                    modifiedWaveList.MoveElement(i, i-1);
+                }
+                if(SirenixEditorGUI.IconButton(EditorIcons.ArrowDown) && i < count-1)
+                {
+                    modifiedWaveList = modifiedWaveList.ToList();
+                    modifiedWaveList.MoveElement(i, i+1);
+                }
+                if(SirenixEditorGUI.IconButton(EditorIcons.Plus))
+                {
+                    modifiedWaveList = modifiedWaveList.ToList();
+                    modifiedWaveList.Insert(i+1, new WaveData());
+                }
+                if(SirenixEditorGUI.IconButton(EditorIcons.Minus))
+                {
+                    modifiedWaveList = modifiedWaveList.ToList();
+                    modifiedWaveList.RemoveAt(i);
+                }
+            }
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space(10);
             EditorGUILayout.BeginHorizontal();
@@ -61,38 +73,17 @@ public sealed class LevelDataDrawerAttribute : OdinAttributeDrawer<LevelDataDraw
             EditorGUILayout.Space(5);
         }
         EditorGUILayout.Space(5);
-
-        CheckModification();
     }
     
     void DrawLevelGeneralInfo(LevelData levelData)
     {
         levelData.LevelIndex = SirenixEditorFields.IntField("Level Index", levelData.LevelIndex);
         levelData.StartCrystal = SirenixEditorFields.FloatField("Start Crystal", levelData.StartCrystal);
-        //List<Config>
     }
 
-    private void DrawWaveHeader(WaveData waveData)
+    private void DrawWaveHeader(int waveIndex)
     {
-        int waveIndex = LevelData.Waves.IndexOf(waveData);
         GUILayout.Label($"Wave {waveIndex + 1}", EditorStyles.boldLabel);
-        if(SirenixEditorGUI.IconButton(EditorIcons.ArrowUp))
-        {
-            if(waveIndex > 1) moveWaveElement = (waveIndex, waveIndex-1);
-        }
-        if(SirenixEditorGUI.IconButton(EditorIcons.ArrowDown))
-        {
-            if(waveIndex < LevelData.Waves.Count - 1) moveWaveElement = (waveIndex, waveIndex+1);
-        }
-        if(SirenixEditorGUI.IconButton(EditorIcons.Plus))
-        {
-            addWaveIndex = waveIndex;
-        }
-        if(SirenixEditorGUI.IconButton(EditorIcons.Minus))
-        {
-            removeWaveIndex = waveIndex;
-        }
-        
     }
 
     void DrawWaveGeneralInfo(WaveData wave)
@@ -104,27 +95,30 @@ public sealed class LevelDataDrawerAttribute : OdinAttributeDrawer<LevelDataDraw
         wave.WaveSpawnPoint = SirenixEditorFields.IntField("Costs", wave.WaveSpawnPoint);
         EditorGUIUtility.labelWidth = prevLabelWidth;
         EditorGUILayout.Space(20);
-        if (GUI.Button(GUILayoutUtility.GetRect(0, 30),"Add Spawn")) wave.MonsterSpawnData.Add(new SpawnData());
+        if (GUI.Button(GUILayoutUtility.GetRect(0, 30),"Add Spawn")) wave.SpawnDataList.Add(new SpawnData());
     }
 
     void DrawWaveSpawns(WaveData wave)
     {
         var prevLabelWidth = EditorGUIUtility.labelWidth;
         EditorGUIUtility.labelWidth = 50;
-        var spawnCount = wave.MonsterSpawnData.Count;
+        var modifiedSpawnList = wave.SpawnDataList;
+        var spawnCount = wave.SpawnDataList.Count;
         for(int i=0; i<spawnCount; i++)
         {
-            var spawnData = wave.MonsterSpawnData[i];
+            var spawnData = wave.SpawnDataList[i];
             SirenixEditorGUI.BeginVerticalList(drawBorder: true, drawDarkBg: false, GUILayout.Width(200));
             {
                 DrawSpawnData(spawnData);
-                if (GUI.Button(GUILayoutUtility.GetRect(0, 20), "Remove Spawn"))
+                if (GUI.Button(GUILayoutUtility.GetRect(0, 20), "Remove"))
                 {
-                    removeSpawnData = (wave, i);
+                    modifiedSpawnList = modifiedSpawnList.ToList();
+                    modifiedSpawnList.RemoveAt(i);
                 }
             }
             SirenixEditorGUI.EndVerticalList();
         }
+        wave.SpawnDataList = modifiedSpawnList;
         EditorGUIUtility.labelWidth = prevLabelWidth;   
     }
 
@@ -137,37 +131,21 @@ public sealed class LevelDataDrawerAttribute : OdinAttributeDrawer<LevelDataDraw
         ) as EntityConfigSO;
         spawnData.EntityID = config.Id; 
         var iconRect = GUILayoutUtility.GetRect(100, 100); // size in GUI
-        SirenixEditorFields.PreviewObjectField(iconRect, config.Icon, 
-            dragOnly: false, allowMove: false, allowSwap: false, allowSceneObjects: false
-        );
+        SirenixEditorFields.PreviewObjectField(iconRect, config.Icon, dragOnly: false, allowMove: false, allowSwap: false, allowSceneObjects: false);
+
         var costStyle = new GUIStyle(EditorStyles.boldLabel){alignment = TextAnchor.MiddleCenter};
         GUILayout.Label($"Spawn Cost: {config.SpawnCost}", costStyle);
         spawnData.PickWeight = SirenixEditorFields.IntField("Weight", spawnData.PickWeight);
 
         EditorGUILayout.BeginHorizontal();
         {
-            GUIContent spawnLabel = new("Spawn");
-            var rect = EditorGUILayout.GetControlRect(); rect = EditorGUI.PrefixLabel(rect, spawnLabel);
+            var rect = EditorGUILayout.GetControlRect(); rect = EditorGUI.PrefixLabel(rect,  new GUIContent("Spawn"));
             var prev = EditorGUIUtility.labelWidth; EditorGUIUtility.labelWidth = 25;
-            spawnData.MinSpawn = EditorGUI.IntField(rect.AlignLeft(rect.width * 0.5f), new GUIContent("min"), spawnData.MinSpawn);
-            spawnData.MaxSpawn = EditorGUI.IntField(rect.AlignRight(rect.width * 0.5f), new GUIContent("max"), spawnData.MaxSpawn);
+            spawnData.MinSpawn = SirenixEditorFields.IntField(rect.AlignLeft(rect.width * 0.5f), new GUIContent("min"), spawnData.MinSpawn);
+            spawnData.MaxSpawn = SirenixEditorFields.IntField(rect.AlignRight(rect.width * 0.5f), new GUIContent("max"), spawnData.MaxSpawn);
             EditorGUIUtility.labelWidth = prev;
         }
         EditorGUILayout.EndHorizontal();
-    }
-
-    void CheckModification()
-    {
-        if (moveWaveElement.oldIndex >= 0 && moveWaveElement.newIndex >= 0)
-        {
-            LevelData.Waves.MoveElement(moveWaveElement.oldIndex, moveWaveElement.newIndex);
-        }
-        if (removeWaveIndex >= 0) LevelData.Waves.RemoveAt(removeWaveIndex);
-        if (addWaveIndex >= 0) LevelData.Waves.Insert(addWaveIndex+1, new WaveData());
-        if (removeSpawnData.wave != null && removeSpawnData.dataIndex >= 0)
-        {
-            removeSpawnData.wave.MonsterSpawnData.RemoveAt(removeSpawnData.dataIndex);
-        }
     }
 }
 

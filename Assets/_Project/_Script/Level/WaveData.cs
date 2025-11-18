@@ -7,7 +7,7 @@ public class WaveData
     public bool IsFlag = false;
     public float WaveTime = 15;
     public int WaveSpawnPoint = 10;
-    public List<SpawnData> MonsterSpawnData = new();
+    public List<SpawnData> SpawnDataList = new();
 }
 
 [Serializable]

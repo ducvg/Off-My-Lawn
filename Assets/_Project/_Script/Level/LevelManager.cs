@@ -110,7 +110,7 @@ public class LevelManager : Singleton<LevelManager>
         HashSet<EntityID> uniqueEntityIDs = new();
         foreach (var wave in levelData.Waves)
         {
-            foreach (var spawn in wave.MonsterSpawnData)
+            foreach (var spawn in wave.SpawnDataList)
             {
                 if (!uniqueEntityIDs.Add(spawn.EntityID)) continue;
             }
@@ -126,7 +126,7 @@ public class LevelManager : Singleton<LevelManager>
         while(previewCount > 0) //pick random till 10
         {
             WaveData randWave = levelData.Waves[Random.Range(0, levelData.Waves.Count)];
-            SpawnData randSpawnData = randWave.MonsterSpawnData[Random.Range(0, randWave.MonsterSpawnData.Count)];
+            SpawnData randSpawnData = randWave.SpawnDataList[Random.Range(0, randWave.SpawnDataList.Count)];
             var previewSpawn = EntityFactory.Instance.SpawnPreviewMode(randSpawnData.EntityID);
             previewMonsters.Add(previewSpawn);
             previewCount--;
