@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,19 +18,19 @@ public class PoolFactory<T> where T : Component
         pools[prefab] = pool;
     }
 
-    public void Preload(T prefab, int count)
+    public void Preload(T prefab, int defaultCapacity = 10, int maxSize = 1000)
     {
         if(!pools.TryGetValue(prefab, out UnityPool<T> pool))
         {
-            AddPool(prefab);
+            AddPool(prefab, defaultCapacity, maxSize);
             pool = pools[prefab];
         }
-        
-        for (int i = 0; i < count; ++i)
-        {
-            pool.Get();
-        }
-        pool.ReleaseAll();     
+
+        Span<T> buffer = new T[defaultCapacity];
+        for (int i = 0; i < defaultCapacity; ++i)
+           buffer[i] = pool.Get();
+        for (int i = 0; i < defaultCapacity; ++i)
+           pool.Release(buffer[i]);
     }
 
     public T Spawn(T prefab, Vector3 position, Transform parent = null)
@@ -54,57 +55,7 @@ public class PoolFactory<T> where T : Component
         }
         else
         {
-            Object.Destroy(instance.gameObject);
+            UnityEngine.Object.Destroy(instance.gameObject);
         }
-    }
-}
-
-public class UnityPool<T> where T : Component
-{
-    private readonly T prefab;
-    private readonly Stack<T> inactiveStack;
-    private readonly int maxSize;
-
-    public UnityPool(T prefab, int defaultCapacity, int maxSize)
-    {
-        this.prefab = prefab;
-        inactiveStack = new(defaultCapacity);
-        this.maxSize = maxSize;
-    }
-
-    private T Create()
-    {
-        return Object.Instantiate(prefab);
-    }
-
-    public T Get()
-    {
-        T instance;
-        
-        if (inactiveStack.Count == 0) instance = Create();
-        else instance = inactiveStack.Pop();
-
-        instance.gameObject.SetActive(true);
-        return instance;
-    }
-
-    public void Release(T instance)
-    {
-        if(inactiveStack.Count > maxSize)
-        {
-            Object.Destroy(instance);
-            return;
-        }
-        instance.gameObject.SetActive(false);
-        inactiveStack.Push(instance);
-    }
-
-    public void ReleaseAll()
-    {
-        while(inactiveStack.Count > 0)
-        {
-            Object.Destroy(inactiveStack.Pop());
-        }
-        inactiveStack.Clear();
     }
 }

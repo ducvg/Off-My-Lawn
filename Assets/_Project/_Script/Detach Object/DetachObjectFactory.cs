@@ -7,8 +7,7 @@ public class DetachObjectFactory : Singleton<DetachObjectFactory>
 
     private void Start()
     {
-        poolFactory.AddPool(prefab, true, 10, 100);
-        poolFactory.Preload(prefab, 10);
+        poolFactory.Preload(prefab, 10, 100);
     }
 
     public DetachObject Spawn(SkinnedMeshRenderer skinnedMesh, Vector3 position, Quaternion rotation)
