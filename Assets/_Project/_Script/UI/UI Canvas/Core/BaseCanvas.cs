@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 public class BaseCanvas : MonoBehaviour
 {
     [SerializeField] protected TransitionData transitionData;
-
     protected bool isTransitioning = false;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -13,8 +12,7 @@ public class BaseCanvas : MonoBehaviour
     {
     }
 
-    //called after opening the canvas
-    public virtual async UniTask Open()
+    public virtual async UniTask OpenAsync()
     {
         if (isTransitioning) return;
         isTransitioning = true;
@@ -25,8 +23,7 @@ public class BaseCanvas : MonoBehaviour
         isTransitioning = false;
     }
 
-    //delay closing the canvas
-    public virtual async UniTask Close()
+    public virtual async UniTask CloseAsync()
     {
         if (isTransitioning) return;
         isTransitioning = true;
@@ -40,15 +37,17 @@ public class BaseCanvas : MonoBehaviour
     public virtual void OpenImmediate()
     {
         if (isTransitioning) return;
+
         gameObject.SetActive(true);
-        transitionData.OpenImmediate();
+        transitionData.Open().Complete();
         isTransitioning = false;
     }
 
     public virtual void CloseImmediate()
     {
         if (isTransitioning) return;
-        transitionData.CloseImmediate();
+
+        transitionData.Close().Complete();
         gameObject.SetActive(false);
         isTransitioning = false;
     }

@@ -20,6 +20,7 @@ public class GameManager : PersistentSingleton<GameManager>
 public enum GameState
 {
     SelectCard,
+    Headstart,
     Playing,
     Paused,
 }

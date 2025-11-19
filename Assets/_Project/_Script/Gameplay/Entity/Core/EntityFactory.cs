@@ -48,13 +48,4 @@ public class EntityFactory : Singleton<EntityFactory>
     {
         entityPool.Release(entity.Config.Prefab, entity);
     }
-
-    public void PreloadEntity(EntityID entityID, int count = 10)
-    {
-        var config = GameDatabase.Instance.EntityDictionary[entityID];
-        if (config != null)
-        {
-            entityPool.Preload(config.Prefab, count);
-        }
-    }
 }

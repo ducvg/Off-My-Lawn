@@ -1,5 +1,3 @@
-using System.Collections;
-using UnityEngine;
 
 public class Hero : Entity
 {
@@ -10,7 +8,6 @@ public class Hero : Entity
     {
         PlacedCell = cell;
         ChangeState(new DropInState());
-        // ChangeState(new DropInState(){ spawnTime = 0.4f });
     }
 
     protected override void SetupGraphics()

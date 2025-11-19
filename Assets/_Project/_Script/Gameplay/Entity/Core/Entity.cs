@@ -18,7 +18,6 @@ public abstract class Entity : MonoBehaviour
 
     protected float health;
 
-    #region Setups
     protected virtual void Awake()
     {
         SetColliderActive(false);
@@ -55,7 +54,6 @@ public abstract class Entity : MonoBehaviour
             .WithShield(Config.DefaultShieldConfig)
             .WithArmor(Config.DefaultArmorConfigs);
     }
-    #endregion
 
     public virtual void Update()
     {
@@ -64,12 +62,6 @@ public abstract class Entity : MonoBehaviour
         {
             currentState.OnUpdate(this);
         }
-    }
-
-    public virtual void SyncAnimationSpeed()
-    {
-        GraphicController.Animator.SetFloat(Animation.MoveSpeedHash, StatModifier.GetFinalMoveSpeed());
-        GraphicController.Animator.SetFloat(Animation.AttackSpeedHash, StatModifier.GetFinalAttackSpeed());
     }
 
 #region Status Effects

@@ -4,7 +4,7 @@ public abstract class Projectile : MonoBehaviour
 {
     public Weapon OwnerWeapon { get; private set; }
     public Vector3 LastPosition { get; private set; }
-    protected ProjectileConfigSO config;
+    public ProjectileConfigSO Config {get; private set;}
     protected int pierceCount;
     protected Entity lastHitTarget;
 
@@ -12,12 +12,12 @@ public abstract class Projectile : MonoBehaviour
     {
         OwnerWeapon = weapon;
         LastPosition = transform.position;
-        config = weapon.Config.ProjectileConfig;
+        Config = weapon.Config.ProjectileConfig;
         pierceCount = weapon.Config.AttackPierce;
         lastHitTarget = null;
     }
 
-    public virtual void Update()
+    public virtual void OnMove()
     {
         LastPosition = transform.position;
     }
@@ -33,12 +33,12 @@ public abstract class Projectile : MonoBehaviour
         }
         if (--pierceCount <= 0)
         {
-            Despawn();
+            ProjectileManager.Instance.Release(this);
         }
     }
 
-    public virtual void Despawn()
+    public virtual void OnDespawn()
     {
-        ProjectileManager.Instance.Release(OwnerWeapon.Config.ProjectileConfig.Prefab, this);
+        
     }
 }

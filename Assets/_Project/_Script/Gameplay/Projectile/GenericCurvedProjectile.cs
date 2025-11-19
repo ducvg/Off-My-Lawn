@@ -23,16 +23,17 @@ public class GenericCurvedProjectile : Projectile
         traveledDistance = 0f;
     }
 
-    public override void Update()
+    public override void OnMove()
     {
         if(traveledDistance > targetDistance)
         {
-            Despawn();
+            //tele out of bound for despawn
+            transform.position = new Vector3(0, -100, 0);
             return;
         }
-        base.Update();
-        traveledDistance += config.Speed * Time.deltaTime;
-        float height = initialPosition.y + config.HeightCurve.Evaluate(traveledDistance / targetDistance) * relativeDistance;
+        base.OnMove();
+        traveledDistance += Config.Speed * Time.deltaTime;
+        float height = initialPosition.y + Config.HeightCurve.Evaluate(traveledDistance / targetDistance) * relativeDistance;
 
         Vector3 flat = initialPosition + transform.forward * traveledDistance;
         transform.position = new Vector3(flat.x, height, flat.z);

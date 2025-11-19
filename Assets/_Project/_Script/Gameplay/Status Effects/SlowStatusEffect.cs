@@ -27,7 +27,6 @@ public class SlowStatusEffect : IStatusEffect
         target.StatModifier.MoveSpeedModifier.bonusAdd += addPercent;
         target.StatModifier.AttackSpeedModifier.bonusAdd += addPercent;
         target.GraphicController.SetEmissionAll(emissionColor);
-        target.SyncAnimationSpeed();
         elapsedTime = 0f;
         return true;
     }
@@ -46,7 +45,6 @@ public class SlowStatusEffect : IStatusEffect
         target.StatModifier.MoveSpeedModifier.bonusAdd -= addPercent;
         target.StatModifier.AttackSpeedModifier.bonusAdd -= addPercent;
         target.GraphicController.SetEmissionAll(Color.black);
-        target.SyncAnimationSpeed();
     }
 
     public IStatusEffect Clone()

@@ -20,7 +20,6 @@ public class LevelManager : Singleton<LevelManager>
     public float levelTotalTime;
     public float levelTimer;
     public float levelDisplayTimer;
-    private List<Entity> previewMonsters = new();
 
     public void Init(int levelIndex)
     {
@@ -54,7 +53,7 @@ public class LevelManager : Singleton<LevelManager>
         SetupLevelProgress();
         CardManager.Instance.SetDeckActive(false);
         await PlayStartLevelText(); //4.5s
-        ClearPreviewMonsters();
+        ClearLevelEntities();
         CardManager.Instance.SetDeckActive(true);
         GameManager.Instance.SetGameState(GameState.Playing);
         WaveManager.Instance.gameObject.SetActive(false); //stop update
@@ -105,7 +104,7 @@ public class LevelManager : Singleton<LevelManager>
 
     }
 
-    void PreloadEntities()
+    private void PreloadEntities()
     {
         HashSet<EntityID> uniqueEntityIDs = new();
         foreach (var wave in levelData.Waves)
@@ -116,30 +115,34 @@ public class LevelManager : Singleton<LevelManager>
             }
         }
 
-        int previewCount = Mathf.Min(uniqueEntityIDs.Count, 10);
-        foreach (var id in uniqueEntityIDs) //spawn each unique first
+        SpawnPreviewEntities(uniqueEntityIDs);
+    }
+
+    private void SpawnPreviewEntities(ICollection<EntityID> spawnIds)
+    {
+        int previewCount = Mathf.Min(spawnIds.Count, 10);
+
+        foreach (var id in spawnIds) //spawn each unique first
         {
-            var previewSpawn = EntityFactory.Instance.SpawnPreviewMode(id);
-            previewMonsters.Add(previewSpawn);
+            EntityFactory.Instance.SpawnPreviewMode(id);
             previewCount--;
         }
         while(previewCount > 0) //pick random till 10
         {
             WaveData randWave = levelData.Waves[Random.Range(0, levelData.Waves.Count)];
             SpawnData randSpawnData = randWave.SpawnDataList[Random.Range(0, randWave.SpawnDataList.Count)];
-            var previewSpawn = EntityFactory.Instance.SpawnPreviewMode(randSpawnData.EntityID);
-            previewMonsters.Add(previewSpawn);
+            EntityFactory.Instance.SpawnPreviewMode(randSpawnData.EntityID);
             previewCount--;
         }
     }
 
-    public void ClearPreviewMonsters()
+    public void ClearLevelEntities()
     {
-        foreach (var monster in previewMonsters)
+        foreach (var (_, entity) in entityColliderMap)
         {
-            monster.Despawn();
+            entity.Despawn();
         }
-        previewMonsters.Clear();
+        entityColliderMap.Clear();
     }
 
     void SetupLevelProgress()
@@ -157,25 +160,11 @@ public class LevelManager : Singleton<LevelManager>
         }
     }
 
-    [Button]
-    void LoadLevel(int index)
+    private void LoadLevel(int index)
     {
         TextAsset jsonAsset = Resources.Load<TextAsset>($"Levels/Level_{index}");
         levelData = JsonUtility.FromJson<LevelData>(jsonAsset.text);
         Debug.Log($"Loaded Level {levelData.LevelIndex}");
-    }
-
-    [Button]
-    void SaveLevel()
-    {
-        const string levelPath = "Assets/_Project/Resources/Levels";
-        string fileName = $"Level_{levelData.LevelIndex}.json";
-        string filePath = Path.Combine(levelPath, fileName);
-        string json = JsonUtility.ToJson(levelData);
-        File.WriteAllText(filePath, json);
-
-        AssetDatabase.ImportAsset(filePath);
-        Debug.Log($"Saved Level {levelData.LevelIndex} to: " + levelPath);
     }
 
     public void SkipLevelTime(float skippedTime)

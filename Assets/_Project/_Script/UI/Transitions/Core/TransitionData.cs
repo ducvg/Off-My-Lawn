@@ -16,7 +16,8 @@ public class TransitionData
     public Sequence Open()
     {
         Sequence sequence = Sequence.Create();
-        for (int i = 0; i < openTransitions.Length; i++)
+        int length = openTransitions.Length;
+        for (int i = 0; i < length; i++)
         {
             sequence.Group(openTransitions[i].Run());
         }
@@ -26,27 +27,12 @@ public class TransitionData
     public Sequence Close()
     {
         Sequence sequence = Sequence.Create();
-        for (int i = 0; i < closeTransitions.Length; i++)
+        int length = closeTransitions.Length;
+        for (int i = 0; i < length; i++)
         {
             sequence.Group(closeTransitions[i].Run());
         }
         return sequence;
-    }
-
-    public void OpenImmediate()
-    {
-        for (int i = 0; i < openTransitions.Length; i++)
-        {
-            openTransitions[i].Run().Complete();
-        }    
-    }
-
-    public void CloseImmediate()
-    {
-        for (int i = 0; i < closeTransitions.Length; i++)
-        {
-            closeTransitions[i].Run().Complete();
-        }    
     }
 }
 

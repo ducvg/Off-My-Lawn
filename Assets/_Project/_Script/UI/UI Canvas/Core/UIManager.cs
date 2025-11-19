@@ -27,7 +27,7 @@ public class UIManager : Singleton<UIManager>
         T canvas = GetCanvas<T>();
 
         canvas.Setup();
-        canvas.Open().Forget();
+        canvas.OpenAsync().Forget();
 
         return canvas;
     }
@@ -36,7 +36,7 @@ public class UIManager : Singleton<UIManager>
     {
         T canvas = GetCanvas<T>();
         canvas.Setup();
-        await canvas.Open();
+        await canvas.OpenAsync();
         return canvas;
     }
 
@@ -52,7 +52,7 @@ public class UIManager : Singleton<UIManager>
     {
         if (IsOpened<T>())
         {
-            activeCanvases[typeof(T)].Close().Forget();
+            activeCanvases[typeof(T)].CloseAsync().Forget();
         }
     }
 
@@ -60,7 +60,7 @@ public class UIManager : Singleton<UIManager>
     {
         if (IsOpened<T>())
         {
-            await activeCanvases[typeof(T)].Close();
+            await activeCanvases[typeof(T)].CloseAsync();
         }
     }
 
@@ -103,7 +103,7 @@ public class UIManager : Singleton<UIManager>
         {
             if (canvas.Value != null && canvas.Value.gameObject.activeSelf)
             {
-                canvas.Value.Close().Forget();
+                canvas.Value.CloseAsync().Forget();
             }
         }
     }
