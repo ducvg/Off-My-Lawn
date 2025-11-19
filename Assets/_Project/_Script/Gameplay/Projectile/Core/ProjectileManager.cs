@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Unity.Burst;
 using Unity.Collections;
@@ -11,23 +10,27 @@ public class ProjectileManager : Singleton<ProjectileManager>
     private PoolFactory<Projectile> projectileFactory = new();
     private List<Projectile> activeLineProjectiles = new();
     private List<Projectile> activeCurvedProjectiles = new();
-    private List<Projectile> projectileToReturn = new();
+    private List<Projectile> projectileToReturns = new();
 
     public Projectile Spawn(Projectile prefab, Vector3 position, Weapon weapon, Transform parent = null)
     {
         var projectile = projectileFactory.Spawn(prefab, position, parent);
-        projectile.transform.forward = weapon.OwnerEntity.transform.forward;
         projectile.Init(weapon);
 
         if (weapon.Config.ProjectileConfig.UseCurve) activeCurvedProjectiles.Add(projectile);
         else activeLineProjectiles.Add(projectile);
-
+        
         return projectile;
     }
 
-    public void Release(Projectile projectile)
+    public void ToDespawn(Projectile projectile)
     {
-        if (projectile.Config.UseCurve) activeCurvedProjectiles.Remove(projectile);
+        projectileToReturns.Add(projectile);
+    }
+
+    private void Despawn(Projectile projectile)
+    {
+        if (projectile.OwnerWeapon.Config.ProjectileConfig.UseCurve) activeCurvedProjectiles.Remove(projectile);
         else activeLineProjectiles.Remove(projectile);
 
         projectile.OnDespawn();
@@ -37,12 +40,24 @@ public class ProjectileManager : Singleton<ProjectileManager>
     void Update()
     {
         MoveStraight(activeLineProjectiles);
-        MoveSelf(activeCurvedProjectiles); //unemployed, temp solution
-        RemoveOutOfBound();
+        MoveSelf(activeCurvedProjectiles); //unemployed
+        CheckReturnProjectiles(); //check out of bounds
         ProcessCollisions();
+        CheckReturnProjectiles(); //check collision
     }
 
-    #region Movement
+    private void CheckReturnProjectiles()
+    {
+        int count = projectileToReturns.Count;
+        for(int i = 0; i < count; ++i)
+        {
+            var projectile = projectileToReturns[i];
+            Despawn(projectile);
+        }
+        projectileToReturns.Clear();
+    }
+
+#region Move
     private void MoveStraight(List<Projectile> projectiles)
     {
         int count = projectiles.Count;
@@ -50,13 +65,17 @@ public class ProjectileManager : Singleton<ProjectileManager>
         var projectileSpeeds = new NativeArray<float>(count, Allocator.TempJob);
         var projectileTransforms = new TransformAccessArray(count);
 
-        for (int i = count - 1; i >= 0; --i)
+        for (int i = 0; i < count; ++i)
         {
             var projectile = projectiles[i];
+            if (projectile.transform.position.x > GameConstant.GRID_BOUND_X_MAX)
+            {
+                ToDespawn(projectile);
+                continue;
+            }
             projectile.OnMove();
-            
             projectileTransforms.Add(projectile.transform);
-            projectileSpeeds[i] = projectile.Config.Speed;
+            projectileSpeeds[i] = projectile.OwnerWeapon.Config.ProjectileConfig.Speed;
         }
 
         MoveJob moveLineJob = new MoveJob
@@ -67,19 +86,9 @@ public class ProjectileManager : Singleton<ProjectileManager>
 
         JobHandle jobHandle = moveLineJob.Schedule(projectileTransforms);
         jobHandle.Complete();
-
+        
         projectileSpeeds.Dispose();
         projectileTransforms.Dispose();
-    }
-
-    private void MoveSelf(List<Projectile> projectiles) //normal update()
-    {
-        int count = projectiles.Count;
-        for (int i = 0; i < count; ++i)
-        {
-            var projectile = projectiles[i];
-            projectile.OnMove();
-        }
     }
 
     [BurstCompile]
@@ -94,29 +103,35 @@ public class ProjectileManager : Singleton<ProjectileManager>
             transform.position += forward * projectileSpeeds[index] * deltaTime;
         }
     }
+
+    private void MoveSelf(List<Projectile> projectiles) //normal update()
+    {
+        Vector3 checkPos;
+        int count = projectiles.Count;
+        for (int i = 0; i < count; ++i)
+        {
+            var projectile = projectiles[i];
+            checkPos = projectile.transform.position;
+            if (checkPos.x > GameConstant.GRID_BOUND_X_MAX
+                || checkPos.y < GameConstant.GRID_BOUND_Y_MIN)
+            {
+                ToDespawn(projectile);
+                continue;
+            }
+            projectile.OnMove();
+        }
+    }
 #endregion
 
-    private void RemoveOutOfBound()
-    {
-        int count = projectileToReturn.Count;
-        for(int i = 0; i < count; ++i)
-        {
-            var projectile = projectileToReturn[i];
-            projectile.OnDespawn();
-            Release(projectile);
-        }
-        projectileToReturn.Clear();
-    }
-
 #region Collision
-    private void ProcessCollisions()
+    void ProcessCollisions()
     {
         RunRayCasts(out NativeArray<RaycastHit> hitResults);
         CheckCollision(in hitResults);
         hitResults.Dispose();
     }
 
-    private void RunRayCasts(out NativeArray<RaycastHit> hitResults)
+    void RunRayCasts(out NativeArray<RaycastHit> hitResults)
     {
         int lineCount = activeLineProjectiles.Count;
         int curveCount = activeCurvedProjectiles.Count;
@@ -162,17 +177,17 @@ public class ProjectileManager : Singleton<ProjectileManager>
             rayCommands[i + lineCount] = new RaycastCommand(from, dir.normalized, qp, rayLength);
         }
 
-        JobHandle handle = RaycastCommand.ScheduleBatch(rayCommands, hitResults, 100);
+        JobHandle handle = RaycastCommand.ScheduleBatch(rayCommands, hitResults, 100, maxHits: 1);
         handle.Complete();
 
         rayCommands.Dispose();
     }
 
-    private void CheckCollision(in NativeArray<RaycastHit> hitResults)
+    void CheckCollision(in NativeArray<RaycastHit> hitResults)
     {
         int lineCount = activeLineProjectiles.Count;
         int hitCount = hitResults.Length;
-        for (int i = hitCount - 1; i >= 0; --i)
+        for (int i = 0; i < hitCount; ++i)
         {
             RaycastHit hit = hitResults[i];
             if (!hit.collider || !LevelManager.Instance.TryGetEntityByCollider(hit.collider, out Entity entity))
@@ -180,8 +195,7 @@ public class ProjectileManager : Singleton<ProjectileManager>
                 continue;
             }
             Projectile projectile = i < lineCount
-                ? activeLineProjectiles[i]
-                : activeCurvedProjectiles[i - lineCount];
+                ? activeLineProjectiles[i] : activeCurvedProjectiles[i - lineCount];
             projectile.OnHit(entity);
         }
     }

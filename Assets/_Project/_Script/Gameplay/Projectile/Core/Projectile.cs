@@ -33,7 +33,7 @@ public abstract class Projectile : MonoBehaviour
         }
         if (--pierceCount <= 0)
         {
-            ProjectileManager.Instance.Release(this);
+            ProjectileManager.Instance.ToDespawn(this);
         }
     }
 

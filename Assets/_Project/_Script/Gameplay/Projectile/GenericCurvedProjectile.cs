@@ -27,8 +27,7 @@ public class GenericCurvedProjectile : Projectile
     {
         if(traveledDistance > targetDistance)
         {
-            //tele out of bound for despawn
-            transform.position = new Vector3(0, -100, 0);
+            ProjectileManager.Instance.ToDespawn(this);
             return;
         }
         base.OnMove();
