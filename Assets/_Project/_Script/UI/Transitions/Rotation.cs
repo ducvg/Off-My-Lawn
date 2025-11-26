@@ -3,7 +3,7 @@ using PrimeTween;
 using UnityEngine;
 
 [Serializable]
-public class Rotation : ITransition
+public sealed class Rotation : ITransition
 {
     [SerializeField] private TweenSettings<Quaternion> settings;
     [SerializeField] private RectTransform target;

@@ -7,7 +7,7 @@ public class CrystalFactory : Singleton<CrystalFactory>
 {
     [SerializeField] private Crystal crystalPrefab;
     [SerializeField] private CrystalConfigSO normalCrystalConfig; //small, large,...
-    private PoolFactory<Crystal> crystalFactory = new();
+    private UnityPoolFactory<Crystal> crystalFactory = new();
 
     void Start()
     {

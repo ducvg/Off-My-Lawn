@@ -7,7 +7,7 @@ using UnityEngine.Jobs;
 
 public class ProjectileManager : Singleton<ProjectileManager>
 {
-    private PoolFactory<Projectile> projectileFactory = new();
+    private UnityPoolFactory<Projectile> projectileFactory = new();
     private List<Projectile> activeLineProjectiles = new();
     private List<Projectile> activeCurvedProjectiles = new();
     private List<Projectile> projectileToReturns = new();

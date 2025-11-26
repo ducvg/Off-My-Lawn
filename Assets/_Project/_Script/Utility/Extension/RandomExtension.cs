@@ -7,8 +7,8 @@ public static class RandomExtension
     {
         int resultIndex = -1;
         float totalWeight = 0;
-        int i; int count = weights.Count;
-        for (i = 0; i < count; ++i)
+        int count = weights.Count;
+        for (int i = 0; i < count; ++i)
         {
             float evaluatingWeight = weights[i];
 

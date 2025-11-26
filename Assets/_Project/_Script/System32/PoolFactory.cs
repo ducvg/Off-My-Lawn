@@ -2,23 +2,23 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolFactory<T> where T : Component
+public sealed class UnityPoolFactory<T> where T : Component
 {
     private Dictionary<T, UnityPool<T>> pools;
 
-    public PoolFactory()
+    public UnityPoolFactory()
     {
         pools = new();
     }
 
-    private void AddPool(T prefab, int defaultCapacity = 10, int maxSize = 1000)
+    private void AddPool(T prefab, int defaultCapacity = 100, int maxSize = 1000)
     {
         if (pools.ContainsKey(prefab)) return;
         var pool = new UnityPool<T>(prefab, defaultCapacity, maxSize);
         pools[prefab] = pool;
     }
 
-    public void Preload(T prefab, int defaultCapacity = 10, int maxSize = 1000)
+    public void Preload(T prefab, int preloadAmount, int defaultCapacity = 100, int maxSize = 1000)
     {
         if(!pools.TryGetValue(prefab, out UnityPool<T> pool))
         {
@@ -26,11 +26,7 @@ public class PoolFactory<T> where T : Component
             pool = pools[prefab];
         }
 
-        Span<T> buffer = new T[defaultCapacity];
-        for (int i = 0; i < defaultCapacity; ++i)
-           buffer[i] = pool.Get();
-        for (int i = 0; i < defaultCapacity; ++i)
-           pool.Release(buffer[i]);
+        pool.Preload(preloadAmount);
     }
 
     public T Spawn(T prefab, Vector3 position, Transform parent = null)

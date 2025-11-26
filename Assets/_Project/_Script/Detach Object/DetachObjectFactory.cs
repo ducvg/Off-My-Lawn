@@ -3,7 +3,7 @@ using UnityEngine;
 public class DetachObjectFactory : Singleton<DetachObjectFactory>
 {
     [SerializeField] private DetachObject prefab;
-    PoolFactory<DetachObject> poolFactory = new();
+    UnityPoolFactory<DetachObject> poolFactory = new();
 
     private void Start()
     {

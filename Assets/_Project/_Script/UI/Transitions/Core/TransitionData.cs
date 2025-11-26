@@ -8,7 +8,7 @@ public interface ITransition
 }
 
 [Serializable]
-public class TransitionData
+public sealed class TransitionData
 {
     [SerializeReference] private ITransition[] openTransitions;
     [SerializeReference] private ITransition[] closeTransitions;

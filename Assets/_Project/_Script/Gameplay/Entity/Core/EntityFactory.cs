@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EntityFactory : Singleton<EntityFactory>
 {
-    private PoolFactory<Entity> entityPool = new();
+    private UnityPoolFactory<Entity> entityPool = new();
 
     public Entity Spawn(EntityID Id, Vector3 position)
     {

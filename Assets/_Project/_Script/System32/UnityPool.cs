@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnityPool<T> where T : Component
+public sealed class UnityPool<T> where T : Component
 {
     private readonly T prefab;
     private readonly Stack<T> inactiveStack;
@@ -12,6 +12,16 @@ public class UnityPool<T> where T : Component
         this.prefab = prefab;
         inactiveStack = new(defaultCapacity);
         this.maxSize = maxSize;
+    }
+
+    public void Preload(int amount)
+    {
+        for(int i=0; i<amount; i++)
+        {
+            T instance = Create();
+            instance.gameObject.SetActive(false);
+            inactiveStack.Push(instance);
+        }
     }
 
     private T Create()

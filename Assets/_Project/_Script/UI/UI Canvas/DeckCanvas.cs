@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using PrimeTween;
 using UnityEngine;
 
-public class DeckCanvas : BaseCanvas
+public sealed class DeckCanvas : BaseCanvas
 {
     [SerializeField] private CardFactory cardFactory;
     [SerializeField] private Vector2 gameplayPosition;

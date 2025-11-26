@@ -2,7 +2,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Runtime.CompilerServices;
 
-public class BaseCanvas : MonoBehaviour
+public abstract class BaseCanvas : MonoBehaviour
 {
     [SerializeField] protected TransitionData transitionData;
     protected bool isTransitioning = false;

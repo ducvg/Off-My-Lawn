@@ -3,7 +3,7 @@ using PrimeTween;
 using UnityEngine;
 
 [Serializable]
-public class Move : ITransition
+public sealed class Move : ITransition
 {
     [SerializeField] private TweenSettings<Vector2> settings;
     [SerializeField] private RectTransform target;

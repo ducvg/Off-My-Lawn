@@ -3,7 +3,7 @@ using PrimeTween;
 using UnityEngine;
 
 [Serializable]
-public class Fade : ITransition
+public sealed class Fade : ITransition
 {
     [SerializeField] private TweenSettings<float> settings;
     [SerializeField] private CanvasGroup canvasGroup;
